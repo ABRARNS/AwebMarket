@@ -751,4 +751,184 @@ function exportPortfolio(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE5() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pro University Calculator</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#0b0e1a;
+    font-family:Segoe UI, sans-serif;
+}
+.calculator{
+    width:360px;
+    padding:22px;
+    border-radius:25px;
+    background:linear-gradient(145deg,#14194a,#070a1f);
+    box-shadow:25px 25px 60px #000;
+}
+#screen{
+    width:100%;
+    height:70px;
+    border:none;
+    border-radius:15px;
+    background:#020312;
+    color:#00ffd0;
+    font-size:26px;
+    padding:15px;
+    box-shadow:inset 0 0 15px #00ffd040;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:18px;
+}
+button{
+    height:52px;
+    border:none;
+    border-radius:14px;
+    background:#21265a;
+    color:white;
+    font-size:14px;
+    cursor:pointer;
+    box-shadow:4px 4px 15px #000;
+}
+button:active{
+    transform:translateY(3px);
+    box-shadow:inset 3px 3px 8px #000;
+}
+.op{background:#3f3aff}
+.eq{
+    grid-column:span 2;
+    background:#00ffb7;
+    color:#000;
+    font-weight:700;
+}
+.clr{background:#ff3e5b}
+.fn{background:#2a2e64}
+</style>
+</head>
+
+<body>
+<div class="calculator">
+
+<input id="screen" readonly>
+
+<div class="grid">
+<button class="fn" onclick="add('(')">(</button>
+<button class="fn" onclick="add(')')">)</button>
+<button class="fn" onclick="add('pi')">π</button>
+<button class="fn" onclick="add('e')">e</button>
+<button class="clr" onclick="clearScreen()">C</button>
+
+<button onclick="add('7')">7</button>
+<button onclick="add('8')">8</button>
+<button onclick="add('9')">9</button>
+<button class="op" onclick="add('/')">÷</button>
+<button class="fn" onclick="add('%')">%</button>
+
+<button onclick="add('4')">4</button>
+<button onclick="add('5')">5</button>
+<button onclick="add('6')">6</button>
+<button class="op" onclick="add('*')">×</button>
+<button class="fn" onclick="power()">xʸ</button>
+
+<button onclick="add('1')">1</button>
+<button onclick="add('2')">2</button>
+<button onclick="add('3')">3</button>
+<button class="op" onclick="add('-')">−</button>
+<button class="fn" onclick="factorial()">n!</button>
+
+<button onclick="add('0')">0</button>
+<button onclick="add('.')">.</button>
+<button class="eq" onclick="calculate()">=</button>
+<button class="op" onclick="add('+')">+</button>
+
+<button class="fn" onclick="sqrtBtn()">√</button>
+<button class="fn" onclick="add('sin(')">sin</button>
+<button class="fn" onclick="add('cos(')">cos</button>
+<button class="fn" onclick="add('tan(')">tan</button>
+
+<button class="fn" onclick="add('log(')">log</button>
+<button class="fn" onclick="add('ln(')">ln</button>
+</div>
+
+</div>
+
+<script>
+'use strict';
+
+/* constants */
+const pi = Math.PI;
+const e  = Math.E;
+const screen = document.getElementById("screen");
+
+/* input */
+function add(v){
+    screen.value += v;
+}
+
+function clearScreen(){
+    screen.value = "";
+}
+
+/* math functions */
+function sin(x){ return Math.sin(x); }
+function cos(x){ return Math.cos(x); }
+function tan(x){ return Math.tan(x); }
+function log(x){ return Math.log10(x); }
+function ln(x){ return Math.log(x); }
+
+/* extra */
+function sqrtBtn(){
+    try{
+        screen.value = Math.sqrt(Number(screen.value));
+    }catch{
+        screen.value="Error";
+    }
+}
+
+function power(){
+    add('**');
+}
+
+function factorial(){
+    try{
+        let n = Number(eval(screen.value));
+        let r = 1;
+        for(let i=1;i<=n;i++) r *= i;
+        screen.value = r;
+    }catch{
+        screen.value="Error";
+    }
+}
+
+/* calculate */
+function calculate(){
+    try{
+        screen.value = eval(screen.value);
+    }catch{
+        screen.value = "Error";
+    }
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
  
