@@ -461,3 +461,292 @@ function exportPortfolio(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+ function copyCODE4() {
+  const code = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>3D CV Maker — Clean Dark (Contact Included)</title>
+
+  <style>
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* ===== THEME ===== */
+    :root {
+      --bg: #0b0f14;
+      --panel: #0f1720;
+      --card: #111827;
+      --border: rgba(255,255,255,0.08);
+      --muted: #9ca3af;
+      --accent: #7c5cff;
+      --radius: 16px;
+    }
+
+    body {
+      background: radial-gradient(800px 400px at 20% 10%, rgba(124,92,255,0.12), transparent), var(--bg);
+      color: #e5e7eb;
+    }
+
+    /* ===== LAYOUT ===== */
+    .app {
+      min-height: 100vh;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+    }
+
+    /* ===== EDITOR ===== */
+    .panel {
+      background: var(--panel);
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .panel h2 { margin: 0 0 12px; font-size: 18px; }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    input, textarea {
+      width: 100%;
+      margin-top: 4px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background-color: transparent;
+      color: inherit;
+      font-size: 14px;
+    }
+
+    textarea { resize: vertical; min-height: 70px; }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 9px 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .primary { background: linear-gradient(90deg, var(--accent), #4ea8ff); color: #fff; }
+    .ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+
+    /* ===== PREVIEW ===== */
+    .preview { display: grid; place-items: center; }
+
+    .card {
+      width: 420px;
+      max-width: 100%;
+      padding: 22px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent), var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover { transform: translateY(-8px) rotateX(5deg) rotateY(-5deg); }
+
+    .row { display: flex; gap: 14px; align-items: center; }
+
+    .avatar {
+      width: 82px;
+      height: 82px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .name { font-size: 22px; font-weight: 700; }
+    .title { font-size: 14px; font-weight: 600; color: var(--accent); }
+    .contact { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .section { margin-top: 16px; }
+    .section h3 { margin: 0 0 6px; font-size: 13px; color: var(--muted); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ===== EDITOR ===== -->
+    <div class="panel">
+      <h2>3D CV Editor</h2>
+
+      <label>Name</label>
+      <input id="name" value="Jane Doe" />
+
+      <label>Title</label>
+      <input id="title" value="Front-End Developer" />
+
+      <label>Email</label>
+      <input id="email" value="jane@email.com" />
+
+      <label>Phone</label>
+      <input id="phone" value="+1 234 567 890" />
+
+      <label>Photo URL</label>
+      <input id="photo" placeholder="https://...jpg" />
+
+      <label>About</label>
+      <textarea id="about">Creative developer focused on clean UI.</textarea>
+
+      <label>Skills (comma separated)</label>
+      <input id="skills" value="HTML, CSS, JavaScript" />
+
+      <div class="buttons">
+        <button class="primary" id="save">Save</button>
+        <button class="ghost" id="load">Load</button>
+        <button class="ghost" id="print">Print</button>
+      </div>
+    </div>
+
+    <!-- ===== PREVIEW ===== -->
+    <div class="preview">
+      <div class="card" id="card">
+        <div class="row">
+          <div class="avatar">
+            <img id="pImg" alt="profile" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300" />
+          </div>
+          <div>
+            <div class="name" id="pName">Jane Doe</div>
+            <div class="title" id="pTitle">Front-End Developer</div>
+            <div class="contact" id="pContact">jane@email.com • +1 234 567 890</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>About</h3>
+          <div id="pAbout">Creative developer focused on clean UI.</div>
+        </div>
+
+        <div class="section">
+          <h3>Skills</h3>
+          <div class="chips" id="pSkills"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    'use strict';
+
+    const nameInput = document.getElementById('name');
+    const titleInput = document.getElementById('title');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const photoInput = document.getElementById('photo');
+    const aboutInput = document.getElementById('about');
+    const skillsInput = document.getElementById('skills');
+
+    const pName = document.getElementById('pName');
+    const pTitle = document.getElementById('pTitle');
+    const pContact = document.getElementById('pContact');
+    const pImg = document.getElementById('pImg');
+    const pAbout = document.getElementById('pAbout');
+    const pSkills = document.getElementById('pSkills');
+
+    const saveBtn = document.getElementById('save');
+    const loadBtn = document.getElementById('load');
+    const printBtn = document.getElementById('print');
+
+    const KEY = 'cv_clean_v2';
+
+    function update() {
+      pName.textContent = nameInput.value;
+      pTitle.textContent = titleInput.value;
+      pContact.textContent = emailInput.value + ' • ' + phoneInput.value;
+      pAbout.textContent = aboutInput.value;
+
+      if (photoInput.value) {
+        pImg.src = photoInput.value;
+      }
+
+      pSkills.innerHTML = '';
+      skillsInput.value.split(',').map(s => s.trim()).filter(Boolean).forEach(skill => {
+        const span = document.createElement('span');
+        span.className = 'chip';
+        span.textContent = skill;
+        pSkills.appendChild(span);
+      });
+    }
+
+    [nameInput, titleInput, emailInput, phoneInput, photoInput, aboutInput, skillsInput]
+      .forEach(el => el.addEventListener('input', update));
+
+    saveBtn.addEventListener('click', () => {
+      localStorage.setItem(KEY, JSON.stringify({
+        name: nameInput.value,
+        title: titleInput.value,
+        email: emailInput.value,
+        phone: phoneInput.value,
+        photo: photoInput.value,
+        about: aboutInput.value,
+        skills: skillsInput.value
+      }));
+    });
+
+    loadBtn.addEventListener('click', () => {
+      const data = JSON.parse(localStorage.getItem(KEY) || '{}');
+      if (!data.name) return;
+      nameInput.value = data.name;
+      titleInput.value = data.title;
+      emailInput.value = data.email;
+      phoneInput.value = data.phone;
+      photoInput.value = data.photo;
+      aboutInput.value = data.about;
+      skillsInput.value = data.skills;
+      update();
+    });
+
+    printBtn.addEventListener('click', () => window.print());
+
+    update();
+  </script>
+
+</body>
+</html>
+
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
