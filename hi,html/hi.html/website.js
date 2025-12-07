@@ -332,136 +332,7 @@ input.addEventListener("keypress", e => {
   navigator.clipboard.writeText(code)
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
-
- }
- function copyCODE3() {
-  const code = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Builder</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
-
-<style>
-body{
-    margin:0;
-    font-family:'Fira Code',monospace;
-    background:#1e1e2f;
-    color:#fff;
-}
-header{
-    padding:20px;
-    text-align:center;
-    font-size:2rem;
-    font-weight:bold;
-    background:#2c3e50;
-}
-main{
-    max-width:900px;
-    margin:20px auto;
-    padding:10px;
-}
-.controls{
-    display:flex;
-    gap:10px;
-    margin-bottom:15px;
-}
-button{
-    padding:10px 16px;
-    border:none;
-    border-radius:6px;
-    background:#2563eb;
-    color:#fff;
-    font-weight:bold;
-    cursor:pointer;
-}
-button:hover{
-    background:#1d4ed8;
-}
-.section{
-    background:#2a2a3e;
-    padding:15px;
-    border-radius:10px;
-    margin-bottom:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,.25);
-}
-.section .title{
-    font-size:1.3rem;
-    font-weight:bold;
-    margin-bottom:8px;
-    outline:none;
-}
-.section textarea{
-    width:100%;
-    height:70px;
-    padding:10px;
-    border-radius:6px;
-    border:none;
-    background:#1e1e2f;
-    color:#fff;
-    resize:vertical;
-}
-</style>
-</head>
-
-<body>
-
-<header>Pro Portfolio Builder</header>
-
-<main>
-    <div class="controls">
-        <button onclick="addSection()">Add Section</button>
-        <button onclick="exportPortfolio()">Export HTML</button>
-    </div>
-
-    <div id="builder"></div>
-</main>
-
-<script>
-const builder = document.getElementById("builder");
-
-function addSection(){
-    builder.insertAdjacentHTML("beforeend",
-        '<div class="section">' +
-            '<div class="title" contenteditable="true">Section Title</div>' +
-            '<textarea placeholder="Write content..."></textarea>' +
-        '</div>'
-    );
-}
-
-function exportPortfolio(){
-    let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Portfolio</title></head><body style="font-family:Arial;padding:20px;">';
-
-    document.querySelectorAll(".section").forEach(section=>{
-        const title = section.querySelector(".title").innerText;
-        const content = section.querySelector("textarea").value;
-
-        html += '<section style="margin-bottom:30px;">';
-        html += '<div style="font-size:22px;font-weight:bold;">' + title + '</div>';
-        html += '<p>' + content + '</p>';
-        html += '</section>';
-    });
-
-    html += '</body></html>';
-
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(new Blob([html],{type:"text/html"}));
-    link.download = "portfolio.html";
-    link.click();
-}
-</script>
-
-</body>
-</html>
-
-  `;
-  navigator.clipboard.writeText(code)
-    .then(() => alert("Copied!"))
-    .catch(() => alert("Copy failed"));
-}
- function copyCODE4() {
+    function copyCODE4() {
   const code = `<!doctype html>
 <html lang="en">
 <head>
@@ -750,3 +621,134 @@ function exportPortfolio(){
     .catch(() => alert("Copy failed"));
 }
 
+
+
+ }
+ function copyCODE3() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Builder</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Fira Code',monospace;
+    background:#1e1e2f;
+    color:#fff;
+}
+header{
+    padding:20px;
+    text-align:center;
+    font-size:2rem;
+    font-weight:bold;
+    background:#2c3e50;
+}
+main{
+    max-width:900px;
+    margin:20px auto;
+    padding:10px;
+}
+.controls{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    background:#2563eb;
+    color:#fff;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:hover{
+    background:#1d4ed8;
+}
+.section{
+    background:#2a2a3e;
+    padding:15px;
+    border-radius:10px;
+    margin-bottom:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.section .title{
+    font-size:1.3rem;
+    font-weight:bold;
+    margin-bottom:8px;
+    outline:none;
+}
+.section textarea{
+    width:100%;
+    height:70px;
+    padding:10px;
+    border-radius:6px;
+    border:none;
+    background:#1e1e2f;
+    color:#fff;
+    resize:vertical;
+}
+</style>
+</head>
+
+<body>
+
+<header>Pro Portfolio Builder</header>
+
+<main>
+    <div class="controls">
+        <button onclick="addSection()">Add Section</button>
+        <button onclick="exportPortfolio()">Export HTML</button>
+    </div>
+
+    <div id="builder"></div>
+</main>
+
+<script>
+const builder = document.getElementById("builder");
+
+function addSection(){
+    builder.insertAdjacentHTML("beforeend",
+        '<div class="section">' +
+            '<div class="title" contenteditable="true">Section Title</div>' +
+            '<textarea placeholder="Write content..."></textarea>' +
+        '</div>'
+    );
+}
+
+function exportPortfolio(){
+    let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Portfolio</title></head><body style="font-family:Arial;padding:20px;">';
+
+    document.querySelectorAll(".section").forEach(section=>{
+        const title = section.querySelector(".title").innerText;
+        const content = section.querySelector("textarea").value;
+
+        html += '<section style="margin-bottom:30px;">';
+        html += '<div style="font-size:22px;font-weight:bold;">' + title + '</div>';
+        html += '<p>' + content + '</p>';
+        html += '</section>';
+    });
+
+    html += '</body></html>';
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([html],{type:"text/html"}));
+    link.download = "portfolio.html";
+    link.click();
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+ 
