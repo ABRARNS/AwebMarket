@@ -644,5 +644,130 @@ function calculate(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE6() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Pet Simulation</title>
+<style>
+  body {
+    background-color: #222;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  #pet {
+    font-size: 100px;
+    margin: 20px;
+  }
+  .stats {
+    margin: 10px 0;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    transform: scale(1.1);
+  }
+  #feed { background-color: #ff4d4d; }
+  #play { background-color: #4dff4d; }
+  #sleep { background-color: #4d4dff; }
+</style>
+</head>
+<body>
+
+<h1>My Virtual Pet</h1>
+<div id="pet">🐶</div>
+
+<div class="stats">Hunger: <span id="hunger">50</span>/100</div>
+<div class="stats">Happiness: <span id="happiness">50</span>/100</div>
+<div class="stats">Energy: <span id="energy">50</span>/100</div>
+
+<button id="feed">Feed 🍖</button>
+<button id="play">Play ⚽</button>
+<button id="sleep">Sleep 💤</button>
+
+<script>
+let hunger = 50;
+let happiness = 50;
+let energy = 50;
+
+const hungerSpan = document.getElementById('hunger');
+const happinessSpan = document.getElementById('happiness');
+const energySpan = document.getElementById('energy');
+const pet = document.getElementById('pet');
+
+// Update stats
+function updateStats() {
+  hungerSpan.textContent = hunger;
+  happinessSpan.textContent = happiness;
+  energySpan.textContent = energy;
+
+  // Change pet emoji based on mood
+  if (happiness > 70 && energy > 50) pet.textContent = '😃';
+  else if (hunger > 80) pet.textContent = '😖';
+  else if (energy < 20) pet.textContent = '😴';
+  else pet.textContent = '🙂';
+}
+
+// Actions
+document.getElementById('feed').onclick = () => {
+  hunger -= 20;
+  if (hunger < 0) hunger = 0;
+  energy += 10;
+  if (energy > 100) energy = 100;
+  updateStats();
+}
+
+document.getElementById('play').onclick = () => {
+  happiness += 20;
+  if (happiness > 100) happiness = 100;
+  energy -= 15;
+  if (energy < 0) energy = 0;
+  hunger += 10;
+  if (hunger > 100) hunger = 100;
+  updateStats();
+}
+
+document.getElementById('sleep').onclick = () => {
+  energy += 30;
+  if (energy > 100) energy = 100;
+  hunger += 15;
+  if (hunger > 100) hunger = 100;
+  updateStats();
+}
+
+// Pet stats decrease over time
+setInterval(() => {
+  hunger += 1;
+  if (hunger > 100) hunger = 100;
+  happiness -= 1;
+  if (happiness < 0) happiness = 0;
+  energy -= 1;
+  if (energy < 0) energy = 0;
+  updateStats();
+}, 3000); // every 3 seconds
+
+updateStats();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
 
  
