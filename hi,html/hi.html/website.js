@@ -768,6 +768,249 @@ updateStats();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE7() {
+  const code = `<!-- @ts-nocheck -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Top-Soft PDF Toolkit</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body{
+  margin:0;
+  padding:2rem 1rem;
+  font-family:'Poppins',sans-serif;
+  background:#f0f4ff;
+  color:#333;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-height:100vh;
+}
+
+h1{
+  font-size:2.5rem;
+  font-weight:600;
+  color:#1a3c9a;
+  margin-bottom:.3rem;
+  text-align:center;
+}
+
+.subtitle{
+  font-size:1.1rem;
+  color:#555;
+  max-width:400px;
+  text-align:center;
+  margin-bottom:2rem;
+}
+
+#dropZone{
+  width:100%;
+  max-width:480px;
+  height:180px;
+  border:3px dashed #4a7df0;
+  background:#d8e1ff;
+  border-radius:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:1.3rem;
+  color:#1a3c9a;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(74,125,240,.3);
+  transition:.3s;
+}
+
+#dropZone.dragover{
+  background:#a9c3ff;
+  border-color:#143f94;
+}
+
+#dropZone svg{
+  width:48px;
+  height:48px;
+  margin-bottom:12px;
+  fill:#1a3c9a;
+}
+
+#fileList{
+  margin-top:1rem;
+  width:100%;
+  max-width:480px;
+}
+
+#actions{
+  margin-top:2rem;
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+button{
+  padding:.8rem 1.6rem;
+  font-size:1.1rem;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#4a7df0,#1a3c9a);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(26,60,154,.4);
+}
+
+button:disabled{
+  background:#a0b3e6;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📄 Top-Soft PDF Toolkit</h1>
+<p class="subtitle">Drag & drop PDF or image files below to merge or convert.</p>
+
+<div id="dropZone">
+  <svg viewBox="0 0 64 64">
+    <path d="M32 2a5 5 0 0 0-5 5v26h-7l11 11 11-11h-7V7a5 5 0 0 0-5-5zm17 44H15a3 3 0 0 0-3 3v5a5 5 0 0 0 5 5h30a5 5 0 0 0 5-5v-5a3 3 0 0 0-3-3z"/>
+  </svg>
+  Drop PDFs or Images Here
+</div>
+
+<div id="fileList"></div>
+
+<div id="actions" style="display:none">
+  <button id="mergeBtn" disabled>Merge PDFs</button>
+  <button id="compressBtn" disabled>Compress PDFs</button>
+  <button id="convertBtn" disabled>Images → PDF</button>
+  <button id="downloadBtn" disabled>Download</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+<script>
+// @ts-nocheck
+/* global PDFLib */
+
+const PDFDocument = PDFLib.PDFDocument;
+
+const dropZone = document.getElementById('dropZone');
+const fileList = document.getElementById('fileList');
+const actions = document.getElementById('actions');
+const mergeBtn = document.getElementById('mergeBtn');
+const compressBtn = document.getElementById('compressBtn');
+const convertBtn = document.getElementById('convertBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+
+let files = [];
+let processedBlob = null;
+
+function updateUI(){
+  if(files.length===0){
+    actions.style.display='none';
+    fileList.textContent='';
+    return;
+  }
+  actions.style.display='flex';
+  fileList.textContent='Files: '+files.map(f=>f.name).join(', ');
+  mergeBtn.disabled=!files.some(f=>f.type==='application/pdf');
+  compressBtn.disabled=!files.some(f=>f.type==='application/pdf');
+  convertBtn.disabled=!files.some(f=>f.type.startsWith('image/'));
+}
+
+dropZone.ondragover=e=>{e.preventDefault();dropZone.classList.add('dragover');};
+dropZone.ondragleave=e=>{e.preventDefault();dropZone.classList.remove('dragover');};
+dropZone.ondrop=e=>{
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  files=files.concat([...e.dataTransfer.files]);
+  processedBlob=null;
+  updateUI();
+};
+
+dropZone.onclick=()=>{
+  const i=document.createElement('input');
+  i.type='file';
+  i.multiple=true;
+  i.accept='.pdf,image/*';
+  i.onchange=e=>{
+    files=files.concat([...e.target.files]);
+    processedBlob=null;
+    updateUI();
+  };
+  i.click();
+};
+
+mergeBtn.onclick=async()=>{
+  processedBlob=await mergePDFs(files);
+  enableDownload('merged.pdf');
+};
+
+compressBtn.onclick=async()=>{
+  processedBlob=await mergePDFs(files);
+  enableDownload('compressed.pdf');
+};
+
+convertBtn.onclick=async()=>{
+  processedBlob=await imagesToPDF(files);
+  enableDownload('converted.pdf');
+};
+
+downloadBtn.onclick=()=>{
+  if(!processedBlob)return;
+  const url=URL.createObjectURL(processedBlob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=downloadBtn.dataset.name||'file.pdf';
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+function enableDownload(name){
+  downloadBtn.disabled=false;
+  downloadBtn.dataset.name=name;
+}
+
+async function mergePDFs(list){
+  const pdf=await PDFDocument.create();
+  for(const f of list){
+    if(f.type!=='application/pdf')continue;
+    const data=await f.arrayBuffer();
+    const d=await PDFDocument.load(data);
+    const pages=await pdf.copyPages(d,d.getPageIndices());
+    pages.forEach(p=>pdf.addPage(p));
+  }
+  return new Blob([await pdf.save()],{type:'application/pdf'});
+}
+
+async function imagesToPDF(list){
+  const pdf=await PDFDocument.create();
+  for(const f of list){
+    if(!f.type.startsWith('image/'))continue;
+    const data=await f.arrayBuffer();
+    const img=f.type==='image/png'
+      ?await pdf.embedPng(data)
+      :await pdf.embedJpg(data);
+    const page=pdf.addPage([img.width,img.height]);
+    page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+  }
+  return new Blob([await pdf.save()],{type:'application/pdf'});
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
 
 
  
