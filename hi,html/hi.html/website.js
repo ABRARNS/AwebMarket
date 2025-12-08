@@ -1202,3 +1202,245 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
 
+function copyCODE9() {
+  const code = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D Profile Maker — Embed for Google Sites</title>
+
+<style>
+:root{
+  --card-w:340px;
+  --card-h:420px;
+  --radius:22px;
+  --accent:linear-gradient(135deg,#6dd5ed,#2193b0);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(180deg,#0f172a,#071029);
+  color:#fff;
+  padding:20px;
+}
+.wrap{display:grid;grid-template-columns:1fr 420px;gap:24px;width:100%;max-width:1100px}
+@media(max-width:920px){.wrap{grid-template-columns:1fr}}
+
+.controls{
+  background:rgba(255,255,255,.03);
+  padding:18px;
+  border-radius:14px;
+}
+.row{display:flex;gap:8px;margin-bottom:10px}
+.field{flex:1;display:flex;flex-direction:column}
+label{font-size:12px;margin-bottom:6px;color:#cbd5e1}
+input,textarea,select{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  padding:10px;
+  border-radius:8px;
+}
+textarea{resize:vertical}
+button{
+  background:#0ea5a4;
+  border:none;
+  padding:10px 12px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button.secondary{
+  background:transparent;
+  color:#cbe7ff;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.preview-wrap{display:flex;flex-direction:column;gap:12px;align-items:center}
+
+.card-3d{width:var(--card-w);height:var(--card-h);perspective:1200px}
+.card{
+  width:100%;
+  height:100%;
+  background:var(--accent);
+  border-radius:var(--radius);
+  transform-style:preserve-3d;
+  transition:transform .3s ease;
+  box-shadow:0 20px 40px rgba(0,0,0,.7);
+}
+.card-inner{
+  position:absolute;
+  inset:0;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.avatar{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:bold;
+  background-size:cover;
+}
+.name{font-size:20px;font-weight:700}
+.role,.bio{font-size:13px;opacity:.9}
+.chip{
+  background:rgba(255,255,255,.1);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<div class="controls">
+<h2>3D Profile Maker</h2>
+
+<div class="row">
+<div class="field">
+<label>Full Name</label>
+<input id="name" value="Abrarion">
+</div>
+<div class="field">
+<label>Role</label>
+<input id="role" value="Web Developer">
+</div>
+</div>
+
+<div class="row">
+<div class="field">
+<label>Bio</label>
+<textarea id="bio">Loves building playful web apps.</textarea>
+</div>
+</div>
+
+<div class="row">
+<div class="field">
+<label>Avatar</label>
+<input type="file" id="avatar" accept="image/*">
+</div>
+<div class="field">
+<label>Background</label>
+<select id="bg">
+<option value="gradient">Gradient</option>
+<option value="sunset">Sunset</option>
+<option value="violet">Violet</option>
+<option value="solid">Dark</option>
+</select>
+</div>
+</div>
+
+<button id="generate">✅ Generate Photo</button>
+<button id="download" class="secondary">⬇️ Download Last</button>
+</div>
+
+<div class="preview-wrap">
+<div class="card-3d">
+<div class="card" id="card">
+<div class="card-inner">
+<div style="display:flex;gap:14px;align-items:center">
+<div class="avatar" id="avatarImg">A</div>
+<div>
+<div class="name" id="namePreview"></div>
+<div class="role" id="rolePreview"></div>
+</div>
+</div>
+
+<div>
+<div class="bio" id="bioPreview"></div>
+<div style="display:flex;justify-content:space-between;margin-top:14px">
+<div class="chip">🌐 abrarion.example</div>
+<div class="chip">✉️ hello@me.com</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+var nameInput=document.getElementById("name");
+var roleInput=document.getElementById("role");
+var bioInput=document.getElementById("bio");
+var avatarInput=document.getElementById("avatar");
+var bgSelect=document.getElementById("bg");
+
+var namePreview=document.getElementById("namePreview");
+var rolePreview=document.getElementById("rolePreview");
+var bioPreview=document.getElementById("bioPreview");
+var avatarImg=document.getElementById("avatarImg");
+var card=document.getElementById("card");
+
+function update(){
+  namePreview.innerHTML=nameInput.value;
+  rolePreview.innerHTML=roleInput.value;
+  bioPreview.innerHTML=bioInput.value;
+  avatarImg.innerHTML=nameInput.value.charAt(0).toUpperCase();
+}
+nameInput.oninput=roleInput.oninput=bioInput.oninput=update;
+update();
+
+avatarInput.onchange=function(e){
+  var f=e.target.files[0];
+  if(!f)return;
+  var r=new FileReader();
+  r.onload=function(ev){
+    avatarImg.style.backgroundImage="url('"+ev.target.result+"')";
+    avatarImg.innerHTML="";
+  };
+  r.readAsDataURL(f);
+};
+
+bgSelect.onchange=function(){
+  var v=bgSelect.value;
+  if(v==="sunset")card.style.background="linear-gradient(135deg,#ff9a9e,#fad0c4)";
+  else if(v==="violet")card.style.background="linear-gradient(135deg,#7f00ff,#e100ff)";
+  else if(v==="solid")card.style.background="#0b1220";
+  else card.style.background="linear-gradient(135deg,#6dd5ed,#2193b0)";
+};
+
+var lastImage=null;
+document.getElementById("generate").onclick=function(){
+  html2canvas(card).then(function(canvas){
+    lastImage=canvas.toDataURL("image/png");
+    var a=document.createElement("a");
+    a.href=lastImage;
+    a.download="profile-card.png";
+    a.click();
+  });
+};
+document.getElementById("download").onclick=function(){
+  if(!lastImage){alert("Generate first");return;}
+  var a=document.createElement("a");
+  a.href=lastImage;
+  a.download="profile-card.png";
+  a.click();
+};
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
