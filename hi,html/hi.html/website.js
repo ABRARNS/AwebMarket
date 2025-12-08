@@ -1011,5 +1011,194 @@ async function imagesToPDF(list){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE8() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Faded-Text Scanner – Top-Soft</title>
+
+  <!-- OCR engine -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+  <style>
+    body{
+      margin:0;
+      font-family:sans-serif;
+      background:#0f172a;
+      color:#f8fafc;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:2rem;
+    }
+    .card{
+      background:#1e293b;
+      padding:1.5rem 2rem;
+      border-radius:1.25rem;
+      max-width:900px;
+      width:100%;
+      box-shadow:0 4px 40px #0005;
+    }
+    h1{font-size:1.75rem;margin:0 0 1rem;font-weight:700}
+    input,button,textarea{
+      width:100%;
+      margin-top:1rem;
+      border-radius:.65rem;
+      border:none;
+    }
+    input{padding:1rem;background:#334155;color:#f8fafc}
+    button{
+      padding:1rem;
+      font-weight:600;
+      background:#3b82f6;
+      cursor:pointer;
+      transition:.2s;
+      color:white;
+    }
+    button:disabled{opacity:.4;cursor:not-allowed}
+    canvas{
+      margin-top:.75rem;
+      max-width:100%;
+      border:2px dashed #334155
+    }
+    textarea{
+      height:12rem;
+      background:#0f172a;
+      padding:1rem;
+      color:#f8fafc;
+      resize:vertical;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>📄 Faded-Text Scanner</h1>
+
+  <input id="imageInput" type="file" accept="image/*" />
+  <canvas id="preview" hidden></canvas>
+
+  <button id="scanBtn" disabled>🔍 Enhance & Extract</button>
+
+  <textarea id="output" placeholder="Recognised text will appear here…" readonly></textarea>
+
+  <button id="openrouterBtn" disabled>🪄 Clean Up with AI</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const imgInput = document.getElementById("imageInput");
+  const canvas   = document.getElementById("preview");
+  const scanBtn  = document.getElementById("scanBtn");
+  const outBox   = document.getElementById("output");
+  const aiBtn    = document.getElementById("openrouterBtn");
+
+  if (!imgInput || !canvas || !scanBtn || !outBox || !aiBtn) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  let snapshot = null;
+
+  /* -------- 1. pick image ---------- */
+  imgInput.addEventListener("change", async () => {
+    const file = imgInput.files && imgInput.files[0];
+    if (!file) return;
+
+    snapshot = await createImageBitmap(file);
+    canvas.width  = snapshot.width;
+    canvas.height = snapshot.height;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(snapshot, 0, 0);
+
+    canvas.hidden = false;
+    scanBtn.disabled = false;
+  });
+
+  /* -------- 2. boost contrast ---------- */
+  function enhanceImage() {
+    if (!snapshot) return;
+    ctx.filter = "grayscale(100%) contrast(300%) brightness(180%)";
+    ctx.drawImage(snapshot, 0, 0);
+    ctx.filter = "none";
+  }
+
+  /* -------- 3. OCR ---------- */
+  scanBtn.addEventListener("click", async () => {
+    if (!snapshot || typeof Tesseract === "undefined") return;
+
+    enhanceImage();
+    outBox.value = "Reading… please wait ⏳";
+    scanBtn.disabled = true;
+
+    const worker = await Tesseract.createWorker("eng");
+    const result = await worker.recognize(canvas);
+    await worker.terminate();
+
+    const text = (result && result.data && result.data.text) 
+      ? result.data.text.trim()
+      : "";
+
+    outBox.value = text || "[Nothing recognised]";
+    scanBtn.disabled = false;
+    aiBtn.disabled = !text;
+  });
+
+  /* -------- 4. Clean with OpenRouter ---------- */
+  aiBtn.addEventListener("click", async () => {
+    aiBtn.disabled = true;
+    aiBtn.textContent = "AI thinking…";
+
+    try {
+      const prompt =
+        "The following OCR output may contain mistakes.\n" +
+        "Please correct spelling, remove artefacts, and format it nicely:\n\n" +
+        outBox.value;
+
+      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer YOUR_OPENROUTER_KEY_HERE",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "openai/gpt-4o-mini",
+          messages: [{ role: "user", content: prompt }],
+          max_tokens: 1024
+        })
+      });
+
+      const data = await res.json();
+      const reply =
+        data &&
+        data.choices &&
+        data.choices[0] &&
+        data.choices[0].message &&
+        data.choices[0].message.content
+          ? data.choices[0].message.content.trim()
+          : "";
+
+      outBox.value = reply || "[AI returned nothing]";
+    } catch (err) {
+      alert("OpenRouter request failed");
+    }
+
+    aiBtn.textContent = "🪄 Clean Up with AI";
+    aiBtn.disabled = false;
+  });
+});
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
 
 
