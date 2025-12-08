@@ -1011,6 +1011,4 @@ async function imagesToPDF(list){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
-
-
- 
+  
