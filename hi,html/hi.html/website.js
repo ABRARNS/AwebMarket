@@ -1685,5 +1685,16 @@ function clearAll(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE11() {
+  const code = `
+<html>
+<button>hello</button>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
 
 
