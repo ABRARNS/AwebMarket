@@ -1444,3 +1444,245 @@ document.getElementById("download").onclick=function(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE10() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Language Maker Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+  margin:0;
+  background:#050b18;
+  color:#e8f2ff;
+  font-family:system-ui, sans-serif;
+}
+.container{
+  max-width:1100px;
+  margin:30px auto;
+  padding:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.card{
+  background:#0b1222;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+h1,h2{
+  margin:0 0 10px;
+}
+textarea{
+  width:100%;
+  min-height:160px;
+  resize:vertical;
+  background:#050b18;
+  color:#cfe7ff;
+  border:1px solid #1f2a44;
+  border-radius:10px;
+  padding:10px;
+  font-family:monospace;
+}
+button{
+  background:#4cc9f0;
+  color:#032030;
+  border:none;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:700;
+}
+button.secondary{
+  background:#1f2a44;
+  color:#cfe7ff;
+}
+.row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.output{
+  background:#050b18;
+  border:1px solid #1f2a44;
+  border-radius:10px;
+  padding:10px;
+  min-height:120px;
+  white-space:pre-wrap;
+}
+.small{
+  font-size:12px;
+  color:#8fa4c7;
+}
+input[type="file"]{
+  display:none;
+}
+@media(max-width:900px){
+  .container{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Language Maker</h1>
+    <p class="small">Max 50 rules • Format: <b>english = custom</b></p>
+
+    <textarea id="dictInput" placeholder="hi = sioa
+nothing = sioal"></textarea>
+
+    <div class="row">
+      <button onclick="applyDictionary()">Apply</button>
+      <button class="secondary" onclick="loadExample()">Example</button>
+      <button class="secondary" onclick="exportJSON()">Export JSON</button>
+      <button class="secondary" onclick="triggerImport()">Import JSON</button>
+      <input type="file" id="fileInput" accept="application/json">
+    </div>
+
+    <p id="dictStatus" class="small"></p>
+  </div>
+
+  <div class="card">
+    <h2>Translate Custom → English</h2>
+
+    <textarea id="customText" placeholder="sioa sioal"></textarea>
+
+    <div class="row">
+      <button onclick="translateText()">Translate</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div class="output" id="result"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+var dictionary = {};
+var reverseDictionary = {};
+
+function applyDictionary(){
+  var lines = document.getElementById("dictInput").value.split("\n");
+  dictionary = {};
+  reverseDictionary = {};
+  var count = 0;
+
+  for(var i = 0; i < lines.length; i++){
+    var line = lines[i].trim();
+    if(!line) continue;
+    if(line.indexOf("=") === -1) continue;
+
+    var parts = line.split("=");
+    if(parts.length !== 2) continue;
+
+    var english = parts[0].trim().toLowerCase();
+    var custom = parts[1].trim().toLowerCase();
+
+    if(!english || !custom) continue;
+
+    dictionary[english] = custom;
+    reverseDictionary[custom] = english;
+    count++;
+
+    if(count > 50){
+      document.getElementById("dictStatus").textContent =
+        "❌ Maximum 50 rules allowed";
+      return;
+    }
+  }
+
+  document.getElementById("dictStatus").textContent =
+    "✅ Dictionary loaded (" + count + " rules)";
+}
+
+function translateText(){
+  var input = document.getElementById("customText").value.trim();
+  if(!input){
+    document.getElementById("result").textContent = "";
+    return;
+  }
+
+  var words = input.split(/\s+/);
+  var output = [];
+
+  for(var i = 0; i < words.length; i++){
+    var w = words[i].toLowerCase();
+    output.push(reverseDictionary[w] || words[i]);
+  }
+
+  document.getElementById("result").textContent = output.join(" ");
+}
+
+function exportJSON(){
+  var json = JSON.stringify(dictionary, null, 2);
+  var blob = new Blob([json], { type: "application/json" });
+  var url = URL.createObjectURL(blob);
+
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "language-dictionary.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function triggerImport(){
+  document.getElementById("fileInput").click();
+}
+
+document.getElementById("fileInput").addEventListener("change", function(e){
+  var file = e.target.files[0];
+  if(!file) return;
+
+  var reader = new FileReader();
+  reader.onload = function(){
+    try{
+      var obj = JSON.parse(reader.result);
+      var lines = [];
+      var count = 0;
+
+      for(var key in obj){
+        if(obj.hasOwnProperty(key)){
+          lines.push(key + " = " + obj[key]);
+          count++;
+          if(count >= 50) break;
+        }
+      }
+      document.getElementById("dictInput").value = lines.join("\n");
+      applyDictionary();
+    }catch(err){
+      alert("Invalid JSON file");
+    }
+  };
+  reader.readAsText(file);
+}, false);
+
+function loadExample(){
+  document.getElementById("dictInput").value =
+"hi = sioa\nnothing = sioal\ncat = meow\ndog = woof";
+  applyDictionary();
+}
+
+function clearAll(){
+  document.getElementById("customText").value = "";
+  document.getElementById("result").textContent = "";
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
