@@ -1686,10 +1686,157 @@ function clearAll(){
     .catch(() => alert("Copy failed"));
 }
 function copyCODE11() {
-  const code = `
-<html>
-<button>hello</button>
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TOP WORD</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #e4e4e4;
+    }
+
+    /* Top title bar */
+    .topbar {
+      background-color: #2b579a;
+      color: white;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      height: 45px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      background: #f5f5f5;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toolbar select,
+    .toolbar input[type="color"],
+    .toolbar button {
+      margin: 4px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .editor-container {
+      background: white;
+      margin: 20px auto;
+      max-width: 900px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      min-height: 600px;
+      padding: 20px;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">TOP WORD</div>
+
+<div class="toolbar">
+  <select id="fontName">
+    <option value="Arial">Arial</option>
+    <option value="Verdana">Verdana</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Courier New">Courier New</option>
+    <option value="Times New Roman">Times New Roman</option>
+  </select>
+
+  <select id="fontSize">
+    <option value="1">8pt</option>
+    <option value="2">10pt</option>
+    <option value="3" selected>12pt</option>
+    <option value="4">14pt</option>
+    <option value="5">18pt</option>
+    <option value="6">24pt</option>
+    <option value="7">36pt</option>
+  </select>
+
+  <button onclick="execCmd('bold')"><b>B</b></button>
+  <button onclick="execCmd('italic')"><i>I</i></button>
+  <button onclick="execCmd('underline')"><u>U</u></button>
+
+  <input type="color" onchange="execCmdWithArg('foreColor', this.value)">
+  <input type="color" onchange="execCmdWithArg('hiliteColor', this.value)">
+
+  <button onclick="execCmd('justifyLeft')">Left</button>
+  <button onclick="execCmd('justifyCenter')">Center</button>
+  <button onclick="execCmd('justifyRight')">Right</button>
+
+  <button onclick="saveAsJson()">💾 Save JSON</button>
+  <input type="file" id="jsonInput" accept=".json" onchange="loadJson()" />
+</div>
+
+<div id="editor" class="editor-container" contenteditable="true">
+  Start typing here...
+</div>
+
+<script>
+  function execCmd(command) {
+    document.execCommand(command, false, null);
+  }
+
+  function execCmdWithArg(command, arg) {
+    document.execCommand(command, false, arg);
+  }
+
+  document.getElementById("fontName").addEventListener("change", function () {
+    execCmdWithArg("fontName", this.value);
+  });
+
+  document.getElementById("fontSize").addEventListener("change", function () {
+    execCmdWithArg("fontSize", this.value);
+  });
+
+  function saveAsJson() {
+    const content = document.getElementById("editor").innerHTML;
+    const blob = new Blob([JSON.stringify({ content })], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "topword-document.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function loadJson() {
+    const file = document.getElementById("jsonInput").files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          document.getElementById("editor").innerHTML = data.content || "";
+        } catch {
+          alert("Invalid JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+  }
+</script>
+
+</body>
 </html>
+
+
+
+
   `;
   navigator.clipboard.writeText(code)
     .then(() => alert("Copied!"))
