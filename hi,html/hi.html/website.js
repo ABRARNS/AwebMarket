@@ -1686,3 +1686,4 @@ function clearAll(){
     .catch(() => alert("Copy failed"));
 }
 
+
