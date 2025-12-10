@@ -1842,6 +1842,242 @@ function copyCODE11() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE12() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clean File Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root {
+  --bg:#0f172a;
+  --panel:#020617;
+  --border:#1e293b;
+  --accent:#6366f1;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,Segoe UI,Roboto,sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.app{
+  width:90%;
+  max-width:1100px;
+  height:80vh;
+  display:grid;
+  grid-template-columns:280px 1fr;
+  background:var(--panel);
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--border);
+}
+
+.sidebar{
+  padding:16px;
+  border-right:1px solid var(--border);
+}
+
+.sidebar h2{
+  margin:0 0 12px;
+}
+
+button,input{
+  width:100%;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#020617;
+  color:var(--text);
+  border:1px solid var(--border);
+  margin-bottom:8px;
+}
+
+button{
+  background:linear-gradient(135deg,var(--accent),#22d3ee);
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#020617;
+  border:1px solid var(--border);
+}
+
+.main{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+}
+
+.toolbar{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+}
+
+.list{
+  flex:1;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:40px 1fr 90px;
+  padding:10px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+
+.row:hover{background:#020617}
+
+.preview{
+  margin-top:10px;
+  min-height:120px;
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  white-space:pre-wrap;
+  overflow:auto;
+}
+
+.small{font-size:12px;color:var(--muted)}
+.path{margin-bottom:8px;font-weight:600}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <div class="sidebar">
+    <h2>📁 File Manager</h2>
+    <button id="newFile">New File</button>
+    <button id="newFolder">New Folder</button>
+    <button id="back" class="secondary">Go Back</button>
+    <p class="small">Local browser storage</p>
+  </div>
+
+  <div class="main">
+    <div class="path" id="path">/</div>
+    <div class="toolbar">
+      <input id="search" placeholder="Search">
+      <button id="refresh" class="secondary">Refresh</button>
+    </div>
+
+    <div class="list" id="list"></div>
+    <div class="preview" id="preview">Select a file</div>
+  </div>
+</div>
+
+<script>
+// @ts-nocheck
+
+var data = {};
+var cwd = "/";
+var list = document.getElementById("list");
+var preview = document.getElementById("preview");
+var pathView = document.getElementById("path");
+var search = document.getElementById("search");
+
+function save(){
+  localStorage.setItem("file-manager-data", JSON.stringify(data));
+}
+function load(){
+  data = JSON.parse(localStorage.getItem("file-manager-data") || "{}");
+}
+function norm(p){ return p.replace(/\/+/g,"/"); }
+
+function render(){
+  list.innerHTML="";
+  pathView.textContent = cwd;
+
+  var q = search.value.toLowerCase();
+
+  for(var key in data){
+    if(!key.startsWith(cwd)) continue;
+
+    var name = key.replace(cwd,"").split("/")[0];
+    if(!name || (q && !name.toLowerCase().includes(q))) continue;
+
+    var row = document.createElement("div");
+    row.className="row";
+    row.innerHTML =
+      "<div>"+(data[key].dir?"📁":"📄")+"</div>"+
+      "<div>"+name+"</div>"+
+      "<div class='small'>"+(data[key].dir?"Folder":"File")+"</div>";
+
+    row.onclick = function(k){
+      return function(){ openItem(k); };
+    }(key);
+
+    list.appendChild(row);
+  }
+}
+
+function openItem(path){
+  var item = data[path];
+  if(!item) return;
+
+  if(item.dir){
+    cwd = norm(path + "/");
+    preview.textContent = "Opened folder";
+    render();
+  }else{
+    preview.textContent = item.content;
+  }
+}
+
+document.getElementById("newFile").onclick=function(){
+  var name = prompt("File name?");
+  if(!name) return;
+  var content = prompt("Content?","") || "";
+  data[norm(cwd+name)] = {dir:false,content:content};
+  save(); render();
+};
+
+document.getElementById("newFolder").onclick=function(){
+  var name = prompt("Folder name?");
+  if(!name) return;
+  data[norm(cwd+name+"/")] = {dir:true,content:""};
+  save(); render();
+};
+
+document.getElementById("back").onclick=function(){
+  if(cwd=="/") return;
+  cwd = cwd.split("/").slice(0,-2).join("/") + "/";
+  cwd = norm(cwd);
+  render();
+};
+
+document.getElementById("refresh").onclick = render;
+search.oninput = render;
+
+load();
+render();
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
 
 
 
