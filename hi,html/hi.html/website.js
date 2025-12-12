@@ -2077,7 +2077,304 @@ render();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE13() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Calm Relax Timer</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #a8edea, #fed6e3);
+    transition: background 0.4s ease;
+  }
+  .box {
+    background: rgba(255,255,255,0.7);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 340px;
+  }
+  input {
+    width: 70px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    margin: 5px;
+    text-align: center;
+  }
+  button {
+    margin-top: 20px;
+    padding: 12px 22px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 12px;
+    background: #4facfe;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #00c6fe;
+  }
+  .time {
+    margin-top: 25px;
+    font-size: 3rem;
+    color: #333;
+  }
+</style>
+</head>
 
+<body>
+<div class="box">
+  <h2>Relax Timer</h2>
+  <div>
+    <input id="min" type="number" min="0" placeholder="Min" />
+    <input id="sec" type="number" min="0" max="59" placeholder="Sec" />
+  </div>
+  <button id="startBtn" type="button">Start</button>
+  <div id="display" class="time">00:00</div>
+</div>
 
+<!-- WORKING ONLINE AUDIO LINKS -->
+<audio id="calm" preload="auto" loop>
+  <source src="https://files.catbox.moe/0zb7g9.mp3" type="audio/mpeg">
+</audio>
 
+<audio id="funk" preload="auto">
+  <source src="https://files.catbox.moe/9q0ilj.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+(function () {
+
+  const min = document.getElementById("min");
+  const sec = document.getElementById("sec");
+  const display = document.getElementById("display");
+  const startBtn = document.getElementById("startBtn");
+
+  const calm = document.getElementById("calm");
+  const funk = document.getElementById("funk");
+
+  let total = 0;
+  let counter = null;
+
+  function update(t) {
+    const m = String(Math.floor(t / 60)).padStart(2, "0");
+    const s = String(t % 60).padStart(2, "0");
+    display.textContent = m + ":" + s;
+  }
+
+  startBtn.addEventListener("click", () => {
+
+    // stop previous timer
+    if (counter) {
+      clearInterval(counter);
+    }
+
+    // stop audio
+    calm.pause(); calm.currentTime = 0;
+    funk.pause(); funk.currentTime = 0;
+
+    const m = parseInt(min.value, 10) || 0;
+    const s = parseInt(sec.value, 10) || 0;
+
+    total = m * 60 + s;
+    if (total <= 0) {
+      alert("Set a valid time.");
+      return;
+    }
+
+    update(total);
+
+    // Play calm music only after user click (allowed)
+    calm.play().catch(() => {});
+
+    counter = setInterval(() => {
+      total--;
+      update(total);
+
+      if (total <= 0) {
+        clearInterval(counter);
+        calm.pause();
+        calm.currentTime = 0;
+
+        // Change theme
+        document.body.style.background = "linear-gradient(to bottom, #ff512f, #dd2476)";
+
+        // Play funk alarm
+        funk.currentTime = 0;
+        funk.play().catch(() => {});
+
+        // Stop funk after 20 seconds
+        setTimeout(() => {
+          funk.pause();
+          funk.currentTime = 0;
+          document.body.style.background = "linear-gradient(to bottom, #a8edea, #fed6e3)";
+        }, 20000);
+      }
+
+    }, 1000);
+  });
+
+})();
+</script>
+</body>
+</html>
+
+  
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE14() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reaction Timer</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #8EC5FC, #E0C3FC);
+        color: #222;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    #timerButton {
+        width: 300px;
+        height: 150px;
+        font-size: 24px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 20px;
+    }
+
+    .wait {
+        background-color: #f1c40f;
+    }
+
+    .ready {
+        background-color: #2ecc71;
+        color: #fff;
+    }
+
+    #result, #compare {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+
+</style>
+</head>
+<body>
+
+<h1>Reaction Timer</h1>
+
+<button id="timerButton" class="wait">Start</button>
+
+<div id="result">Reaction: —</div>
+<div id="compare">Improvement: —</div>
+
+<script>
+"use strict";
+
+(function () {
+    const button = document.getElementById("timerButton");
+    const resultBox = document.getElementById("result");
+    const compareBox = document.getElementById("compare");
+
+    let timeoutId = null;
+    let startTime = 0;
+    let lastScore = null;
+
+    function startWaiting() {
+        button.textContent = "Wait...";
+        button.className = "wait";
+
+        const delay = Math.floor(Math.random() * 2000) + 2000;
+
+        timeoutId = setTimeout(() => {
+            button.textContent = "CLICK!";
+            button.className = "ready";
+            startTime = Date.now();
+        }, delay);
+    }
+
+    function handleClick() {
+        if (button.classList.contains("wait")) {
+            clearTimeout(timeoutId);
+            button.textContent = "Too Early!";
+            resultBox.textContent = "Reaction: —";
+            compareBox.textContent = "Improvement: —";
+            setTimeout(startWaiting, 1200);
+            return;
+        }
+
+        if (button.classList.contains("ready")) {
+            const reaction = Date.now() - startTime;
+            resultBox.textContent = "Reaction: " + reaction + " ms";
+
+            if (lastScore === null) {
+                compareBox.textContent = "Improvement: —";
+            } else {
+                const diff = lastScore - reaction;
+                if (diff > 0) {
+                    compareBox.textContent = "Improved by " + diff + " ms";
+                } else if (diff < 0) {
+                    compareBox.textContent = "Slower by " + Math.abs(diff) + " ms";
+                } else {
+                    compareBox.textContent = "Same speed as before";
+                }
+            }
+
+            lastScore = reaction;
+
+            button.textContent = "Start Again";
+            button.className = "wait";
+            return;
+        }
+
+        startWaiting();
+    }
+
+    button.addEventListener("click", handleClick);
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
 
