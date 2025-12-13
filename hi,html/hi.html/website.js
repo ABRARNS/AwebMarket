@@ -1,3 +1,7 @@
+// @ts-nocheck
+
+
+
 function copyCODE() {
   const code = `<!DOCTYPE html>
 <html lang="en">
@@ -2377,4 +2381,538 @@ function copyCODE14() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE15() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Footstep Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: system-ui, Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .app {
+      background: #020617;
+      padding: 24px;
+      border-radius: 14px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    .steps {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .start {
+      background: #22c55e;
+      color: #022c22;
+    }
+
+    .reset {
+      background: #ef4444;
+      color: #450a0a;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <h1>Footstep Counter</h1>
+
+    <div id="stepCount" class="steps">0</div>
+
+    <button id="startBtn" class="start">Start Tracking</button>
+    <button id="resetBtn" class="reset">Reset</button>
+
+    <div id="status" class="status">Waiting for permission…</div>
+  </div>
+
+  <script>
+    "use strict";
+
+    (function () {
+      var stepCount = 0;
+      var lastMagnitude = 0;
+      var lastStepTime = 0;
+      var threshold = 12;
+      var minInterval = 300;
+      var isTracking = false;
+
+      var stepEl = document.getElementById("stepCount");
+      var statusEl = document.getElementById("status");
+      var startBtn = document.getElementById("startBtn");
+      var resetBtn = document.getElementById("resetBtn");
+
+      function updateSteps() {
+        stepEl.textContent = String(stepCount);
+      }
+
+      function handleMotion(event) {
+        if (!isTracking || !event.accelerationIncludingGravity) {
+          return;
+        }
+
+        var acc = event.accelerationIncludingGravity;
+        var magnitude = Math.sqrt(
+          (acc.x || 0) * (acc.x || 0) +
+          (acc.y || 0) * (acc.y || 0) +
+          (acc.z || 0) * (acc.z || 0)
+        );
+
+        var now = Date.now();
+
+        if (
+          magnitude > threshold &&
+          lastMagnitude <= threshold &&
+          now - lastStepTime > minInterval
+        ) {
+          stepCount += 1;
+          lastStepTime = now;
+          updateSteps();
+        }
+
+        lastMagnitude = magnitude;
+      }
+
+      function startTracking() {
+        if (typeof DeviceMotionEvent === "undefined") {
+          statusEl.textContent = "Motion sensors not supported on this device.";
+          return;
+        }
+
+        if (
+          typeof DeviceMotionEvent.requestPermission === "function"
+        ) {
+          DeviceMotionEvent.requestPermission()
+            .then(function (response) {
+              if (response === "granted") {
+                window.addEventListener("devicemotion", handleMotion);
+                isTracking = true;
+                statusEl.textContent = "Tracking steps…";
+              } else {
+                statusEl.textContent = "Permission denied.";
+              }
+            })
+            .catch(function () {
+              statusEl.textContent = "Permission request failed.";
+            });
+        } else {
+          window.addEventListener("devicemotion", handleMotion);
+          isTracking = true;
+          statusEl.textContent = "Tracking steps…";
+        }
+      }
+
+      function resetSteps() {
+        stepCount = 0;
+        lastMagnitude = 0;
+        lastStepTime = 0;
+        updateSteps();
+      }
+
+      startBtn.addEventListener("click", startTracking);
+      resetBtn.addEventListener("click", resetSteps);
+    })();
+  </script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE16() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lung Breath Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app {
+            background-color: #020617;
+            width: 100%;
+            max-width: 420px;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            margin-top: 0;
+            text-align: center;
+            font-size: 22px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #cbd5f5;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        button:disabled {
+            background-color: #475569;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            background-color: #020617;
+            border: 1px solid #334155;
+            display: none;
+        }
+
+        .note {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <h1>Lung Breath Test</h1>
+
+    <p>
+        Take a deep breath, then hold it for as long as you safely can.
+        Press <strong>Start</strong> when you begin holding your breath.
+        Press <strong>Stop</strong> when you need to breathe again.
+    </p>
+
+    <div class="timer" id="timer">0.0</div>
+
+    <button id="startButton">Start Test</button>
+    <button id="stopButton" disabled>Stop</button>
+
+    <div class="result" id="resultBox"></div>
+
+    <div class="note">
+        This is an educational screening tool only.
+        It is not a medical diagnosis.
+        If you have breathing concerns, consult a healthcare professional.
+    </div>
+</div>
+
+<script>
+    "use strict";
+
+    var startButton = document.getElementById("startButton");
+    var stopButton = document.getElementById("stopButton");
+    var timerDisplay = document.getElementById("timer");
+    var resultBox = document.getElementById("resultBox");
+
+    var startTime = 0;
+    var intervalId = null;
+
+    function startTest() {
+        resultBox.style.display = "none";
+        timerDisplay.textContent = "0.0";
+
+        startTime = Date.now();
+        intervalId = window.setInterval(updateTimer, 100);
+
+        startButton.disabled = true;
+        stopButton.disabled = false;
+    }
+
+    function stopTest() {
+        if (intervalId !== null) {
+            window.clearInterval(intervalId);
+            intervalId = null;
+        }
+
+        var elapsedMs = Date.now() - startTime;
+        var seconds = elapsedMs / 1000;
+
+        showResult(seconds);
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+    }
+
+    function updateTimer() {
+        var elapsedMs = Date.now() - startTime;
+        var seconds = elapsedMs / 1000;
+        timerDisplay.textContent = seconds.toFixed(1);
+    }
+
+    function showResult(seconds) {
+        var message = "";
+        var rounded = seconds.toFixed(1);
+
+        if (seconds < 20) {
+            message = "Below average breath-hold capacity.";
+        } else if (seconds >= 20 && seconds < 40) {
+            message = "Average breath-hold capacity.";
+        } else if (seconds >= 40 && seconds < 60) {
+            message = "Good breath-hold capacity.";
+        } else {
+            message = "Excellent breath-hold capacity.";
+        }
+
+        resultBox.innerHTML =
+            "<strong>Time:</strong> " + rounded + " seconds<br>" +
+            "<strong>Assessment:</strong> " + message;
+
+        resultBox.style.display = "block";
+    }
+
+    startButton.addEventListener("click", startTest);
+    stopButton.addEventListener("click", stopTest);
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE17() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wi-Fi Speed Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 24px;
+      letter-spacing: 1px;
+    }
+
+    .speed {
+      font-size: 48px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    .unit {
+      font-size: 16px;
+      opacity: 0.8;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #00c6ff;
+      background: linear-gradient(to right, #0072ff, #00c6ff);
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .tip-box {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.25);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 6px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Wi-Fi Speed Test</h1>
+
+    <div class="speed" id="speedValue">0
+      <span class="unit">Mbps</span>
+    </div>
+
+    <button id="startBtn">Start Test</button>
+
+    <div class="status" id="statusText">Ready to test your connection</div>
+
+    <div class="tip-box" id="tipBox">
+      <span class="label">Tip</span>
+      Start the test to get advice based on your internet speed.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var startBtn = document.getElementById("startBtn");
+      var speedValue = document.getElementById("speedValue");
+      var statusText = document.getElementById("statusText");
+      var tipBox = document.getElementById("tipBox");
+
+      function getTip(speed) {
+        if (speed < 5) {
+          return "Your internet speed is very slow. Move closer to the router, stop background downloads, or restart your modem.";
+        }
+        if (speed < 15) {
+          return "Your speed is okay for browsing, but video streaming may buffer. Try using fewer connected devices.";
+        }
+        if (speed < 40) {
+          return "Good speed. You can stream HD videos and attend online classes smoothly.";
+        }
+        return "Excellent speed. Perfect for gaming, 4K streaming, and large downloads.";
+      }
+
+      startBtn.addEventListener("click", function () {
+        startBtn.disabled = true;
+        statusText.textContent = "Testing download speed...";
+        speedValue.textContent = "0";
+
+        var image = new Image();
+        var imageSizeBytes = 5000000; // 5 MB
+        var startTime = new Date().getTime();
+
+        image.onload = function () {
+          var endTime = new Date().getTime();
+          var durationSeconds = (endTime - startTime) / 1000;
+          var bitsLoaded = imageSizeBytes * 8;
+          var speedMbps = (bitsLoaded / durationSeconds / 1024 / 1024).toFixed(2);
+
+          speedValue.textContent = speedMbps;
+          statusText.textContent = "Test completed";
+          tipBox.innerHTML = "<span class='label'>Tip</span>" + getTip(Number(speedMbps));
+          startBtn.disabled = false;
+        };
+
+        image.onerror = function () {
+          statusText.textContent = "Test failed. Check your connection.";
+          tipBox.innerHTML = "<span class='label'>Tip</span>Try again when your internet is stable.";
+          startBtn.disabled = false;
+        };
+
+        image.src = "https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg?cache=" + Math.random();
+      });
+    })();
+  </script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
+
+
 
