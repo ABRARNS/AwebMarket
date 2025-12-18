@@ -3707,3 +3707,524 @@ function copyCODE21() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE22() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Color Palette Generator</title>
+<style>
+body { font-family: Arial; display: flex; flex-direction: column; align-items: center; background: #f0f4f8; padding: 50px; }
+h1 { color: #333; }
+.palette { display: flex; margin-top: 20px; }
+.color-box { width: 100px; height: 100px; margin: 5px; border-radius: 10px; display: flex; justify-content: center; align-items: center; color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+button { margin-top: 20px; padding: 10px 20px; border: none; border-radius: 8px; background: #007acc; color: #fff; cursor: pointer; }
+button:hover { background: #005fa3; }
+</style>
+</head>
+<body>
+<h1>Color Palette Generator</h1>
+<div class="palette" id="palette"></div>
+<button onclick="generatePalette()">Generate Palette</button>
+<script>
+function randomColor() { return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0'); }
+function generatePalette() {
+    const paletteDiv = document.getElementById('palette');
+    paletteDiv.innerHTML = '';
+    for(let i=0;i<5;i++){
+        const color = randomColor();
+        const box = document.createElement('div');
+        box.className = 'color-box';
+        box.style.background = color;
+        box.textContent = color;
+        box.onclick = ()=>navigator.clipboard.writeText(color);
+        paletteDiv.appendChild(box);
+    }
+}
+generatePalette();
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE23() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Regex Tester</title>
+<style>
+body { font-family: monospace; display: flex; flex-direction: column; align-items: center; padding: 50px; background: #e0f7fa; }
+input, textarea { width: 80%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; font-family: monospace; }
+h1 { color: #00796b; }
+#result { background: #fff; padding: 10px; border-radius: 5px; width: 80%; min-height: 50px; }
+button { padding: 8px 15px; border: none; border-radius: 5px; background: #00796b; color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Regex Tester</h1>
+<input type="text" id="pattern" placeholder="Enter regex pattern (without / /)">
+<textarea id="text" placeholder="Enter text to test..."></textarea>
+<button onclick="testRegex()">Test</button>
+<div id="result"></div>
+<script>
+function testRegex() {
+    const pattern = document.getElementById('pattern').value;
+    const text = document.getElementById('text').value;
+    let regex;
+    try { regex = new RegExp(pattern, 'g'); } 
+    catch(e){ document.getElementById('result').textContent = 'Invalid regex'; return; }
+    const matches = text.match(regex);
+    document.getElementById('result').textContent = matches ? matches.join(', ') : 'No match found';
+}
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE24() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dev Toolbox</title>
+<style>
+body{font-family:system-ui;background:#020617;color:#e5e7eb;padding:30px}
+textarea{width:100%;height:120px;background:#0f172a;color:#e5e7eb;padding:10px;border:none}
+button{margin:5px;padding:8px 12px;background:#38bdf8;color:#000;border:none}
+.box{margin-top:20px}
+</style>
+</head>
+<body>
+
+<h2>Developer Toolbox</h2>
+<textarea id="text"></textarea>
+
+<div class="box">
+<button onclick="formatJSON()">Format JSON</button>
+<button onclick="encode()">Base64 Encode</button>
+<button onclick="decode()">Base64 Decode</button>
+<button onclick="checksum()">Checksum</button>
+<button onclick="copy()">Copy</button>
+</div>
+
+<script>
+function formatJSON(){
+  try{
+    text.value=JSON.stringify(JSON.parse(text.value),null,2);
+  }catch{alert("Invalid JSON")}
+}
+function encode(){ text.value=btoa(text.value) }
+function decode(){ text.value=atob(text.value) }
+function checksum(){
+  let sum=0;
+  for(let c of text.value) sum+=c.charCodeAt(0);
+  alert("Checksum: "+sum);
+}
+function copy(){ navigator.clipboard.writeText(text.value) }
+const text=document.getElementById("text");
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE25() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SEO Analyzer – VS Code Proof</title>
+
+<style>
+body {
+  font-family: system-ui, Arial, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 30px;
+}
+
+h1 { margin-bottom: 5px; }
+
+textarea {
+  width: 100%;
+  height: 240px;
+  background: #020617;
+  color: #e5e7eb;
+  border: none;
+  padding: 12px;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+button {
+  margin-top: 12px;
+  padding: 10px 18px;
+  background: #38bdf8;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#output {
+  margin-top: 20px;
+  background: #020617;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.good { color: #4ade80; }
+.bad  { color: #f87171; }
+.info { color: #93c5fd; }
+
+hr {
+  border: none;
+  border-top: 1px solid #1e293b;
+  margin: 12px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Client-Side SEO Analyzer</h1>
+<p class="info">Paste full HTML source below</p>
+
+<textarea id="htmlInput" placeholder="<!DOCTYPE html> ..."></textarea>
+<button id="analyzeBtn">Analyze SEO</button>
+
+<div id="output"></div>
+
+<script>
+(function () {
+
+  var button = document.getElementById("analyzeBtn");
+  var output = document.getElementById("output");
+
+  button.addEventListener("click", runSEO);
+
+  function runSEO() {
+    output.innerHTML = "";
+    var html = document.getElementById("htmlInput").value;
+
+    if (!html || html.trim().length === 0) {
+      print("No HTML provided.", "bad");
+      return;
+    }
+
+    var doc;
+    try {
+      doc = new DOMParser().parseFromString(html, "text/html");
+    } catch (e) {
+      print("HTML parsing failed.", "bad");
+      return;
+    }
+
+    var score = 100;
+
+    score -= checkTitle(doc);
+    score -= checkMeta(doc);
+    score -= checkHeadings(doc);
+    score -= checkImages(doc);
+    score -= checkWordCount(doc);
+    score -= checkLinks(doc);
+    score -= checkOpenGraph(doc);
+    analyzeKeywords(doc);
+
+    print("SEO Score: " + Math.max(score, 0) + " / 100", score >= 70 ? "good" : "bad");
+  }
+
+  /* ---------- CHECKS ---------- */
+
+  function checkTitle(doc) {
+    var t = doc.getElementsByTagName("title")[0];
+    if (!t || !t.textContent) {
+      print("Missing <title> tag", "bad");
+      return 15;
+    }
+    var len = t.textContent.trim().length;
+    if (len < 30 || len > 60) {
+      print("Title length issue (" + len + " chars)", "bad");
+      return 10;
+    }
+    print("Title OK (" + len + " chars)", "good");
+    return 0;
+  }
+
+  function checkMeta(doc) {
+    var metas = doc.getElementsByTagName("meta");
+    var desc = null;
+
+    for (var i = 0; i < metas.length; i++) {
+      if (metas[i].getAttribute("name") === "description") {
+        desc = metas[i];
+        break;
+      }
+    }
+
+    if (!desc || !desc.getAttribute("content")) {
+      print("Missing meta description", "bad");
+      return 15;
+    }
+
+    var len = desc.getAttribute("content").trim().length;
+    if (len < 70 || len > 160) {
+      print("Meta description length issue (" + len + " chars)", "bad");
+      return 10;
+    }
+
+    print("Meta description OK", "good");
+    return 0;
+  }
+
+  function checkHeadings(doc) {
+    var h1 = doc.getElementsByTagName("h1").length;
+    print("H1 count: " + h1, h1 === 1 ? "good" : "bad");
+    return h1 === 1 ? 0 : 10;
+  }
+
+  function checkImages(doc) {
+    var imgs = doc.getElementsByTagName("img");
+    var missing = 0;
+
+    for (var i = 0; i < imgs.length; i++) {
+      if (!imgs[i].getAttribute("alt")) missing++;
+    }
+
+    if (missing > 0) {
+      print(missing + " images missing alt text", "bad");
+      return 10;
+    }
+
+    print("All images have alt text", "good");
+    return 0;
+  }
+
+  function checkWordCount(doc) {
+    var text = doc.body && doc.body.textContent ? doc.body.textContent : "";
+    var words = text.trim().split(/\s+/).filter(Boolean).length;
+
+    print("Word count: " + words, words >= 300 ? "good" : "bad");
+    return words >= 300 ? 0 : 10;
+  }
+
+  function checkLinks(doc) {
+    var links = doc.getElementsByTagName("a");
+    var internal = 0, external = 0;
+
+    for (var i = 0; i < links.length; i++) {
+      var href = links[i].getAttribute("href") || "";
+      if (href.indexOf("http") === 0) external++;
+      else if (href.length > 0) internal++;
+    }
+
+    print("Internal links: " + internal, "info");
+    print("External links: " + external, "info");
+
+    return internal > 0 ? 0 : 5;
+  }
+
+  function checkOpenGraph(doc) {
+    var og = doc.querySelector('meta[property="og:title"]');
+    if (!og) {
+      print("Missing Open Graph tags", "bad");
+      return 5;
+    }
+    print("Open Graph tags found", "good");
+    return 0;
+  }
+
+  function analyzeKeywords(doc) {
+    var text = doc.body && doc.body.textContent ? doc.body.textContent.toLowerCase() : "";
+    var words = text.match(/\b[a-z]{4,}\b/g) || [];
+    var freq = {};
+    for (var i = 0; i < words.length; i++) {
+      freq[words[i]] = (freq[words[i]] || 0) + 1;
+    }
+
+    var sorted = Object.keys(freq).sort(function (a, b) {
+      return freq[b] - freq[a];
+    });
+
+    if (sorted.length > 0) {
+      print("Top keywords: " + sorted.slice(0, 5).join(", "), "info");
+    }
+  }
+
+  function print(msg, cls) {
+    var p = document.createElement("p");
+    p.className = cls;
+    p.textContent = msg;
+    output.appendChild(p);
+  }
+
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE26() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HTML Security Analyzer</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+  color: #38bdf8;
+}
+textarea {
+  width: 100%;
+  height: 220px;
+  background: #020617;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+  padding: 12px;
+  font-family: monospace;
+}
+button {
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: #38bdf8;
+  color: #020617;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover {
+  background: #0ea5e9;
+}
+.result {
+  margin-top: 20px;
+  background: #020617;
+  padding: 15px;
+  border-left: 5px solid #38bdf8;
+}
+.warning {
+  color: #f87171;
+}
+.safe {
+  color: #4ade80;
+}
+.score {
+  font-size: 20px;
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<h1>🔐 HTML Security Analyzer</h1>
+
+<textarea id="code" placeholder="Paste your HTML code here..."></textarea>
+<button id="analyzeBtn">Analyze Security</button>
+
+<div class="result" id="output"></div>
+
+<script>
+"use strict";
+
+(function () {
+  const textarea = document.getElementById("code");
+  const button = document.getElementById("analyzeBtn");
+  const output = document.getElementById("output");
+
+  button.addEventListener("click", analyze);
+
+  function analyze() {
+    const html = textarea.value;
+    let issues = [];
+    let risk = 0;
+
+    if (/<script[\s>]/i.test(html)) {
+      issues.push("Inline <script> detected (XSS risk)");
+      risk += 25;
+    }
+
+    if (/on[a-z]+\s*=/i.test(html)) {
+      issues.push("Inline event handlers detected (onclick, onerror, etc.)");
+      risk += 20;
+    }
+
+    if (/javascript:/i.test(html)) {
+      issues.push("javascript: URL detected");
+      risk += 20;
+    }
+
+    if (/style\s*=/i.test(html)) {
+      issues.push("Inline styles detected (CSP bypass risk)");
+      risk += 10;
+    }
+
+    if (!/content-security-policy/i.test(html)) {
+      issues.push("Missing Content-Security-Policy meta tag");
+      risk += 25;
+    }
+
+    renderResult(issues, risk);
+  }
+
+  function renderResult(issues, risk) {
+    output.textContent = "";
+    
+    if (issues.length === 0) {
+      const p = document.createElement("p");
+      p.className = "safe";
+      p.textContent = "✔ No major security issues detected";
+      output.appendChild(p);
+    } else {
+      issues.forEach(function (issue) {
+        const p = document.createElement("p");
+        p.className = "warning";
+        p.textContent = "⚠ " + issue;
+        output.appendChild(p);
+      });
+    }
+
+    const level =
+      risk < 20 ? "LOW" :
+      risk < 50 ? "MEDIUM" : "HIGH";
+
+    const score = document.createElement("div");
+    score.className = "score";
+    score.textContent = "Risk Score: " + risk + " / 100 — " + level;
+    output.appendChild(score);
+  }
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
