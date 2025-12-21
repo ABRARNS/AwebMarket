@@ -4228,3 +4228,1020 @@ button:hover {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE27() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keyboard Beat Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#000;
+  color:#fff;
+  font-family:system-ui;
+  min-height:100vh;
+}
+.unlock{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.6rem;
+  cursor:pointer;
+  z-index:10;
+}
+header{text-align:center;padding:20px}
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+button{
+  padding:10px 16px;
+  background:#111;
+  border:1px solid #333;
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+}
+button.active{
+  background:#00ffaa;
+  color:#000;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(60px,1fr));
+  gap:10px;
+  padding:20px;
+  max-width:900px;
+  margin:auto;
+}
+.key{
+  height:60px;
+  background:#111;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+.key.flash{
+  background:#00ffaa;
+  color:#000;
+  box-shadow:0 0 20px #00ffaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="unlock" id="unlock">ENABLE SOUND</div>
+
+<header>
+  <h1>Keyboard Beat Machine</h1>
+  <p>Mash keys · Record · Replay</p>
+</header>
+
+<div class="controls">
+  <button id="recordBtn">● Record</button>
+  <button id="playBtn">▶ Replay</button>
+  <button id="clearBtn">✖ Clear</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+/* ================= AUDIO ================= */
+let audioCtx;
+let unlocked = false;
+
+/* HARD UNLOCK */
+unlock.onclick = () => {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  // test beep
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.frequency.value = 440;
+  g.gain.value = 0.4;
+  o.connect(g);
+  g.connect(audioCtx.destination);
+  o.start();
+  o.stop(audioCtx.currentTime + 0.15);
+
+  unlocked = true;
+  unlock.remove();
+};
+
+/* ================= KEYS ================= */
+const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+const grid = document.getElementById("grid");
+const keyEls = {};
+
+chars.forEach(k=>{
+  const d=document.createElement("div");
+  d.className="key";
+  d.textContent=k;
+  grid.appendChild(d);
+  keyEls[k]=d;
+});
+
+/* ================= SOUND ================= */
+function playSound(code){
+  if(!unlocked) return;
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type="square";
+  osc.frequency.value = 120 + (code % 30) * 25;
+  gain.gain.value = 0.3;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.18);
+}
+
+/* ================= VISUAL ================= */
+function flash(k){
+  const el=keyEls[k];
+  if(!el) return;
+  el.classList.add("flash");
+  setTimeout(()=>el.classList.remove("flash"),120);
+}
+
+/* ================= RECORDING ================= */
+let recording=false;
+let startTime=0;
+let recorded=[];
+
+/* ================= KEYBOARD ================= */
+document.addEventListener("keydown",e=>{
+  const k=e.key.toUpperCase();
+  if(!keyEls[k]) return;
+
+  playSound(k.charCodeAt(0));
+  flash(k);
+
+  if(recording){
+    recorded.push({
+      key:k,
+      time:performance.now()-startTime
+    });
+  }
+});
+
+/* ================= CONTROLS ================= */
+recordBtn.onclick=()=>{
+  recording=!recording;
+  recordBtn.classList.toggle("active",recording);
+
+  if(recording){
+    recorded=[];
+    startTime=performance.now();
+    recordBtn.textContent="● Recording";
+  }else{
+    recordBtn.textContent="● Record";
+  }
+};
+
+playBtn.onclick=()=>{
+  if(!recorded.length) return;
+
+  recorded.forEach(ev=>{
+    setTimeout(()=>{
+      playSound(ev.key.charCodeAt(0));
+      flash(ev.key);
+    },ev.time);
+  });
+};
+
+clearBtn.onclick=()=>{
+  recorded=[];
+};
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE28() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keyboard Beat Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+/* ===== BODY ===== */
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #111 0%, #000 60%),
+    linear-gradient(120deg, #0f0f0f, #050505);
+  color: #fff;
+  font-family: system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+}
+
+header p {
+  opacity: 0.7;
+  margin-top: 6px;
+}
+
+/* ===== CONTROLS ===== */
+.controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+button {
+  background: linear-gradient(145deg, #1e1e1e, #0a0a0a);
+  color: #fff;
+  border: 1px solid #333;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px #00ffaa55;
+}
+
+button.active {
+  background: linear-gradient(145deg, #00ffaa, #007755);
+  color: #000;
+}
+
+/* ===== KEY GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.key {
+  height: 60px;
+  border-radius: 10px;
+  background:
+    linear-gradient(145deg, #181818, #0a0a0a);
+  border: 1px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== FLASH EFFECT ===== */
+.key.flash {
+  animation: flash 0.15s ease;
+}
+
+@keyframes flash {
+  0% {
+    background: #00ffaa;
+    color: #000;
+    box-shadow: 0 0 20px #00ffaa;
+  }
+  100% {
+    background:
+      linear-gradient(145deg, #181818, #0a0a0a);
+    color: #fff;
+    box-shadow: none;
+  }
+}
+
+/* ===== RIPPLE ===== */
+.key::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, #00ffaa66 0%, transparent 70%);
+  opacity: 0;
+}
+
+.key.flash::after {
+  opacity: 1;
+  animation: ripple 0.25s ease;
+}
+
+@keyframes ripple {
+  from { transform: scale(0.3); }
+  to { transform: scale(1.5); opacity: 0; }
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 14px;
+  opacity: 0.5;
+  font-size: 0.85rem;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>KEYBOARD BEAT MACHINE</h1>
+  <p>Mash keys · Record · Replay</p>
+</header>
+
+<div class="controls">
+  <button id="recordBtn">● Record</button>
+  <button id="playBtn">▶ Replay</button>
+  <button id="clearBtn">✖ Clear</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  No libraries · One file · VS Code safe
+</footer>
+
+<script>
+/* ===== AUDIO SETUP ===== */
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+/* ===== KEY LIST ===== */
+const keys = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
+const grid = document.getElementById("grid");
+
+/* ===== STATE ===== */
+let recording = false;
+let recordStart = 0;
+let recordedEvents = [];
+
+/* ===== CREATE KEYS ===== */
+const keyElements = {};
+
+keys.forEach(k => {
+  const div = document.createElement("div");
+  div.className = "key";
+  div.textContent = k;
+  grid.appendChild(div);
+  keyElements[k] = div;
+});
+
+/* ===== SOUND FUNCTION ===== */
+function playSound(char) {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  const base = char.charCodeAt(0);
+  osc.type = "square";
+  osc.frequency.value = 120 + (base % 24) * 20;
+
+  gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.25);
+}
+
+/* ===== FLASH VISUAL ===== */
+function flashKey(char) {
+  const el = keyElements[char];
+  if (!el) return;
+  el.classList.remove("flash");
+  void el.offsetWidth;
+  el.classList.add("flash");
+}
+
+/* ===== KEY HANDLER ===== */
+document.addEventListener("keydown", e => {
+  const key = e.key.toUpperCase();
+  if (!keys.includes(key)) return;
+
+  audioCtx.resume();
+  playSound(key);
+  flashKey(key);
+
+  if (recording) {
+    recordedEvents.push({
+      key,
+      time: performance.now() - recordStart
+    });
+  }
+});
+
+/* ===== RECORD ===== */
+recordBtn.onclick = () => {
+  recording = !recording;
+  recordBtn.classList.toggle("active", recording);
+
+  if (recording) {
+    recordedEvents = [];
+    recordStart = performance.now();
+    recordBtn.textContent = "● Recording";
+  } else {
+    recordBtn.textContent = "● Record";
+  }
+};
+
+/* ===== REPLAY ===== */
+playBtn.onclick = () => {
+  if (!recordedEvents.length) return;
+
+  audioCtx.resume();
+  recordedEvents.forEach(ev => {
+    setTimeout(() => {
+      playSound(ev.key);
+      flashKey(ev.key);
+    }, ev.time);
+  });
+};
+
+/* ===== CLEAR ===== */
+clearBtn.onclick = () => {
+  recordedEvents = [];
+};
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE29() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Key Impact Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;
+  height:100%;
+}
+body{
+  background:radial-gradient(circle at top,#111,#000 70%);
+  color:#fff;
+  font-family:system-ui;
+  overflow:hidden;
+  outline:none;
+}
+
+/* HEADER */
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:14px;
+  text-align:center;
+  z-index:5;
+}
+header h1{letter-spacing:3px;font-size:1.4rem}
+header p{opacity:.6;font-size:.85rem}
+
+/* CONTROLS */
+.controls{
+  position:fixed;
+  bottom:14px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  z-index:5;
+}
+button{
+  padding:10px 18px;
+  background:#111;
+  border:1px solid #333;
+  color:#fff;
+  border-radius:20px;
+  cursor:pointer;
+}
+button.active{
+  background:#00ffaa;
+  color:#000;
+}
+
+/* STAGE */
+.stage{
+  position:absolute;
+  inset:0;
+}
+
+/* KEY CARD */
+.card{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(0.6);
+  padding:40px 60px;
+  font-size:3rem;
+  font-weight:800;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#000;
+  box-shadow:0 0 60px var(--c1);
+  animation:pop 0.6s ease forwards;
+}
+
+@keyframes pop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0.4)}
+  60%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+  100%{opacity:0;transform:translate(-50%,-80%) scale(1)}
+}
+
+/* SHAKE */
+.shake{
+  animation:shake 0.2s;
+}
+@keyframes shake{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(4px,-4px)}
+  50%{transform:translate(-4px,4px)}
+  75%{transform:translate(3px,-3px)}
+  100%{transform:translate(0,0)}
+}
+</style>
+</head>
+
+<body tabindex="0">
+
+<header>
+  <h1>KEY IMPACT MACHINE</h1>
+  <p>Click anywhere if keys stop · Record · Replay</p>
+</header>
+
+<div class="stage" id="stage"></div>
+
+<div class="controls">
+  <button id="recordBtn">● Record</button>
+  <button id="playBtn">▶ Replay</button>
+  <button id="clearBtn">✖ Clear</button>
+</div>
+
+<script>
+/* FORCE FOCUS (VS CODE FIX) */
+document.body.focus();
+document.addEventListener("click",()=>document.body.focus());
+
+const stage=document.getElementById("stage");
+let recording=false;
+let startTime=0;
+let recorded=[];
+
+/* COLOR */
+function randColor(){
+  var h = Math.floor(Math.random() * 360);
+  return [
+    "hsl(" + h + ",90%,60%)",
+    "hsl(" + (h + 40) + ",90%,50%)"
+  ];
+}
+
+
+/* VISUAL */
+function trigger(key){
+  const [c1,c2]=randColor();
+  const card=document.createElement("div");
+  card.className="card";
+  card.textContent=key;
+  card.style.setProperty("--c1",c1);
+  card.style.setProperty("--c2",c2);
+  stage.appendChild(card);
+
+  document.body.classList.add("shake");
+  setTimeout(()=>document.body.classList.remove("shake"),200);
+  setTimeout(()=>card.remove(),600);
+}
+
+/* KEYBOARD */
+document.addEventListener("keydown",e=>{
+  if(!document.hasFocus()) return;
+  const k=e.key.toUpperCase();
+  if(k.length!==1) return;
+
+  trigger(k);
+
+  if(recording){
+    recorded.push({key:k,time:performance.now()-startTime});
+  }
+});
+
+/* CONTROLS */
+recordBtn.onclick=()=>{
+  recording=!recording;
+  recordBtn.classList.toggle("active",recording);
+  if(recording){
+    recorded=[];
+    startTime=performance.now();
+    recordBtn.textContent="● Recording";
+  }else{
+    recordBtn.textContent="● Record";
+  }
+};
+
+playBtn.onclick=()=>{
+  recorded.forEach(ev=>{
+    setTimeout(()=>trigger(ev.key),ev.time);
+  });
+};
+
+clearBtn.onclick=()=>recorded=[];
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE30() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Click Explosion Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  background:#000;
+  height:100vh;
+  font-family:system-ui;
+  color:#fff;
+}
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  text-align:center;
+  padding:14px;
+  z-index:5;
+}
+header h1{letter-spacing:2px;font-size:1.4rem;}
+header p{opacity:.6;font-size:.85rem;}
+button{
+  padding:10px 16px;
+  margin:0 5px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+}
+button.active{background:#0f0;color:#000;}
+.controls{
+  position:fixed;
+  bottom:14px;
+  width:100%;
+  text-align:center;
+  z-index:5;
+}
+.particle{
+  position:absolute;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  pointer-events:none;
+  opacity:1;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Click Explosion Simulator</h1>
+<p>Click anywhere to explode · Record · Replay</p>
+</header>
+
+<div class="controls">
+<button id="recordBtn">● Record</button>
+<button id="playBtn">▶ Replay</button>
+<button id="clearBtn">✖ Clear</button>
+</div>
+
+<script>
+let recording=false;
+let startTime=0;
+let recorded=[];
+
+/* ===== PARTICLE EXPLOSION ===== */
+function explode(x,y){
+  for(var i=0;i<12;i++){
+    var p=document.createElement("div");
+    p.className="particle";
+    var size=5+Math.random()*10;
+    p.style.width=p.style.height=size+"px";
+    p.style.background="hsl("+Math.floor(Math.random()*360)+",80%,60%)";
+    p.style.left=x+"px";
+    p.style.top=y+"px";
+    document.body.appendChild(p);
+
+    // random direction and speed
+    var dx=(Math.random()-0.5)*300;
+    var dy=(Math.random()-0.5)*300;
+
+    (function(p,dx,dy){
+      var start=performance.now();
+      function anim(time){
+        var t=(time-start)/600; 
+        if(t>1){p.remove();return;}
+        p.style.left=x+dx*t+"px";
+        p.style.top=y+dy*t+"px";
+        p.style.opacity=1-t;
+        requestAnimationFrame(anim);
+      }
+      requestAnimationFrame(anim);
+    })(p,dx,dy);
+  }
+}
+
+/* ===== CLICK HANDLER ===== */
+document.addEventListener("click",e=>{
+  explode(e.clientX,e.clientY);
+  if(recording){
+    recorded.push({x:e.clientX,y:e.clientY,time:performance.now()-startTime});
+  }
+});
+
+/* ===== CONTROLS ===== */
+const recordBtn=document.getElementById("recordBtn");
+const playBtn=document.getElementById("playBtn");
+const clearBtn=document.getElementById("clearBtn");
+
+recordBtn.onclick=function(){
+  recording=!recording;
+  recordBtn.classList.toggle("active",recording);
+  if(recording){recorded=[];startTime=performance.now();recordBtn.textContent="● Recording";}
+  else{recordBtn.textContent="● Record";}
+}
+
+playBtn.onclick=function(){
+  for(var i=0;i<recorded.length;i++){
+    (function(ev){
+      setTimeout(function(){
+        explode(ev.x,ev.y);
+      },ev.time);
+    })(recorded[i]);
+  }
+}
+
+clearBtn.onclick=function(){
+  recorded=[];
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE31() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mouse Painter & Explosion Machine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  background:#111;
+  height:100vh;
+  font-family:system-ui;
+  cursor:crosshair;
+}
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:14px;
+  text-align:center;
+  z-index:5;
+  color:#fff;
+}
+header h1{letter-spacing:2px;font-size:1.4rem}
+header p{opacity:.7;font-size:.85rem}
+.controls{
+  position:fixed;
+  bottom:14px;
+  width:100%;
+  text-align:center;
+  z-index:5;
+}
+button{
+  padding:10px 16px;
+  margin:0 5px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#222;
+  color:#fff;
+  cursor:pointer;
+}
+button.active{background:#0f0;color:#000;}
+.particle, .trail{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+</style>
+</head>
+<body tabindex="0">
+
+<header>
+<h1>Mouse Painter & Explosion Machine</h1>
+<p>Move mouse → trails | Click → explosions | Record & Replay</p>
+</header>
+
+<div class="controls">
+<button id="recordBtn">● Record</button>
+<button id="playBtn">▶ Replay</button>
+<button id="clearBtn">✖ Clear</button>
+</div>
+
+<script>
+document.body.focus(); // VS CODE fix
+document.addEventListener("click",()=>document.body.focus());
+
+let recording=false;
+let startTime=0;
+let recorded=[];
+
+/* RANDOM COLOR HELPER */
+function randColor(){
+  var h=Math.floor(Math.random()*360);
+  return "hsl("+h+",90%,60%)";
+}
+
+/* ===== MOUSE TRAIL ===== */
+document.addEventListener("mousemove",e=>{
+  const trail=document.createElement("div");
+  trail.className="trail";
+  trail.style.width=trail.style.height="8px";
+  trail.style.background=randColor();
+  trail.style.left=e.clientX+"px";
+  trail.style.top=e.clientY+"px";
+  document.body.appendChild(trail);
+  setTimeout(()=>trail.remove(),500);
+
+  if(recording){
+    recorded.push({type:"move",x:e.clientX,y:e.clientY,time:performance.now()-startTime});
+  }
+});
+
+/* ===== CLICK EXPLOSION ===== */
+document.addEventListener("click",e=>{
+  for(var i=0;i<10;i++){
+    var p=document.createElement("div");
+    p.className="particle";
+    var size=5+Math.random()*10;
+    p.style.width=p.style.height=size+"px";
+    p.style.background=randColor();
+    p.style.left=e.clientX+"px";
+    p.style.top=e.clientY+"px";
+    document.body.appendChild(p);
+
+    var dx=(Math.random()-0.5)*300;
+    var dy=(Math.random()-0.5)*300;
+
+    (function(p,dx,dy){
+      var start=performance.now();
+      function anim(time){
+        var t=(time-start)/600; 
+        if(t>1){p.remove();return;}
+        p.style.left=parseFloat(e.clientX)+dx*t+"px";
+        p.style.top=parseFloat(e.clientY)+dy*t+"px";
+        p.style.opacity=1-t;
+        requestAnimationFrame(anim);
+      }
+      requestAnimationFrame(anim);
+    })(p,dx,dy);
+
+    if(recording){
+      recorded.push({type:"click",x:e.clientX,y:e.clientY,time:performance.now()-startTime});
+    }
+  }
+});
+
+/* ===== CONTROLS ===== */
+const recordBtn=document.getElementById("recordBtn");
+const playBtn=document.getElementById("playBtn");
+const clearBtn=document.getElementById("clearBtn");
+
+recordBtn.onclick=function(){
+  recording=!recording;
+  recordBtn.classList.toggle("active",recording);
+  if(recording){recorded=[];startTime=performance.now();recordBtn.textContent="● Recording";}
+  else{recordBtn.textContent="● Record";}
+}
+
+playBtn.onclick=function(){
+  recorded.forEach(ev=>{
+    setTimeout(()=>{
+      if(ev.type=="move"){
+        const t=document.createElement("div");
+        t.className="trail";
+        t.style.width=t.style.height="8px";
+        t.style.background=randColor();
+        t.style.left=ev.x+"px";
+        t.style.top=ev.y+"px";
+        document.body.appendChild(t);
+        setTimeout(()=>t.remove(),500);
+      } else if(ev.type=="click"){
+        for(var i=0;i<10;i++){
+          var p=document.createElement("div");
+          p.className="particle";
+          var size=5+Math.random()*10;
+          p.style.width=p.style.height=size+"px";
+          p.style.background=randColor();
+          p.style.left=ev.x+"px";
+          p.style.top=ev.y+"px";
+          document.body.appendChild(p);
+          var dx=(Math.random()-0.5)*300;
+          var dy=(Math.random()-0.5)*300;
+          (function(p,dx,dy){
+            var start=performance.now();
+            function anim(time){
+              var t=(time-start)/600; 
+              if(t>1){p.remove();return;}
+              p.style.left=parseFloat(ev.x)+dx*t+"px";
+              p.style.top=parseFloat(ev.y)+dy*t+"px";
+              p.style.opacity=1-t;
+              requestAnimationFrame(anim);
+            }
+            requestAnimationFrame(anim);
+          })(p,dx,dy);
+        }
+      }
+    },ev.time);
+  });
+}
+
+clearBtn.onclick=function(){recorded=[];}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
