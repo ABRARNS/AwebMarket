@@ -5245,3 +5245,838 @@ clearBtn.onclick=function(){recorded=[];}
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE32() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keyboard Behavior Visualizer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0e0f13;
+  --panel: #151822;
+  --accent: #4cc9f0;
+  --accent2: #f72585;
+  --text: #eaeaf0;
+  --muted: #8b8fa8;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1a1d2b, #0e0f13);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: 95%;
+  max-width: 900px;
+  background: var(--panel);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  resize: none;
+  background: #0e1018;
+  color: var(--text);
+  border: 1px solid #22263a;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: var(--accent);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.stat {
+  background: #101322;
+  border-radius: 14px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid #1f2440;
+}
+
+.stat h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+.stat p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.visualizer {
+  margin-top: 22px;
+  height: 120px;
+  background: #0c0f1b;
+  border-radius: 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid #1f2440;
+}
+
+.bar {
+  width: 8px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2));
+  border-radius: 4px 4px 0 0;
+  transition: height 0.15s ease;
+}
+
+.footer {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Keyboard Behavior Visualizer</h1>
+  <div class="subtitle">This analyzes how you type, not what you type.</div>
+
+  <textarea id="input" placeholder="Start typing here..."></textarea>
+
+  <div class="stats">
+    <div class="stat">
+      <h2 id="speed">0</h2>
+      <p>Keys / minute</p>
+    </div>
+    <div class="stat">
+      <h2 id="pauses">0</h2>
+      <p>Long pauses</p>
+    </div>
+    <div class="stat">
+      <h2 id="backs">0</h2>
+      <p>Backspaces</p>
+    </div>
+    <div class="stat">
+      <h2 id="bursts">0</h2>
+      <p>Speed bursts</p>
+    </div>
+  </div>
+
+  <div class="visualizer" id="visualizer"></div>
+
+  <div class="footer">Fully offline · Single HTML file · No tracking</div>
+</div>
+
+<script>
+const input = document.getElementById("input");
+const speedEl = document.getElementById("speed");
+const pausesEl = document.getElementById("pauses");
+const backsEl = document.getElementById("backs");
+const burstsEl = document.getElementById("bursts");
+const viz = document.getElementById("visualizer");
+
+let keyTimes = [];
+let lastKeyTime = null;
+let pauses = 0;
+let backs = 0;
+let bursts = 0;
+
+const MAX_BARS = 60;
+
+function addBar(height) {
+  const bar = document.createElement("div");
+  bar.className = "bar";
+  bar.style.height = height + "%";
+  viz.appendChild(bar);
+
+  if (viz.children.length > MAX_BARS) {
+    viz.removeChild(viz.firstChild);
+  }
+}
+
+input.addEventListener("keydown", e => {
+  const now = Date.now();
+
+  if (lastKeyTime) {
+    const diff = now - lastKeyTime;
+
+    if (diff > 800) pauses++;
+    if (diff < 120) bursts++;
+
+    addBar(Math.min(100, Math.max(10, 600 / diff)));
+  }
+
+  if (e.key === "Backspace") backs++;
+
+  lastKeyTime = now;
+  keyTimes.push(now);
+
+  // keep last 60 seconds
+  keyTimes = keyTimes.filter(t => now - t < 60000);
+
+  speedEl.textContent = keyTimes.length;
+  pausesEl.textContent = pauses;
+  backsEl.textContent = backs;
+  burstsEl.textContent = bursts;
+});
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE33() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Human Annoyance Tester</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0b0d12;
+  --card: #141827;
+  --accent: #ff6b6b;
+  --accent2: #4dabf7;
+  --text: #f1f3f5;
+  --muted: #9aa0b4;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1a1f36, #0b0d12);
+  min-height: 100vh;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: 95%;
+  max-width: 900px;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 40px 90px rgba(0,0,0,.7);
+}
+
+h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.sub {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.control {
+  background: #0f1322;
+  border: 1px solid #22284a;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.control label {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.control input {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.value {
+  text-align: right;
+  font-size: 12px;
+  color: var(--accent2);
+}
+
+.demo {
+  margin-top: 26px;
+  padding: 20px;
+  background: #0d1020;
+  border-radius: 16px;
+  border: 1px solid #232a52;
+}
+
+button {
+  background: linear-gradient(135deg, var(--accent), #ff8787);
+  border: none;
+  color: #000;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .15s ease, filter .15s ease;
+}
+
+button:active {
+  transform: scale(.95);
+}
+
+.fake-content {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.card {
+  height: 16px;
+  background: linear-gradient(90deg, #1a1f3a, #242a55, #1a1f3a);
+  background-size: 200% 100%;
+  border-radius: 10px;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% }
+  100% { background-position: 200% }
+}
+
+.status {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.annoyance {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--accent);
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Human Annoyance Tester</h1>
+  <div class="sub">Simulate bad UX to feel real user frustration.</div>
+
+  <div class="controls">
+    <div class="control">
+      <label>Click Delay (ms)</label>
+      <input type="range" min="0" max="3000" value="800" id="delay">
+      <div class="value" id="delayVal">800ms</div>
+    </div>
+
+    <div class="control">
+      <label>Random Freeze Chance</label>
+      <input type="range" min="0" max="100" value="20" id="freeze">
+      <div class="value" id="freezeVal">20%</div>
+    </div>
+
+    <div class="control">
+      <label>UI Jank Level</label>
+      <input type="range" min="0" max="100" value="30" id="jank">
+      <div class="value" id="jankVal">30%</div>
+    </div>
+  </div>
+
+  <div class="demo">
+    <button id="actionBtn">Submit Form</button>
+
+    <div class="fake-content" id="content"></div>
+
+    <div class="annoyance" id="annoyance">Annoyance: 0%</div>
+    <div class="status" id="status">Waiting for interaction…</div>
+  </div>
+</div>
+
+<script>
+const delay = document.getElementById("delay");
+const freeze = document.getElementById("freeze");
+const jank = document.getElementById("jank");
+
+const delayVal = document.getElementById("delayVal");
+const freezeVal = document.getElementById("freezeVal");
+const jankVal = document.getElementById("jankVal");
+
+const btn = document.getElementById("actionBtn");
+const content = document.getElementById("content");
+const status = document.getElementById("status");
+const annoyance = document.getElementById("annoyance");
+
+function updateVals() {
+  delayVal.textContent = delay.value + "ms";
+  freezeVal.textContent = freeze.value + "%";
+  jankVal.textContent = jank.value + "%";
+}
+updateVals();
+
+[delay, freeze, jank].forEach(i => i.oninput = updateVals);
+
+function buildSkeleton() {
+  content.innerHTML = "";
+  for (let i = 0; i < 6; i++) {
+    const c = document.createElement("div");
+    c.className = "card";
+    content.appendChild(c);
+  }
+}
+
+btn.onclick = () => {
+  status.textContent = "Processing...";
+  btn.disabled = true;
+  buildSkeleton();
+
+  let annoyanceScore = Math.min(
+    100,
+    Number(delay.value)/30 +
+    Number(freeze.value)/2 +
+    Number(jank.value)/2
+  );
+
+  annoyance.textContent = "Annoyance: " + Math.round(annoyanceScore) + "%";
+
+  if (Math.random() * 100 < freeze.value) {
+    status.textContent = "Page frozen...";
+    setTimeout(() => {
+      status.textContent = "Recovered from freeze";
+    }, 1500);
+  }
+
+  setTimeout(() => {
+    content.innerHTML = "";
+    status.textContent = "Action completed (finally).";
+    btn.disabled = false;
+  }, Number(delay.value));
+};
+
+setInterval(() => {
+  if (Math.random() * 100 < jank.value) {
+    document.body.style.transform = "translateX(1px)";
+    setTimeout(() => document.body.style.transform = "", 50);
+  }
+}, 400);
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE34() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Code Minifier & Cleaner</title>
+<style>
+body{
+  font-family:Arial, sans-serif;
+  background:#0f1220;
+  color:#fff;
+  margin:0;
+  padding:20px;
+}
+h1{text-align:center}
+textarea{
+  width:100%;
+  height:200px;
+  background:#11142a;
+  color:#fff;
+  border:1px solid #333;
+  padding:10px;
+  box-sizing:border-box;
+}
+button{
+  padding:10px 20px;
+  margin:10px 5px 10px 0;
+  border:none;
+  background:#4f7cff;
+  color:#fff;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+.stats{
+  margin-top:10px;
+  font-size:14px;
+  opacity:.8;
+}
+.section{margin-top:20px}
+</style>
+</head>
+<body>
+
+<h1>Offline HTML / CSS / JS Minifier</h1>
+
+<div class="section">
+<h3>Input Code</h3>
+<textarea id="input" placeholder="Paste HTML, CSS, or JS here"></textarea>
+</div>
+
+<button onclick="minify()">Minify</button>
+<button onclick="beautify()">Clean / Beautify</button>
+
+<div class="section">
+<h3>Output</h3>
+<textarea id="output" placeholder="Result appears here"></textarea>
+<div class="stats" id="stats"></div>
+</div>
+
+<script>
+function minify(){
+  let code = input.value;
+  let originalSize = code.length;
+
+  code = code
+    .replace(/<!--[\s\S]*?-->/g,'')        // HTML comments
+    .replace(/\/\*[\s\S]*?\*\//g,'')       // CSS/JS comments
+    .replace(/\n+/g,'')
+    .replace(/\s{2,}/g,' ')
+    .replace(/\s*([{}:;,])\s*/g,'$1');
+
+  output.value = code;
+  stats.innerText =
+    "Original: " + originalSize +
+    " chars | Minified: " + code.length +
+    " chars | Saved: " + (originalSize - code.length);
+}
+
+function beautify(){
+  let code = input.value;
+  let formatted = '';
+  let indent = 0;
+
+  for(let i=0;i<code.length;i++){
+    let c = code[i];
+    if(c === '{'){
+      indent++;
+      formatted += '{\n' + '  '.repeat(indent);
+    }else if(c === '}'){
+      indent--;
+      formatted += '\n' + '  '.repeat(indent) + '}';
+    }else if(c === ';'){
+      formatted += ';\n' + '  '.repeat(indent);
+    }else{
+      formatted += c;
+    }
+  }
+
+  output.value = formatted;
+  stats.innerText =
+    "Beautified length: " + formatted.length + " chars";
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE35() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SEO Meta Generator</title>
+<style>
+body{
+  font-family:Arial, sans-serif;
+  background:#0d1117;
+  color:#e6edf3;
+  padding:20px;
+  margin:0;
+}
+h1{text-align:center}
+input, textarea{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  background:#161b22;
+  color:#e6edf3;
+  border:1px solid #30363d;
+  box-sizing:border-box;
+}
+button{
+  padding:10px 18px;
+  background:#238636;
+  border:none;
+  color:white;
+  cursor:pointer;
+  margin-top:10px;
+}
+button:hover{opacity:.9}
+.section{margin-top:20px}
+.output{
+  white-space:pre-wrap;
+  background:#010409;
+  padding:10px;
+  border:1px solid #30363d;
+}
+.warn{color:#f85149}
+.good{color:#3fb950}
+small{opacity:.7}
+</style>
+</head>
+<body>
+
+<h1>SEO Meta Generator & Validator</h1>
+
+<div class="section">
+<label>Page Title</label>
+<input id="title" placeholder="Best Free Website Code Marketplace">
+<small>Recommended: 50–60 characters</small>
+
+<label>Meta Description</label>
+<textarea id="desc" rows="3" placeholder="Copy free or buy premium website source code built by experienced developers."></textarea>
+<small>Recommended: 140–160 characters</small>
+
+<label>Page URL (Canonical)</label>
+<input id="url" placeholder="https://example.com/page">
+</div>
+
+<button onclick="generate()">Generate & Validate</button>
+
+<div class="section">
+<h3>Validation Report</h3>
+<div id="report"></div>
+</div>
+
+<div class="section">
+<h3>Generated Meta Tags</h3>
+<div class="output" id="output"></div>
+</div>
+
+<script>
+function generate(){
+  var t = document.getElementById('title').value.trim();
+  var d = document.getElementById('desc').value.trim();
+  var u = document.getElementById('url').value.trim();
+  var r = "";
+
+  // Title check
+  if(t.length < 30)
+    r += "<div class='warn'>[ERROR] Title too short</div>";
+  else if(t.length > 60)
+    r += "<div class='warn'>[ERROR] Title too long</div>";
+  else
+    r += "<div class='good'>[OK] Title length OK</div>";
+
+  // Description check
+  if(d.length < 140)
+    r += "<div class='warn'>[ERROR] Description too short</div>";
+  else if(d.length > 160)
+    r += "<div class='warn'>[ERROR] Description too long</div>";
+  else
+    r += "<div class='good'>[OK] Description length OK</div>";
+
+  // URL check
+  if(u.indexOf("http") !== 0)
+    r += "<div class='warn'>[ERROR] Canonical URL missing or invalid</div>";
+  else
+    r += "<div class='good'>[OK] Canonical URL OK</div>";
+
+  document.getElementById('report').innerHTML = r;
+
+  // Generate meta tags
+  var metaTags = "<title>" + t + "</title>\n" +
+    "<meta name=\"description\" content=\"" + d + "\">\n" +
+    "<link rel=\"canonical\" href=\"" + u + "\">\n\n" +
+    "<meta property=\"og:title\" content=\"" + t + "\">\n" +
+    "<meta property=\"og:description\" content=\"" + d + "\">\n" +
+    "<meta property=\"og:url\" content=\"" + u + "\">\n" +
+    "<meta property=\"og:type\" content=\"website\">\n\n" +
+    "<meta name=\"robots\" content=\"index, follow\">";
+
+  document.getElementById('output').innerText = metaTags;
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE36() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Website Performance Analyzer</title>
+<style>
+body{
+  font-family:Arial,sans-serif;
+  background:#0d1117;
+  color:#e6edf3;
+  margin:0;
+  padding:20px;
+}
+h1{text-align:center}
+textarea,button{
+  width:100%;
+  margin:6px 0;
+  padding:10px;
+  background:#161b22;
+  color:#e6edf3;
+  border:1px solid #30363d;
+  box-sizing:border-box;
+}
+button{
+  cursor:pointer;
+  background:#238636;
+  color:#fff;
+  border:none;
+}
+button:hover{opacity:.9}
+#report{
+  margin-top:10px;
+  padding:10px;
+  background:#010409;
+  border:1px solid #30363d;
+  white-space:pre-wrap;
+}
+.warn{color:#f85149;}
+.good{color:#3fb950;}
+</style>
+</head>
+<body>
+
+<h1>Offline Website Performance Analyzer</h1>
+
+<label>Paste your website HTML here:</label>
+<textarea id="input" rows="12" placeholder="Paste full HTML code"></textarea>
+
+<button onclick="analyze()">Analyze Performance</button>
+
+<h3>Report:</h3>
+<div id="report"></div>
+
+<script>
+function analyze(){
+  var code = document.getElementById('input').value;
+  var report = "";
+  var score = 100;
+
+  // Inline CSS check
+  var inlineCSS = code.match(/style\s*=/gi);
+  if(inlineCSS && inlineCSS.length>0){
+    report += "[WARN] Inline CSS detected: "+inlineCSS.length+" places\n";
+    score -= inlineCSS.length*2;
+  } else report += "[GOOD] No inline CSS detected\n";
+
+  // Image alt check
+  var imgs = code.match(/<img\s+[^>]*>/gi);
+  var missingAlt=0;
+  if(imgs){
+    for(var i=0;i<imgs.length;i++){
+      if(!/alt\s*=/.test(imgs[i])) missingAlt++;
+    }
+  }
+  if(missingAlt>0){
+    report += "[WARN] "+missingAlt+" image(s) missing alt attribute\n";
+    score -= missingAlt*2;
+  } else report += "[GOOD] All images have alt attributes\n";
+
+  // Empty links check
+  var links = code.match(/<a\s+[^>]*>/gi);
+  var emptyLinks=0;
+  if(links){
+    for(var i=0;i<links.length;i++){
+      if(/>\s*<\/a>/.test(links[i]+"")) emptyLinks++;
+    }
+  }
+  if(emptyLinks>0){
+    report += "[WARN] "+emptyLinks+" empty link(s) found\n";
+    score -= emptyLinks*1;
+  } else report += "[GOOD] No empty links\n";
+
+  // Deprecated tags
+  var deprecated = code.match(/<font\b|<center\b/gi);
+  if(deprecated){
+    report += "[WARN] Deprecated HTML tags found: "+deprecated.length+"\n";
+    score -= deprecated.length*2;
+  } else report += "[GOOD] No deprecated tags\n";
+
+  // Large inline scripts
+  var scripts = code.match(/<script[^>]*>[\s\S]*?<\/script>/gi);
+  var largeScripts=0;
+  if(scripts){
+    for(var i=0;i<scripts.length;i++){
+      if(scripts[i].length>500) largeScripts++;
+    }
+  }
+  if(largeScripts>0){
+    report += "[WARN] "+largeScripts+" large inline script(s) detected (>500 chars)\n";
+    score -= largeScripts*2;
+  } else report += "[GOOD] No large inline scripts\n";
+
+  report += "\nOverall Score: "+Math.max(score,0)+"/100";
+  document.getElementById('report').innerText = report;
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
