@@ -6080,3 +6080,825 @@ function analyze(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE37() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Procedural Particle Chaos Simulator</title>
+<style>
+  body { margin:0; overflow:hidden; background:#111; cursor:pointer; }
+  canvas { display:block; }
+  #info {
+    position:absolute; top:10px; left:10px; color:white; font-family:Arial; background:rgba(0,0,0,0.5); padding:5px; border-radius:5px;
+  }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="info">Click anywhere to add more chaos particles!</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize',()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+// Particle class
+class Particle {
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.vx = (Math.random()-0.5)*4;
+    this.vy = (Math.random()-0.5)*4;
+    this.size = Math.random()*5+2;
+    this.color = 'hsl(' + (Math.random()*360) + ',100%,50%)';
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+let particles = [];
+const PARTICLE_COUNT = 100;
+for(let i=0;i<PARTICLE_COUNT;i++){
+  particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height));
+}
+
+// Animation loop
+function animate(){
+  ctx.fillStyle = 'rgba(0,0,0,0.2)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  for(let i=0;i<particles.length;i++){
+    particles[i].update();
+    particles[i].draw();
+    for(let j=i+1;j<particles.length;j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist<100){
+        ctx.beginPath();
+        ctx.strokeStyle = 'hsla(' + (Math.random()*360) + ',100%,50%,0.3)';
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+// Add particles on click
+canvas.addEventListener('click', e=>{
+  for(let i=0;i<20;i++){
+    particles.push(new Particle(e.clientX+Math.random()*50-25, e.clientY+Math.random()*50-25));
+  }
+});
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE38() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Flashcards</title>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 30px 10px;
+  min-height: 100vh;
+  color: #fff;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+
+.container {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  width: 90%;
+  max-width: 600px;
+  backdrop-filter: blur(10px);
+}
+
+input, button {
+  padding: 12px;
+  margin: 8px 0;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+input {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+input::placeholder {
+  color: #eee;
+}
+
+input:focus {
+  background: rgba(255,255,255,0.4);
+}
+
+button {
+  background: #ff6f61;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:hover {
+  background: #ff856f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+#flashcards {
+  margin-top: 20px;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.flashcard {
+  background: linear-gradient(120deg, #ff6f61, #fdbb2d);
+  color: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.flashcard:hover {
+  transform: translateY(-5px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+</style>
+</head>
+<body>
+
+<h1>Offline Flashcards</h1>
+
+<div class="container">
+<input type="text" id="question" placeholder="Enter question">
+<input type="text" id="answer" placeholder="Enter answer">
+<button onclick="addCard()">Add Flashcard</button>
+<button onclick="shuffleCards()">Shuffle Flashcards</button>
+</div>
+
+<div id="flashcards"></div>
+
+<script>
+// Load flashcards from localStorage
+let cards = [];
+if(localStorage.getItem('flashcards')){
+  cards = JSON.parse(localStorage.getItem('flashcards'));
+  renderCards();
+}
+
+// Add new flashcard
+function addCard(){
+  const q = document.getElementById('question').value.trim();
+  const a = document.getElementById('answer').value.trim();
+  if(q && a){
+    cards.push({question:q, answer:a});
+    localStorage.setItem('flashcards', JSON.stringify(cards));
+    renderCards();
+    document.getElementById('question').value="";
+    document.getElementById('answer').value="";
+  }
+}
+
+// Render flashcards
+function renderCards(){
+  const container = document.getElementById('flashcards');
+  container.innerHTML="";
+  for(let i=0;i<cards.length;i++){
+    const card = document.createElement('div');
+    card.className="flashcard";
+    card.innerText = cards[i].question;
+    card.flipped = false;
+    card.onclick = function(){
+      card.flipped = !card.flipped;
+      card.innerText = card.flipped ? cards[i].answer : cards[i].question;
+    };
+    container.appendChild(card);
+  }
+}
+
+// Shuffle flashcards
+function shuffleCards(){
+  for(let i=cards.length-1;i>0;i--){
+    const j = Math.floor(Math.random()* (i+1));
+    const temp = cards[i]; cards[i]=cards[j]; cards[j]=temp;
+  }
+  renderCards();
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE39() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Habit Tracker</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  margin:0; padding:20px; color:#fff; display:flex; flex-direction:column; align-items:center;
+}
+h1 { margin-bottom:20px; text-shadow:2px 2px 5px rgba(0,0,0,0.3);}
+.container { background: rgba(255,255,255,0.1); padding:20px; border-radius:15px; width:90%; max-width:600px; backdrop-filter: blur(10px); }
+input, button { padding:10px; margin:5px 0; width:100%; border-radius:8px; border:none; font-size:16px; }
+button { background:#ff7e5f; cursor:pointer; font-weight:bold; transition:0.2s; }
+button:hover { background:#feb47b; }
+#habits { margin-top:20px; display:flex; flex-direction:column; gap:10px; }
+.habit { display:flex; justify-content:space-between; align-items:center; background: rgba(0,0,0,0.2); padding:10px; border-radius:10px; transition:0.3s; }
+.habit.done { background: rgba(0,255,0,0.3); }
+.habit button { width:40px; background:#ff6b6b; border-radius:50%; font-weight:bold; color:#fff; padding:5px 0; }
+.habit button:hover { background:#ff8787; }
+</style>
+</head>
+<body>
+
+<h1>Offline Habit Tracker</h1>
+<div class="container">
+<input type="text" id="habitInput" placeholder="Enter new habit">
+<button onclick="addHabit()">Add Habit</button>
+<div id="habits"></div>
+</div>
+
+<script>
+// Load habits from localStorage
+let habits = [];
+if(localStorage.getItem('habits')){
+  habits = JSON.parse(localStorage.getItem('habits'));
+  renderHabits();
+}
+
+// Add new habit
+function addHabit(){
+  const val = document.getElementById('habitInput').value.trim();
+  if(val){
+    habits.push({name:val, done:false});
+    localStorage.setItem('habits', JSON.stringify(habits));
+    renderHabits();
+    document.getElementById('habitInput').value="";
+  }
+}
+
+// Render habits
+function renderHabits(){
+  const container = document.getElementById('habits');
+  container.innerHTML="";
+  for(let i=0;i<habits.length;i++){
+    const div = document.createElement('div');
+    div.className="habit" + (habits[i].done ? " done" : "");
+    div.innerHTML='<span>'+habits[i].name+'</span><div><button onclick="removeHabit('+i+')">x</button><button onclick="toggleDone('+i+')">'+(habits[i].done?'✔':'❌')+'</button></div>';
+    container.appendChild(div);
+  }
+}
+
+// Toggle done
+function toggleDone(i){
+  habits[i].done = !habits[i].done;
+  localStorage.setItem('habits', JSON.stringify(habits));
+  renderHabits();
+}
+
+// Remove habit
+function removeHabit(i){
+  habits.splice(i,1);
+  localStorage.setItem('habits', JSON.stringify(habits));
+  renderHabits();
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE40() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Decision Log</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0b1220;
+  font-family: Arial, sans-serif;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.app {
+  width: 100%;
+  max-width: 900px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form {
+  background: #020617;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.form label {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+  outline: none;
+  font-size: 14px;
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #22c55e;
+  color: #022c22;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background: #4ade80;
+}
+
+.list {
+  margin-top: 25px;
+}
+
+.card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+.card p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #cbd5f5;
+}
+
+.card small {
+  color: #64748b;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #dc2626;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Decision Log</h1>
+
+  <div class="form">
+    <label>Decision</label>
+    <input id="decision" placeholder="What decision did you make?">
+
+    <label>Reason</label>
+    <textarea id="reason"></textarea>
+
+    <label>Alternatives Considered</label>
+    <textarea id="alternatives"></textarea>
+
+    <label>Expected Outcome</label>
+    <textarea id="outcome"></textarea>
+
+    <button onclick="addDecision()">Save Decision</button>
+  </div>
+
+  <div class="list" id="list"></div>
+</div>
+
+<script>
+var STORAGE_KEY = "decision_log_entries";
+
+function loadDecisions() {
+  var raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return [];
+  return JSON.parse(raw);
+}
+
+function saveDecisions(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function addDecision() {
+  var decisionInput = document.getElementById("decision");
+  var decisionText = decisionInput.value.trim();
+  if (decisionText === "") return;
+
+  var entry = {
+    decision: decisionText,
+    reason: document.getElementById("reason").value,
+    alternatives: document.getElementById("alternatives").value,
+    outcome: document.getElementById("outcome").value,
+    time: new Date().toLocaleString()
+  };
+
+  var data = loadDecisions();
+  data.unshift(entry);
+  saveDecisions(data);
+
+  decisionInput.value = "";
+  document.getElementById("reason").value = "";
+  document.getElementById("alternatives").value = "";
+  document.getElementById("outcome").value = "";
+
+  render();
+}
+
+function deleteDecision(index) {
+  var data = loadDecisions();
+  data.splice(index, 1);
+  saveDecisions(data);
+  render();
+}
+
+function render() {
+  var list = document.getElementById("list");
+  list.innerHTML = "";
+
+  var data = loadDecisions();
+
+  for (var i = 0; i < data.length; i++) {
+    var d = data[i];
+
+    var card = document.createElement("div");
+    card.className = "card";
+
+    var title = document.createElement("h3");
+    title.textContent = d.decision;
+
+    var reason = document.createElement("p");
+    reason.textContent = "Reason: " + d.reason;
+
+    var alternatives = document.createElement("p");
+    alternatives.textContent = "Alternatives: " + d.alternatives;
+
+    var outcome = document.createElement("p");
+    outcome.textContent = "Expected Outcome: " + d.outcome;
+
+    var time = document.createElement("small");
+    time.textContent = d.time;
+
+    var delBtn = document.createElement("button");
+    delBtn.textContent = "Delete";
+    delBtn.onclick = (function(idx) {
+      return function() {
+        deleteDecision(idx);
+      };
+    })(i);
+
+    card.appendChild(title);
+    card.appendChild(reason);
+    card.appendChild(alternatives);
+    card.appendChild(outcome);
+    card.appendChild(time);
+    card.appendChild(document.createElement("br"));
+    card.appendChild(delBtn);
+
+    list.appendChild(card);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE41() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Reading Tracker</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #0f172a;
+  font-family: Arial, sans-serif;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.app {
+  width: 100%;
+  max-width: 900px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form {
+  background: #020617;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+input, textarea {
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background: #020617;
+  color: #e5e7eb;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #38bdf8;
+  color: #020617;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0ea5e9;
+}
+
+.list {
+  margin-top: 25px;
+}
+
+.card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+}
+
+.card h3 {
+  margin: 0 0 6px;
+}
+
+.card p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #cbd5f5;
+}
+
+.card small {
+  color: #64748b;
+}
+
+.card button {
+  margin-top: 8px;
+  background: #ef4444;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Reading Progress Tracker</h1>
+
+  <div class="form">
+    <label>Title</label>
+    <input id="title">
+
+    <label>Current Progress (page, %, chapter)</label>
+    <input id="progress">
+
+    <label>Notes</label>
+    <textarea id="notes"></textarea>
+
+    <button onclick="addItem()">Add Reading</button>
+  </div>
+
+  <div class="list" id="list"></div>
+</div>
+
+<script>
+var KEY = "reading_tracker_items";
+
+function loadItems() {
+  var raw = localStorage.getItem(KEY);
+  if (!raw) return [];
+  return JSON.parse(raw);
+}
+
+function saveItems(items) {
+  localStorage.setItem(KEY, JSON.stringify(items));
+}
+
+function addItem() {
+  var title = document.getElementById("title").value.trim();
+  if (title === "") return;
+
+  var item = {
+    title: title,
+    progress: document.getElementById("progress").value,
+    notes: document.getElementById("notes").value,
+    date: new Date().toLocaleDateString()
+  };
+
+  var items = loadItems();
+  items.unshift(item);
+  saveItems(items);
+
+  document.getElementById("title").value = "";
+  document.getElementById("progress").value = "";
+  document.getElementById("notes").value = "";
+
+  render();
+}
+
+function deleteItem(index) {
+  var items = loadItems();
+  items.splice(index, 1);
+  saveItems(items);
+  render();
+}
+
+function render() {
+  var list = document.getElementById("list");
+  list.innerHTML = "";
+
+  var items = loadItems();
+
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+
+    var card = document.createElement("div");
+    card.className = "card";
+
+    var h = document.createElement("h3");
+    h.textContent = it.title;
+
+    var p1 = document.createElement("p");
+    p1.textContent = "Progress: " + it.progress;
+
+    var p2 = document.createElement("p");
+    p2.textContent = "Notes: " + it.notes;
+
+    var sm = document.createElement("small");
+    sm.textContent = "Added: " + it.date;
+
+    var btn = document.createElement("button");
+    btn.textContent = "Delete";
+    btn.onclick = (function(idx) {
+      return function() {
+        deleteItem(idx);
+      };
+    })(i);
+
+    card.appendChild(h);
+    card.appendChild(p1);
+    card.appendChild(p2);
+    card.appendChild(sm);
+    card.appendChild(document.createElement("br"));
+    card.appendChild(btn);
+
+    list.appendChild(card);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
