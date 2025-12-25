@@ -6902,3 +6902,539 @@ render();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE42() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cognitive Traceboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0e1220;
+  --panel:#161b34;
+  --card:#1f2550;
+  --accent:#6aa9ff;
+  --accent2:#9b7bff;
+  --text:#e6ebff;
+  --muted:#9aa3c7;
+}
+
+*{box-sizing:border-box;font-family:Inter,system-ui,Arial}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,var(--panel),var(--bg));
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+}
+
+header{
+  padding:16px 20px;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#050713;
+}
+
+#ui{
+  display:flex;
+  height:calc(100vh - 56px);
+}
+
+#left{
+  width:280px;
+  background:var(--panel);
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+#left h3{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+}
+
+textarea{
+  width:100%;
+  height:90px;
+  resize:none;
+  background:var(--card);
+  border:none;
+  border-radius:10px;
+  padding:10px;
+  color:var(--text);
+  outline:none;
+}
+
+button{
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#050713;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#2a2f55;
+  color:var(--text);
+}
+
+#timeline{
+  flex:1;
+  overflow:auto;
+  font-size:12px;
+}
+
+.entry{
+  padding:6px 8px;
+  margin-bottom:6px;
+  background:#20265a;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.entry:hover{background:#2c3380}
+
+#board{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+}
+
+.node{
+  position:absolute;
+  min-width:140px;
+  max-width:220px;
+  padding:10px;
+  background:linear-gradient(145deg,#2a3080,#1b2050);
+  border-radius:12px;
+  cursor:grab;
+  box-shadow:0 10px 30px rgba(0,0,0,0.35);
+}
+
+.node time{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+
+.node p{
+  margin:0;
+  font-size:13px;
+}
+
+.replay{
+  position:absolute;
+  inset:0;
+  background:rgba(14,18,32,0.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<header>Cognitive Traceboard</header>
+
+<div id="ui">
+  <div id="left">
+    <h3>Capture Thought</h3>
+    <textarea id="thought" placeholder="Write what is in your mind right now..."></textarea>
+    <button onclick="addThought()">Add to Board</button>
+
+    <button class="secondary" onclick="replay()">Replay Thinking</button>
+
+    <h3>Timeline</h3>
+    <div id="timeline"></div>
+  </div>
+
+  <div id="board"></div>
+</div>
+
+<div class="replay" id="replayScreen">Replaying cognitive evolution…</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("traceboard") || "[]");
+const board = document.getElementById("board");
+const timeline = document.getElementById("timeline");
+
+function save(){localStorage.setItem("traceboard",JSON.stringify(data));}
+
+function render(){
+  board.innerHTML="";
+  timeline.innerHTML="";
+  data.forEach((t,i)=>{
+    const n=document.createElement("div");
+    n.className="node";
+    n.style.left=t.x+"px";
+    n.style.top=t.y+"px";
+    n.innerHTML="<time>"+t.time+"</time><p>"+t.text+"</p>";
+    drag(n,t);
+    board.appendChild(n);
+
+    const e=document.createElement("div");
+    e.className="entry";
+    e.textContent=t.time+" — "+t.text.slice(0,30);
+    e.onclick=()=>focusNode(i);
+    timeline.appendChild(e);
+  });
+}
+
+function addThought(){
+  const text=document.getElementById("thought").value.trim();
+  if(!text)return;
+  const t={
+    text,
+    time:new Date().toLocaleTimeString(),
+    x:60+Math.random()*400,
+    y:60+Math.random()*300
+  };
+  data.push(t);
+  save();
+  render();
+  document.getElementById("thought").value="";
+}
+
+function drag(el,obj){
+  let ox,oy;
+  el.onmousedown=e=>{
+    ox=e.offsetX;oy=e.offsetY;
+    document.onmousemove=m=>{
+      obj.x=m.pageX-board.offsetLeft-ox;
+      obj.y=m.pageY-board.offsetTop-oy;
+      el.style.left=obj.x+"px";
+      el.style.top=obj.y+"px";
+    };
+    document.onmouseup=()=>{
+      document.onmousemove=null;
+      save();
+    };
+  };
+}
+
+function focusNode(i){
+  const n=board.children[i];
+  n.scrollIntoView({behavior:"smooth",block:"center",inline:"center"});
+}
+
+async function replay(){
+  const screen=document.getElementById("replayScreen");
+  screen.style.display="flex";
+  board.innerHTML="";
+  for(const t of data){
+    await new Promise(r=>setTimeout(r,600));
+    const n=document.createElement("div");
+    n.className="node";
+    n.style.left=t.x+"px";
+    n.style.top=t.y+"px";
+    n.innerHTML="<time>"+t.time+"</time><p>"+t.text+"</p>";
+    board.appendChild(n);
+  }
+  setTimeout(()=>screen.style.display="none",600);
+}
+
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE43() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ClientFlow — Offline Project Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0e1220;
+  --panel:#151a30;
+  --card:#1d2340;
+  --accent:#6c8cff;
+  --accent2:#22c55e;
+  --danger:#ef4444;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --radius:14px;
+}
+
+*{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Arial}
+body{
+  margin:0;
+  background:linear-gradient(135deg,#0b0f1d,#121736);
+  color:var(--text);
+  min-height:100vh;
+}
+
+header{
+  padding:24px;
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:.3px;
+}
+
+.app{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:20px;
+  padding:20px;
+}
+
+.panel{
+  background:var(--panel);
+  border-radius:var(--radius);
+  padding:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+}
+
+.panel h2{
+  margin:0 0 14px;
+  font-size:16px;
+  color:var(--muted);
+  font-weight:500;
+}
+
+input,select,textarea,button{
+  width:100%;
+  background:#0f142b;
+  border:1px solid #232860;
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:10px;
+  outline:none;
+}
+
+textarea{resize:none;height:80px}
+
+input:focus,select:focus,textarea:focus{
+  border-color:var(--accent);
+}
+
+button{
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),#4f6cff);
+  border:none;
+  font-weight:600;
+  margin-top:10px;
+}
+
+button.secondary{
+  background:#0f142b;
+  border:1px solid #2a3170;
+}
+
+.list{
+  display:grid;
+  gap:14px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+  transition:.2s;
+}
+
+.card:hover{transform:translateY(-2px)}
+
+.card h3{
+  margin:0;
+  font-size:16px;
+  font-weight:600;
+}
+
+.meta{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.badge{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:11px;
+  margin-right:6px;
+}
+
+.priority-high{background:#3b0d12;color:#fca5a5}
+.priority-medium{background:#3a2a0d;color:#fde68a}
+.priority-low{background:#0d2e1a;color:#86efac}
+
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.actions button{
+  flex:1;
+  padding:8px;
+  font-size:12px;
+}
+
+.danger{
+  background:linear-gradient(135deg,#ef4444,#b91c1c);
+}
+
+.topbar{
+  display:flex;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>ClientFlow — Offline Project Manager</header>
+
+<div class="app">
+  <!-- LEFT -->
+  <div class="panel">
+    <h2>Add / Edit Entry</h2>
+    <input id="name" placeholder="Client or Project Name">
+    <input id="category" placeholder="Category (Web, Design, App)">
+    <select id="priority">
+      <option value="high">High Priority</option>
+      <option value="medium">Medium Priority</option>
+      <option value="low">Low Priority</option>
+    </select>
+    <select id="status">
+      <option>Active</option>
+      <option>Paused</option>
+      <option>Completed</option>
+    </select>
+    <textarea id="notes" placeholder="Internal notes, requirements, reminders"></textarea>
+    <button onclick="save()">Save Entry</button>
+    <button class="secondary" onclick="resetForm()">Clear</button>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel">
+    <div class="topbar">
+      <input id="search" placeholder="Search..." oninput="render()">
+      <select id="filter" onchange="render()">
+        <option value="">All</option>
+        <option>Active</option>
+        <option>Paused</option>
+        <option>Completed</option>
+      </select>
+    </div>
+
+    <div id="list" class="list"></div>
+  </div>
+</div>
+
+<script>
+var data = JSON.parse(localStorage.getItem("clientflow") || "[]");
+var editId = null;
+
+function save(){
+  var entry={
+    id: editId || Date.now(),
+    name: name.value.trim(),
+    category: category.value.trim(),
+    priority: priority.value,
+    status: status.value,
+    notes: notes.value.trim()
+  };
+  if(!entry.name) return;
+
+  if(editId){
+    data = data.map(function(i){return i.id===editId?entry:i});
+  }else{
+    data.unshift(entry);
+  }
+  persist();
+  resetForm();
+}
+
+function edit(id){
+  var e=data.find(function(i){return i.id===id});
+  editId=id;
+  name.value=e.name;
+  category.value=e.category;
+  priority.value=e.priority;
+  status.value=e.status;
+  notes.value=e.notes;
+}
+
+function removeEntry(id){
+  if(!confirm("Delete this entry?")) return;
+  data=data.filter(function(i){return i.id!==id});
+  persist();
+}
+
+function persist(){
+  localStorage.setItem("clientflow",JSON.stringify(data));
+  render();
+}
+
+function resetForm(){
+  editId=null;
+  name.value="";
+  category.value="";
+  notes.value="";
+}
+
+function render(){
+  list.innerHTML="";
+  var s=search.value.toLowerCase();
+  var f=filter.value;
+
+  data.filter(function(i){
+    return (!f || i.status===f) &&
+           (i.name.toLowerCase().includes(s) ||
+            i.category.toLowerCase().includes(s) ||
+            i.notes.toLowerCase().includes(s));
+  }).forEach(function(i){
+    var pClass="priority-"+i.priority;
+    list.innerHTML+=
+      '<div class="card">'+
+      '<h3>'+i.name+'</h3>'+
+      '<div class="meta">'+i.category+' • '+i.status+'</div>'+
+      '<div style="margin-top:8px">'+
+      '<span class="badge '+pClass+'">'+i.priority+'</span>'+
+      '</div>'+
+      '<div class="meta" style="margin-top:8px">'+i.notes+'</div>'+
+      '<div class="actions">'+
+      '<button onclick="edit('+i.id+')">Edit</button>'+
+      '<button class="danger" onclick="removeEntry('+i.id+')">Delete</button>'+
+      '</div>'+
+      '</div>';
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
