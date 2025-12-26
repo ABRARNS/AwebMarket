@@ -7438,3 +7438,482 @@ render();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE44() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FlagSmith Lite — Offline Feature Flag Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0e1117;
+  --panel:#161b22;
+  --border:#30363d;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --accent:#3fb950;
+  --danger:#f85149;
+}
+
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  padding:30px;
+}
+
+h1{
+  margin:0 0 6px 0;
+  font-size:22px;
+  font-weight:600;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:20px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+}
+
+label{
+  font-size:12px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
+}
+
+input, select{
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:#0d1117;
+  color:var(--text);
+  margin-bottom:12px;
+}
+
+button{
+  width:100%;
+  padding:9px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:#21262d;
+  color:var(--text);
+  cursor:pointer;
+}
+
+button.primary{
+  background:var(--accent);
+  border:none;
+  color:#0e1117;
+  font-weight:600;
+}
+
+button.danger{
+  background:var(--danger);
+  border:none;
+  color:white;
+}
+
+button:hover{opacity:.9}
+
+.flag{
+  border-bottom:1px solid var(--border);
+  padding:10px 0;
+}
+
+.flag:last-child{border-bottom:none}
+
+.flag-name{
+  font-weight:600;
+}
+
+.flag-meta{
+  font-size:12px;
+  color:var(--muted);
+  margin:4px 0;
+}
+
+.toggle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:6px;
+}
+
+.codebox{
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:10px;
+  font-size:12px;
+  white-space:pre-wrap;
+  color:#c9d1d9;
+}
+</style>
+</head>
+
+<body>
+
+<h1>FlagSmith Lite</h1>
+<div class="subtitle">Offline feature flag manager for developers</div>
+
+<div class="container">
+
+  <div class="panel">
+    <label>Feature Name</label>
+    <input id="fname" placeholder="new_checkout_ui">
+
+    <label>Environment</label>
+    <select id="fenv">
+      <option>development</option>
+      <option>staging</option>
+      <option>production</option>
+    </select>
+
+    <button class="primary" onclick="addFlag()">Add Feature Flag</button>
+
+    <hr style="border-color:var(--border);margin:16px 0">
+
+    <button onclick="exportFlags()">Export JSON</button>
+    <button onclick="importFlags()">Import JSON</button>
+    <button class="danger" onclick="clearAll()">Clear All</button>
+  </div>
+
+  <div class="panel">
+    <div id="flags"></div>
+
+    <h3 style="margin-top:20px;font-size:14px;">Live Config Output</h3>
+    <div class="codebox" id="output"></div>
+  </div>
+
+</div>
+
+<script>
+var storeKey = "flagsmith_lite_data";
+
+function loadFlags(){
+  return JSON.parse(localStorage.getItem(storeKey) || "[]");
+}
+
+function saveFlags(data){
+  localStorage.setItem(storeKey, JSON.stringify(data));
+}
+
+function addFlag(){
+  var name = document.getElementById("fname").value.trim();
+  var env = document.getElementById("fenv").value;
+  if(!name) return;
+
+  var data = loadFlags();
+  data.push({name:name, env:env, enabled:false});
+  saveFlags(data);
+  document.getElementById("fname").value="";
+  render();
+}
+
+function toggleFlag(i){
+  var data = loadFlags();
+  data[i].enabled = !data[i].enabled;
+  saveFlags(data);
+  render();
+}
+
+function removeFlag(i){
+  var data = loadFlags();
+  data.splice(i,1);
+  saveFlags(data);
+  render();
+}
+
+function exportFlags(){
+  alert(JSON.stringify(loadFlags(), null, 2));
+}
+
+function importFlags(){
+  var json = prompt("Paste flag JSON");
+  if(!json) return;
+  try{
+    saveFlags(JSON.parse(json));
+    render();
+  }catch(e){
+    alert("Invalid JSON");
+  }
+}
+
+function clearAll(){
+  if(confirm("Delete all flags?")){
+    localStorage.removeItem(storeKey);
+    render();
+  }
+}
+
+function render(){
+  var data = loadFlags();
+  var box = document.getElementById("flags");
+  box.innerHTML="";
+
+  data.forEach(function(f,i){
+    var d = document.createElement("div");
+    d.className="flag";
+    d.innerHTML =
+      '<div class="flag-name">'+f.name+'</div>'+
+      '<div class="flag-meta">'+f.env+'</div>'+
+      '<div class="toggle">'+
+        '<button onclick="toggleFlag('+i+')">'+(f.enabled?"Disable":"Enable")+'</button>'+
+        '<button onclick="removeFlag('+i+')">Delete</button>'+
+      '</div>';
+    box.appendChild(d);
+  });
+
+  document.getElementById("output").textContent =
+    JSON.stringify(data.reduce(function(a,f){
+      a[f.name+"@"+f.env]=f.enabled;
+      return a;
+    },{}),null,2);
+}
+
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE45() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SpecGuard — API Contract Validator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0c0f14;
+  --panel:#151a22;
+  --border:#2b3240;
+  --text:#e5e9f0;
+  --muted:#9aa4b2;
+  --good:#4ade80;
+  --bad:#f87171;
+  --warn:#facc15;
+}
+
+*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  padding:28px;
+}
+
+h1{
+  margin:0;
+  font-size:22px;
+  font-weight:600;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px;
+}
+
+label{
+  font-size:12px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:6px;
+}
+
+textarea{
+  width:100%;
+  height:220px;
+  resize:vertical;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#0b0e13;
+  color:var(--text);
+  font-size:13px;
+}
+
+button{
+  margin-top:12px;
+  padding:9px 14px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#1e2533;
+  color:var(--text);
+  cursor:pointer;
+}
+
+button.primary{
+  background:#3b82f6;
+  border:none;
+  font-weight:600;
+}
+
+.results{
+  margin-top:14px;
+  font-size:13px;
+}
+
+.ok{color:var(--good)}
+.err{color:var(--bad)}
+.warn{color:var(--warn)}
+
+.item{
+  border-bottom:1px solid var(--border);
+  padding:6px 0;
+}
+.item:last-child{border-bottom:none}
+</style>
+</head>
+
+<body>
+
+<h1>SpecGuard</h1>
+<div class="sub">Offline API contract validation utility</div>
+
+<div class="grid">
+  <div class="panel">
+    <label>Expected Schema (example)</label>
+    <textarea id="schema">
+{
+  "id": "number",
+  "name": "string",
+  "email": "string",
+  "active": "boolean"
+}
+    </textarea>
+  </div>
+
+  <div class="panel">
+    <label>Actual API Response</label>
+    <textarea id="response">
+{
+  "id": 12,
+  "name": "Alex",
+  "email": "alex@mail.com",
+  "active": true
+}
+    </textarea>
+  </div>
+</div>
+
+<button class="primary" onclick="validate()">Validate Contract</button>
+
+<div class="panel results" id="results"></div>
+
+<script>
+var KEY = "specguard_data";
+
+function save(){
+  localStorage.setItem(KEY, JSON.stringify({
+    schema:document.getElementById("schema").value,
+    response:document.getElementById("response").value
+  }));
+}
+
+function load(){
+  var d = JSON.parse(localStorage.getItem(KEY) || "{}");
+  if(d.schema) document.getElementById("schema").value = d.schema;
+  if(d.response) document.getElementById("response").value = d.response;
+}
+
+function typeOf(v){
+  if(Array.isArray(v)) return "array";
+  return typeof v;
+}
+
+function validate(){
+  save();
+  var out = document.getElementById("results");
+  out.innerHTML = "";
+
+  var schema, response;
+  try{
+    schema = JSON.parse(document.getElementById("schema").value);
+    response = JSON.parse(document.getElementById("response").value);
+  }catch(e){
+    out.innerHTML = "<div class='err'>Invalid JSON input</div>";
+    return;
+  }
+
+  var issues = 0;
+
+  for(var k in schema){
+    if(!(k in response)){
+      issues++;
+      out.innerHTML += "<div class='item err'>Missing key: "+k+"</div>";
+    }else{
+      var expected = schema[k];
+      var actual = typeOf(response[k]);
+      if(actual !== expected){
+        issues++;
+        out.innerHTML += "<div class='item warn'>Type mismatch on "+k+" (expected "+expected+", got "+actual+")</div>";
+      }else{
+        out.innerHTML += "<div class='item ok'>"+k+" OK</div>";
+      }
+    }
+  }
+
+  for(var r in response){
+    if(!(r in schema)){
+      issues++;
+      out.innerHTML += "<div class='item warn'>Unexpected key: "+r+"</div>";
+    }
+  }
+
+  if(issues === 0){
+    out.innerHTML = "<div class='ok'>✔ API contract validated successfully</div>";
+  }
+}
+
+load();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
