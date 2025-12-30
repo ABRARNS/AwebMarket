@@ -7917,3 +7917,632 @@ load();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE46() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TraceNote — Offline Action Logger</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --background:#0d1117;
+  --panel:#161b22;
+  --border:#30363d;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --accent:#58a6ff;
+  --low:#3fb950;
+  --medium:#d29922;
+  --high:#f85149;
+  --radius:14px;
+  --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--background);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+header{
+  padding:18px 24px;
+  border-bottom:1px solid var(--border);
+}
+
+header h1{
+  margin:0;
+  font-size:20px;
+}
+
+main{
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:16px;
+  padding:16px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+}
+
+.panel h2{
+  margin:0 0 12px;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:var(--muted);
+}
+
+label{
+  font-size:12px;
+  color:var(--muted);
+}
+
+input, select, textarea{
+  width:100%;
+  margin:6px 0 12px;
+  padding:10px;
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text);
+  font-size:13px;
+}
+
+textarea{
+  resize:vertical;
+  min-height:80px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--accent);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#21262d;
+  color:var(--text);
+  margin-top:8px;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.entry{
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+}
+
+.entry-header{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:var(--muted);
+  font-family:var(--mono);
+}
+
+.badge{
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:600;
+}
+
+.low{background:rgba(63,185,80,.15);color:var(--low)}
+.medium{background:rgba(210,153,34,.15);color:var(--medium)}
+.high{background:rgba(248,81,73,.15);color:var(--high)}
+
+.entry h3{
+  margin:8px 0 6px;
+  font-size:14px;
+}
+
+.entry p{
+  margin:0;
+  font-size:13px;
+  color:#c9d1d9;
+}
+
+.search{
+  margin-bottom:12px;
+}
+
+footer{
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TraceNote — Offline Action Logger</h1>
+</header>
+
+<main>
+  <div class="panel">
+    <h2>New Entry</h2>
+
+    <label for="titleInput">Title</label>
+    <input id="titleInput" type="text">
+
+    <label for="categoryInput">Category</label>
+    <input id="categoryInput" type="text" placeholder="bug, study, incident">
+
+    <label for="severitySelect">Severity</label>
+    <select id="severitySelect">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+
+    <label for="detailsInput">Details</label>
+    <textarea id="detailsInput"></textarea>
+
+    <button id="saveButton">Save Entry</button>
+    <button class="secondary" id="exportButton">Export JSON</button>
+    <button class="secondary" id="clearButton">Clear All</button>
+  </div>
+
+  <div class="panel">
+    <h2>Log History</h2>
+    <input id="searchInput" class="search" placeholder="Search entries">
+    <div id="entryList" class="list"></div>
+  </div>
+</main>
+
+<footer>
+  Local-only · No accounts · No tracking · Single HTML file
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "tracenote.entries";
+
+  var titleInputElement = document.getElementById("titleInput");
+  var categoryInputElement = document.getElementById("categoryInput");
+  var severitySelectElement = document.getElementById("severitySelect");
+  var detailsInputElement = document.getElementById("detailsInput");
+  var searchInputElement = document.getElementById("searchInput");
+
+  var saveButtonElement = document.getElementById("saveButton");
+  var exportButtonElement = document.getElementById("exportButton");
+  var clearButtonElement = document.getElementById("clearButton");
+
+  var entryListElement = document.getElementById("entryList");
+
+  var entries = loadEntries();
+
+  function loadEntries() {
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === null) {
+        return [];
+      }
+      return JSON.parse(stored);
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveEntries() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function generateId() {
+    if (window.crypto && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    return String(Date.now()) + Math.random().toString(16).slice(2);
+  }
+
+  function resetForm() {
+    titleInputElement.value = "";
+    categoryInputElement.value = "";
+    detailsInputElement.value = "";
+    severitySelectElement.value = "low";
+  }
+
+  function addEntry() {
+    var titleValue = titleInputElement.value.trim();
+    if (titleValue.length === 0) {
+      return;
+    }
+
+    var entry = {
+      id: generateId(),
+      title: titleValue,
+      category: categoryInputElement.value.trim() || "uncategorized",
+      severity: severitySelectElement.value,
+      details: detailsInputElement.value.trim(),
+      time: new Date().toISOString()
+    };
+
+    entries.unshift(entry);
+    saveEntries();
+    resetForm();
+    renderEntries(searchInputElement.value);
+  }
+
+  function renderEntries(filterText) {
+    var search = filterText.toLowerCase();
+    entryListElement.innerHTML = "";
+
+    for (var i = 0; i < entries.length; i++) {
+      var entry = entries[i];
+      var searchable = JSON.stringify(entry).toLowerCase();
+
+      if (searchable.indexOf(search) === -1) {
+        continue;
+      }
+
+      var entryElement = document.createElement("div");
+      entryElement.className = "entry";
+
+      entryElement.innerHTML =
+        '<div class="entry-header">' +
+          '<span>' + new Date(entry.time).toLocaleString() + '</span>' +
+          '<span class="badge ' + entry.severity + '">' + entry.category + '</span>' +
+        '</div>' +
+        '<h3>' + entry.title + '</h3>' +
+        '<p>' + entry.details + '</p>';
+
+      entryListElement.appendChild(entryElement);
+    }
+  }
+
+  function exportEntries() {
+    var blob = new Blob(
+      [JSON.stringify(entries, null, 2)],
+      { type: "application/json" }
+    );
+
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "tracenote-export.json";
+    link.click();
+  }
+
+  function clearAllEntries() {
+    var confirmed = window.confirm("Delete all entries?");
+    if (!confirmed) {
+      return;
+    }
+    entries = [];
+    saveEntries();
+    renderEntries("");
+  }
+
+  saveButtonElement.addEventListener("click", addEntry);
+  exportButtonElement.addEventListener("click", exportEntries);
+  clearButtonElement.addEventListener("click", clearAllEntries);
+
+  searchInputElement.addEventListener("input", function (event) {
+    renderEntries(event.target.value);
+  });
+
+  renderEntries("");
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE47() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>StateMirror — Local State Snapshot Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --background:#0e1117;
+  --panel:#161b22;
+  --border:#30363d;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --accent:#7ee787;
+  --radius:14px;
+  --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:var(--background);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+header{
+  padding:18px 24px;
+  border-bottom:1px solid var(--border);
+}
+
+header h1{
+  margin:0;
+  font-size:20px;
+}
+
+main{
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:16px;
+  padding:16px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px;
+}
+
+.panel h2{
+  margin:0 0 12px;
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  color:var(--muted);
+}
+
+textarea{
+  width:100%;
+  min-height:260px;
+  resize:vertical;
+  padding:12px;
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:12px;
+  color:var(--text);
+  font-family:var(--mono);
+  font-size:13px;
+}
+
+input{
+  width:100%;
+  margin:6px 0 12px;
+  padding:10px;
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text);
+  font-size:13px;
+}
+
+button{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--accent);
+  color:#000;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#21262d;
+  color:var(--text);
+  margin-top:8px;
+}
+
+.snapshot{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px;
+  background:#0d1117;
+  margin-bottom:10px;
+}
+
+.snapshot-title{
+  font-size:13px;
+  font-weight:600;
+}
+
+.snapshot-time{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.snapshot button{
+  margin-top:6px;
+}
+
+footer{
+  padding:12px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>StateMirror — Local State Snapshot Tool</h1>
+</header>
+
+<main>
+  <div class="panel">
+    <h2>Current State</h2>
+    <textarea id="stateInput" placeholder="Paste config, notes, JSON, ideas..."></textarea>
+  </div>
+
+  <div class="panel">
+    <h2>Snapshots</h2>
+
+    <input id="snapshotNameInput" placeholder="Snapshot name">
+
+    <button id="saveSnapshotButton">Save Snapshot</button>
+    <button class="secondary" id="exportSnapshotsButton">Export All</button>
+    <button class="secondary" id="clearSnapshotsButton">Clear All</button>
+
+    <div id="snapshotList"></div>
+  </div>
+</main>
+
+<footer>
+  Offline · Local snapshots · Single HTML file
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "statemirror.snapshots";
+
+  var stateInputElement = document.getElementById("stateInput");
+  var snapshotNameInputElement = document.getElementById("snapshotNameInput");
+  var snapshotListElement = document.getElementById("snapshotList");
+
+  var saveSnapshotButtonElement = document.getElementById("saveSnapshotButton");
+  var exportSnapshotsButtonElement = document.getElementById("exportSnapshotsButton");
+  var clearSnapshotsButtonElement = document.getElementById("clearSnapshotsButton");
+
+  var snapshots = loadSnapshots();
+
+  function loadSnapshots() {
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored === null) {
+        return [];
+      }
+      return JSON.parse(stored);
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveSnapshots() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshots));
+  }
+
+  function createSnapshot() {
+    var nameValue = snapshotNameInputElement.value.trim();
+    if (nameValue.length === 0) {
+      nameValue = "Snapshot";
+    }
+
+    var snapshot = {
+      id: generateId(),
+      name: nameValue,
+      content: stateInputElement.value,
+      time: new Date().toISOString()
+    };
+
+    snapshots.unshift(snapshot);
+    saveSnapshots();
+    snapshotNameInputElement.value = "";
+    renderSnapshots();
+  }
+
+  function generateId() {
+    return String(Date.now()) + Math.random().toString(16).slice(2);
+  }
+
+  function restoreSnapshot(snapshot) {
+    stateInputElement.value = snapshot.content;
+  }
+
+  function renderSnapshots() {
+    snapshotListElement.innerHTML = "";
+
+    for (var i = 0; i < snapshots.length; i++) {
+      var snapshot = snapshots[i];
+
+      var container = document.createElement("div");
+      container.className = "snapshot";
+
+      container.innerHTML =
+        '<div class="snapshot-title">' + snapshot.name + '</div>' +
+        '<div class="snapshot-time">' + new Date(snapshot.time).toLocaleString() + '</div>';
+
+      var restoreButton = document.createElement("button");
+      restoreButton.textContent = "Restore";
+      restoreButton.addEventListener("click", function (snap) {
+        return function () {
+          restoreSnapshot(snap);
+        };
+      }(snapshot));
+
+      container.appendChild(restoreButton);
+      snapshotListElement.appendChild(container);
+    }
+  }
+
+  function exportAllSnapshots() {
+    var blob = new Blob(
+      [JSON.stringify(snapshots, null, 2)],
+      { type: "application/json" }
+    );
+
+    var link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "statemirror-snapshots.json";
+    link.click();
+  }
+
+  function clearAllSnapshots() {
+    var confirmed = window.confirm("Delete all snapshots?");
+    if (!confirmed) {
+      return;
+    }
+
+    snapshots = [];
+    saveSnapshots();
+    renderSnapshots();
+  }
+
+  saveSnapshotButtonElement.addEventListener("click", createSnapshot);
+  exportSnapshotsButtonElement.addEventListener("click", exportAllSnapshots);
+  clearSnapshotsButtonElement.addEventListener("click", clearAllSnapshots);
+
+  renderSnapshots();
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
