@@ -8546,3 +8546,932 @@ footer{
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE48() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DOM Snapshot Diff — Offline Version Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0f1220;
+  --panel:#171a2e;
+  --border:#2a2f55;
+  --text:#e8ebff;
+  --muted:#9aa0ff;
+  --add:#1f8f5f;
+  --remove:#a33b3b;
+  --same:#2a2f55;
+}
+
+*{box-sizing:border-box;font-family:system-ui,Segoe UI,Roboto,Arial}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  font-weight:700;
+  font-size:18px;
+}
+
+main{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  height:calc(100vh - 58px);
+}
+
+.editor{
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+textarea{
+  flex:1;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  padding:12px;
+  resize:none;
+  font-family:Consolas,monospace;
+  font-size:13px;
+}
+
+button{
+  background:#4f63ff;
+  color:#fff;
+  border:none;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+button.secondary{
+  background:var(--panel);
+  border:1px solid var(--border);
+}
+
+.sidebar{
+  border-left:1px solid var(--border);
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.snapshot{
+  border:1px solid var(--border);
+  padding:8px;
+  cursor:pointer;
+  background:var(--panel);
+  font-size:13px;
+}
+
+.snapshot.active{
+  outline:2px solid #4f63ff;
+}
+
+.diff{
+  padding:10px;
+  border-top:1px solid var(--border);
+  overflow:auto;
+  font-family:Consolas,monospace;
+  font-size:13px;
+}
+
+.line.add{background:rgba(31,143,95,0.25)}
+.line.remove{background:rgba(163,59,59,0.25)}
+.line.same{background:rgba(42,47,85,0.25)}
+
+.line{
+  padding:2px 6px;
+  white-space:pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<header>DOM Snapshot Diff — Offline Version Tracker</header>
+
+<main>
+  <div class="editor">
+    <textarea id="code" placeholder="Paste HTML code here..."></textarea>
+    <div>
+      <button onclick="saveSnapshot()">Save Snapshot</button>
+      <button class="secondary" onclick="compare()">Compare Last Two</button>
+    </div>
+    <div id="diff" class="diff"></div>
+  </div>
+
+  <div class="sidebar">
+    <strong>Snapshots</strong>
+    <div id="list"></div>
+  </div>
+</main>
+
+<script>
+const KEY = "dom_snapshots_v1";
+let snapshots = JSON.parse(localStorage.getItem(KEY) || "[]");
+
+function save(){
+  localStorage.setItem(KEY, JSON.stringify(snapshots));
+}
+
+function saveSnapshot(){
+  const code = document.getElementById("code").value;
+  if(!code.trim()) return;
+  snapshots.push({
+    time:new Date().toLocaleString(),
+    code
+  });
+  save();
+  render();
+}
+
+function render(){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  snapshots.forEach((s,i)=>{
+    const div = document.createElement("div");
+    div.className = "snapshot";
+    div.textContent = (i+1)+". "+s.time;
+    div.onclick = ()=>document.getElementById("code").value = s.code;
+    list.appendChild(div);
+  });
+}
+
+function compare(){
+  if(snapshots.length < 2) return;
+  const a = snapshots[snapshots.length-2].code.split("\n");
+  const b = snapshots[snapshots.length-1].code.split("\n");
+  const diff = document.getElementById("diff");
+  diff.innerHTML = "";
+
+  const max = Math.max(a.length,b.length);
+  for(let i=0;i<max;i++){
+    const line = document.createElement("div");
+    if(a[i] === b[i]){
+      line.className="line same";
+      line.textContent="  "+(a[i]||"");
+    }else{
+      if(a[i]){
+        const r = document.createElement("div");
+        r.className="line remove";
+        r.textContent="- "+a[i];
+        diff.appendChild(r);
+      }
+      if(b[i]){
+        const ad = document.createElement("div");
+        ad.className="line add";
+        ad.textContent="+ "+b[i];
+        diff.appendChild(ad);
+      }
+      continue;
+    }
+    diff.appendChild(line);
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE49() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Decision Trace Logger</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  background: #0e0e14;
+  color: #eaeaf0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 16px;
+  background: #151520;
+  font-weight: bold;
+  border-bottom: 1px solid #2a2a3a;
+}
+
+main {
+  display: flex;
+  height: calc(100vh - 54px);
+}
+
+section {
+  flex: 1;
+  padding: 16px;
+  border-right: 1px solid #2a2a3a;
+}
+
+section:last-child {
+  border-right: none;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #151520;
+  color: #eaeaf0;
+  border: 1px solid #2a2a3a;
+}
+
+button {
+  padding: 10px;
+  background: #4a63ff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.entry {
+  border: 1px solid #2a2a3a;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #151520;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Offline Decision Trace Logger</header>
+
+<main>
+<section>
+  <input id="decision" placeholder="Decision">
+  <textarea id="reason" placeholder="Reason"></textarea>
+  <select id="confidence">
+    <option value="Low">Low confidence</option>
+    <option value="Medium">Medium confidence</option>
+    <option value="High">High confidence</option>
+  </select>
+  <textarea id="expect" placeholder="Expected outcome"></textarea>
+  <textarea id="actual" placeholder="Actual outcome (optional)"></textarea>
+  <button onclick="addEntry()">Save Decision</button>
+</section>
+
+<section id="log"></section>
+</main>
+
+<script>
+var KEY = "decision_trace_v1";
+var data = [];
+
+function loadData() {
+  var raw = localStorage.getItem(KEY);
+  if (raw) {
+    data = JSON.parse(raw);
+  }
+}
+
+function saveData() {
+  localStorage.setItem(KEY, JSON.stringify(data));
+}
+
+function addEntry() {
+  var d = document.getElementById("decision").value;
+  var r = document.getElementById("reason").value;
+  var c = document.getElementById("confidence").value;
+  var e = document.getElementById("expect").value;
+  var a = document.getElementById("actual").value;
+
+  if (d === "" || r === "") return;
+
+  data.push({
+    decision: d,
+    reason: r,
+    confidence: c,
+    expected: e,
+    actual: a,
+    time: new Date().toLocaleString()
+  });
+
+  saveData();
+  render();
+}
+
+function render() {
+  var box = document.getElementById("log");
+  box.innerHTML = "";
+
+  for (var i = data.length - 1; i >= 0; i--) {
+    var x = data[i];
+    var div = document.createElement("div");
+    div.className = "entry";
+    div.innerHTML =
+      "<strong>" + x.decision + "</strong><br>" +
+      "Reason: " + x.reason + "<br>" +
+      "Confidence: " + x.confidence + "<br>" +
+      "Expected: " + x.expected + "<br>" +
+      "Actual: " + x.actual + "<br>" +
+      "Time: " + x.time;
+    box.appendChild(div);
+  }
+}
+
+loadData();
+render();
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE50() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Offline Focus Session Recorder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  background: #0d0f16;
+  color: #e8eaf2;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 16px;
+  background: #14172a;
+  border-bottom: 1px solid #2a2f4a;
+  font-weight: bold;
+}
+
+main {
+  padding: 16px;
+}
+
+button {
+  padding: 10px 14px;
+  background: #4a63ff;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+button.stop {
+  background: #a33b3b;
+}
+
+.stat {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #2a2f4a;
+  background: #14172a;
+  font-size: 13px;
+}
+
+.session {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #2a2f4a;
+  background: #14172a;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Offline Focus Session Recorder</header>
+
+<main>
+  <button onclick="startSession()">Start Session</button>
+  <button class="stop" onclick="stopSession()">Stop Session</button>
+
+  <div class="stat" id="live">
+    Status: Idle
+  </div>
+
+  <div id="sessions"></div>
+</main>
+
+<script>
+var KEY = "focus_sessions_v1";
+var sessions = [];
+var active = false;
+var startTime = 0;
+var keys = 0;
+var clicks = 0;
+var lastAction = 0;
+var idleTime = 0;
+var idleTimer = null;
+
+function loadData() {
+  var raw = localStorage.getItem(KEY);
+  if (raw) {
+    sessions = JSON.parse(raw);
+  }
+}
+
+function saveData() {
+  localStorage.setItem(KEY, JSON.stringify(sessions));
+}
+
+function now() {
+  return new Date().getTime();
+}
+
+function activity() {
+  if (!active) return;
+  keys = keys + 1;
+  lastAction = now();
+}
+
+function mouseActivity() {
+  if (!active) return;
+  clicks = clicks + 1;
+  lastAction = now();
+}
+
+function startSession() {
+  if (active) return;
+  active = true;
+  startTime = now();
+  lastAction = startTime;
+  keys = 0;
+  clicks = 0;
+  idleTime = 0;
+
+  if (idleTimer) {
+    clearInterval(idleTimer);
+  }
+
+  idleTimer = setInterval(checkIdle, 1000);
+  updateLive();
+}
+
+function stopSession() {
+  if (!active) return;
+  active = false;
+
+  clearInterval(idleTimer);
+
+  var end = now();
+  sessions.push({
+    start: new Date(startTime).toLocaleString(),
+    end: new Date(end).toLocaleString(),
+    duration: Math.round((end - startTime) / 1000),
+    keys: keys,
+    clicks: clicks,
+    idle: idleTime
+  });
+
+  saveData();
+  render();
+  updateLive();
+}
+
+function checkIdle() {
+  var diff = now() - lastAction;
+  if (diff > 5000) {
+    idleTime = idleTime + 1;
+  }
+  updateLive();
+}
+
+function updateLive() {
+  var box = document.getElementById("live");
+  if (!active) {
+    box.innerHTML = "Status: Idle";
+    return;
+  }
+
+  box.innerHTML =
+    "Status: Recording<br>" +
+    "Keys pressed: " + keys + "<br>" +
+    "Mouse clicks: " + clicks + "<br>" +
+    "Idle seconds: " + idleTime;
+}
+
+function render() {
+  var box = document.getElementById("sessions");
+  box.innerHTML = "";
+
+  for (var i = sessions.length - 1; i >= 0; i--) {
+    var s = sessions[i];
+    var div = document.createElement("div");
+    div.className = "session";
+    div.innerHTML =
+      "Start: " + s.start + "<br>" +
+      "End: " + s.end + "<br>" +
+      "Duration: " + s.duration + " sec<br>" +
+      "Keys: " + s.keys + "<br>" +
+      "Clicks: " + s.clicks + "<br>" +
+      "Idle: " + s.idle + " sec";
+    box.appendChild(div);
+  }
+}
+
+document.addEventListener("keydown", activity);
+document.addEventListener("mousedown", mouseActivity);
+
+loadData();
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE51() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Offline Assumption Validator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  background: #0e1118;
+  color: #e6e8f2;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 16px;
+  background: #15192a;
+  border-bottom: 1px solid #2a2f4a;
+  font-weight: bold;
+}
+
+main {
+  display: flex;
+  height: calc(100vh - 54px);
+}
+
+section {
+  flex: 1;
+  padding: 16px;
+  border-right: 1px solid #2a2f4a;
+}
+
+section:last-child {
+  border-right: none;
+}
+
+input, textarea, select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #15192a;
+  color: #e6e8f2;
+  border: 1px solid #2a2f4a;
+}
+
+button {
+  padding: 10px;
+  background: #4a63ff;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.entry {
+  border: 1px solid #2a2f4a;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #15192a;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Offline Assumption Validator</header>
+
+<main>
+<section>
+  <input id="assumption" placeholder="Assumption">
+  <select id="confidence">
+    <option value="Low">Low confidence</option>
+    <option value="Medium">Medium confidence</option>
+    <option value="High">High confidence</option>
+  </select>
+  <textarea id="for" placeholder="Evidence for"></textarea>
+  <textarea id="against" placeholder="Evidence against"></textarea>
+  <select id="status">
+    <option value="Open">Open</option>
+    <option value="Validated">Validated</option>
+    <option value="Broken">Broken</option>
+  </select>
+  <button onclick="addItem()">Save Assumption</button>
+</section>
+
+<section id="list"></section>
+</main>
+
+<script>
+var KEY = "assumption_validator_v1";
+var items = [];
+
+function loadData() {
+  var raw = localStorage.getItem(KEY);
+  if (raw) {
+    items = JSON.parse(raw);
+  }
+}
+
+function saveData() {
+  localStorage.setItem(KEY, JSON.stringify(items));
+}
+
+function addItem() {
+  var a = document.getElementById("assumption").value;
+  var c = document.getElementById("confidence").value;
+  var f = document.getElementById("for").value;
+  var g = document.getElementById("against").value;
+  var s = document.getElementById("status").value;
+
+  if (a === "") return;
+
+  items.push({
+    assumption: a,
+    confidence: c,
+    forText: f,
+    againstText: g,
+    status: s,
+    time: new Date().toLocaleString()
+  });
+
+  saveData();
+  render();
+}
+
+function render() {
+  var box = document.getElementById("list");
+  box.innerHTML = "";
+
+  for (var i = items.length - 1; i >= 0; i--) {
+    var x = items[i];
+    var div = document.createElement("div");
+    div.className = "entry";
+    div.innerHTML =
+      "<strong>" + x.assumption + "</strong><br>" +
+      "Confidence: " + x.confidence + "<br>" +
+      "For: " + x.forText + "<br>" +
+      "Against: " + x.againstText + "<br>" +
+      "Status: " + x.status + "<br>" +
+      "Logged: " + x.time;
+    box.appendChild(div);
+  }
+}
+
+loadData();
+render();
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE52() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Offline Client Error Recorder Plus</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  margin: 0;
+  background: #0e1016;
+  color: #e6e8f0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 16px;
+  background: #15192a;
+  border-bottom: 1px solid #2a2f4a;
+  font-weight: bold;
+}
+
+main {
+  display: flex;
+  height: calc(100vh - 54px);
+}
+
+section {
+  flex: 1;
+  padding: 16px;
+  border-right: 1px solid #2a2f4a;
+}
+
+section:last-child {
+  border-right: none;
+}
+
+textarea, input, select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: #15192a;
+  color: #e6e8f0;
+  border: 1px solid #2a2f4a;
+}
+
+button {
+  padding: 10px;
+  background: #4a63ff;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+button.danger {
+  background: #a33b3b;
+}
+
+.stats {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.log {
+  border: 1px solid #2a2f4a;
+  background: #15192a;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>Offline Client Error Recorder Plus</header>
+
+<main>
+<section>
+  <div class="stats" id="stats">Errors: 0</div>
+
+  <textarea id="note" placeholder="Manual note or observation"></textarea>
+
+  <select id="noteType">
+    <option value="INFO">Info</option>
+    <option value="WARNING">Warning</option>
+  </select>
+
+  <button onclick="addNote()">Add Note</button>
+  <button onclick="exportLogs()">Export TXT</button>
+  <button class="danger" onclick="clearLogs()">Clear Logs</button>
+</section>
+
+<section id="logs"></section>
+</main>
+
+<script>
+var KEY = "client_error_logs_v2";
+var logs = [];
+
+function loadData() {
+  var raw = localStorage.getItem(KEY);
+  if (raw) {
+    logs = JSON.parse(raw);
+  }
+}
+
+function saveData() {
+  localStorage.setItem(KEY, JSON.stringify(logs));
+}
+
+function updateStats() {
+  var count = 0;
+  for (var i = 0; i < logs.length; i++) {
+    if (logs[i].type === "JS ERROR") {
+      count = count + 1;
+    }
+  }
+  document.getElementById("stats").innerHTML = "Errors: " + count;
+}
+
+function addLog(type, message, source, line) {
+  logs.push({
+    type: type,
+    message: message,
+    source: source,
+    line: line,
+    time: new Date().toLocaleString()
+  });
+  saveData();
+  render();
+}
+
+function addNote() {
+  var n = document.getElementById("note").value;
+  var t = document.getElementById("noteType").value;
+  if (n === "") return;
+
+  addLog(t, n, "-", "-");
+  document.getElementById("note").value = "";
+}
+
+function clearLogs() {
+  if (!confirm("Clear all logs?")) return;
+  logs = [];
+  saveData();
+  render();
+}
+
+function exportLogs() {
+  var text = "";
+  for (var i = 0; i < logs.length; i++) {
+    var x = logs[i];
+    text +=
+      "Type: " + x.type + "\n" +
+      "Message: " + x.message + "\n" +
+      "Source: " + x.source + "\n" +
+      "Line: " + x.line + "\n" +
+      "Time: " + x.time + "\n\n";
+  }
+
+  var win = window.open("");
+  win.document.write("<pre>" + text + "</pre>");
+  win.document.close();
+}
+
+function render() {
+  var box = document.getElementById("logs");
+  box.innerHTML = "";
+
+  for (var i = logs.length - 1; i >= 0; i--) {
+    var x = logs[i];
+    var div = document.createElement("div");
+    div.className = "log";
+    div.innerHTML =
+      "Type: " + x.type + "<br>" +
+      "Message: " + x.message + "<br>" +
+      "Source: " + x.source + "<br>" +
+      "Line: " + x.line + "<br>" +
+      "Time: " + x.time;
+    box.appendChild(div);
+  }
+
+  updateStats();
+}
+
+window.onerror = function(msg, src, line) {
+  addLog("JS ERROR", String(msg), String(src), String(line));
+  return false;
+};
+
+loadData();
+render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
