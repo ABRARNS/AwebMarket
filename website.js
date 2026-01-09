@@ -9475,3 +9475,1001 @@ render();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE53() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Text Similarity Analyzer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0e1220;
+  --panel:#151a33;
+  --accent:#4da3ff;
+  --text:#e6e9f2;
+  --muted:#9aa3c7;
+  --danger:#ff6b6b;
+  --success:#4dff9a;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body{
+  margin:0;
+  background:linear-gradient(135deg,#0b1020,#12183a);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.app{
+  width:100%;
+  max-width:1100px;
+  padding:20px;
+}
+
+.card{
+  background:var(--panel);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 30px 60px rgba(0,0,0,.4);
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:26px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+textarea{
+  width:100%;
+  min-height:220px;
+  background:#0b0f26;
+  border:1px solid #1f2755;
+  border-radius:12px;
+  color:var(--text);
+  padding:14px;
+  resize:vertical;
+  font-size:14px;
+}
+
+textarea:focus{
+  outline:none;
+  border-color:var(--accent);
+}
+
+.controls{
+  display:flex;
+  gap:12px;
+  margin-top:16px;
+  flex-wrap:wrap;
+}
+
+button{
+  background:var(--accent);
+  color:#00162d;
+  border:none;
+  border-radius:12px;
+  padding:12px 18px;
+  font-weight:600;
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#1e2755;
+  color:var(--text);
+}
+
+.result{
+  margin-top:20px;
+  padding:16px;
+  background:#0b1028;
+  border-radius:12px;
+  border:1px solid #1f2755;
+}
+
+.score{
+  font-size:38px;
+  font-weight:700;
+}
+
+.score.low{ color:var(--success); }
+.score.mid{ color:#ffd166; }
+.score.high{ color:var(--danger); }
+
+.explain{
+  margin-top:10px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+footer{
+  margin-top:16px;
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="card">
+    <h1>Offline Text Similarity Analyzer</h1>
+    <div class="subtitle">
+      TF-IDF + Cosine Similarity · 100% Local · No Internet Required
+    </div>
+
+    <div class="grid">
+      <textarea id="textA" placeholder="Paste first text here..."></textarea>
+      <textarea id="textB" placeholder="Paste second text here..."></textarea>
+    </div>
+
+    <div class="controls">
+      <button onclick="analyze()">Analyze Similarity</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="output" class="result" style="display:none">
+      <div id="score" class="score"></div>
+      <div id="explain" class="explain"></div>
+    </div>
+
+    <footer>
+      Works offline · Open directly in browser or VS Code Live Server
+    </footer>
+  </div>
+</div>
+
+<script>
+function tokenize(text){
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g,"")
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+function termFrequency(tokens){
+  const tf = {};
+  tokens.forEach(t => tf[t] = (tf[t] || 0) + 1);
+  return tf;
+}
+
+function computeTFIDF(tf, idf){
+  const vec = {};
+  for(const term in tf){
+    vec[term] = tf[term] * idf[term];
+  }
+  return vec;
+}
+
+function cosineSimilarity(a, b){
+  let dot = 0;
+  let magA = 0;
+  let magB = 0;
+
+  const terms = new Set([...Object.keys(a), ...Object.keys(b)]);
+  terms.forEach(t=>{
+    const x = a[t] || 0;
+    const y = b[t] || 0;
+    dot += x * y;
+    magA += x * x;
+    magB += y * y;
+  });
+
+  if(magA === 0 || magB === 0) return 0;
+  return dot / (Math.sqrt(magA) * Math.sqrt(magB));
+}
+
+function analyze(){
+  const t1 = document.getElementById("textA").value.trim();
+  const t2 = document.getElementById("textB").value.trim();
+
+  if(!t1 || !t2){
+    alert("Please enter text in both boxes.");
+    return;
+  }
+
+  const tokensA = tokenize(t1);
+  const tokensB = tokenize(t2);
+
+  const tfA = termFrequency(tokensA);
+  const tfB = termFrequency(tokensB);
+
+  const vocab = new Set([...tokensA, ...tokensB]);
+  const idf = {};
+
+  vocab.forEach(term=>{
+    let docs = 0;
+    if(tfA[term]) docs++;
+    if(tfB[term]) docs++;
+    idf[term] = Math.log(2 / (1 + docs)) + 1;
+  });
+
+  const vecA = computeTFIDF(tfA, idf);
+  const vecB = computeTFIDF(tfB, idf);
+
+  const similarity = cosineSimilarity(vecA, vecB);
+  const percent = Math.round(similarity * 100);
+
+  const scoreEl = document.getElementById("score");
+  const explainEl = document.getElementById("explain");
+  const out = document.getElementById("output");
+
+  scoreEl.textContent = percent + "% Similar";
+  scoreEl.className = "score " + 
+    (percent < 30 ? "low" : percent < 70 ? "mid" : "high");
+
+  let explanation = "";
+  if(percent < 30){
+    explanation = "Low similarity. The texts share minimal vocabulary and structure.";
+  }else if(percent < 70){
+    explanation = "Moderate similarity. Some shared wording or ideas exist.";
+  }else{
+    explanation = "High similarity. Significant overlap detected. Possible duplication.";
+  }
+
+  explainEl.textContent = explanation;
+  out.style.display = "block";
+}
+
+function clearAll(){
+  document.getElementById("textA").value = "";
+  document.getElementById("textB").value = "";
+  document.getElementById("output").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE54() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline File Integrity Verifier</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0c1020;
+  color:#e8ebff;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+
+.box{
+  background:#141a38;
+  padding:26px;
+  border-radius:14px;
+  width:100%;
+  max-width:560px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+}
+
+h1{
+  margin:0 0 10px;
+}
+
+p{
+  color:#9aa3c7;
+  font-size:14px;
+}
+
+input{
+  width:100%;
+  margin-top:12px;
+}
+
+button{
+  margin-top:16px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#4da3ff;
+  color:#00162d;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.output{
+  margin-top:16px;
+  padding:14px;
+  background:#0b1028;
+  border-radius:12px;
+  border:1px solid #1f2755;
+  font-size:13px;
+  word-break:break-all;
+}
+
+.good{ color:#4dff9a; }
+.bad{ color:#ff6b6b; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h1>File Integrity Verifier</h1>
+  <p>
+    Generate and verify cryptographic fingerprints to detect file tampering.
+    Works fully offline.
+  </p>
+
+  <input type="file" id="fileInput">
+
+  <button onclick="generateHash()">Generate Hash</button>
+
+  <div id="hashOutput" class="output"></div>
+
+  <p style="margin-top:16px">
+    Paste a previously saved hash to verify:
+  </p>
+
+  <input type="text" id="verifyInput" placeholder="Paste SHA-256 hash here">
+
+  <button onclick="verifyHash()">Verify Integrity</button>
+
+  <div id="verifyResult" class="output"></div>
+</div>
+
+<script>
+var lastHash = "";
+
+function generateHash(){
+  var input = document.getElementById("fileInput");
+  var output = document.getElementById("hashOutput");
+
+  if(input.files.length === 0){
+    output.textContent = "No file selected.";
+    return;
+  }
+
+  var file = input.files[0];
+  var reader = new FileReader();
+
+  reader.onload = function(){
+    var data = reader.result;
+
+    window.crypto.subtle.digest("SHA-256", data).then(function(buffer){
+      var hex = bufferToHex(buffer);
+      lastHash = hex;
+      output.textContent = "SHA-256 Hash:\n" + hex;
+    });
+  };
+
+  reader.readAsArrayBuffer(file);
+}
+
+function verifyHash(){
+  var userHash = document.getElementById("verifyInput").value.trim();
+  var result = document.getElementById("verifyResult");
+
+  if(userHash === ""){
+    result.textContent = "No hash provided.";
+    return;
+  }
+
+  if(lastHash === ""){
+    result.textContent = "Generate hash first.";
+    return;
+  }
+
+  if(userHash === lastHash){
+    result.innerHTML = "<span class='good'>Integrity verified. File is unchanged.</span>";
+  }else{
+    result.innerHTML = "<span class='bad'>Integrity FAILED. File was modified.</span>";
+  }
+}
+
+function bufferToHex(buffer){
+  var bytes = new Uint8Array(buffer);
+  var hex = "";
+  var index = 0;
+
+  while(index < bytes.length){
+    var value = bytes[index].toString(16);
+    if(value.length === 1){
+      value = "0" + value;
+    }
+    hex = hex + value;
+    index = index + 1;
+  }
+
+  return hex;
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE55() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline CSV Relational Analyzer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0c1020;
+  color:#e8ebff;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+
+.panel{
+  background:#141a38;
+  padding:26px;
+  border-radius:14px;
+  width:100%;
+  max-width:1100px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+}
+
+h1{
+  margin:0 0 10px;
+}
+
+p{
+  color:#9aa3c7;
+  font-size:14px;
+}
+
+textarea{
+  width:100%;
+  min-height:160px;
+  background:#0b1028;
+  border:1px solid #1f2755;
+  border-radius:10px;
+  color:#e8ebff;
+  padding:12px;
+  font-size:13px;
+  resize:vertical;
+}
+
+.controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+
+input{
+  padding:10px;
+  background:#0b1028;
+  border:1px solid #1f2755;
+  border-radius:8px;
+  color:#e8ebff;
+}
+
+button{
+  margin-top:14px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#4da3ff;
+  color:#00162d;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.output{
+  margin-top:16px;
+  background:#0b1028;
+  border:1px solid #1f2755;
+  border-radius:12px;
+  padding:14px;
+  max-height:300px;
+  overflow:auto;
+  font-size:13px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th, td{
+  border:1px solid #1f2755;
+  padding:6px;
+  text-align:left;
+}
+
+th{
+  background:#141a38;
+}
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>CSV Relational Analyzer</h1>
+  <p>
+    Perform offline relational operations on raw CSV data.
+  </p>
+
+  <textarea id="csvA" placeholder="CSV A
+id,name
+1,Alice
+2,Bob"></textarea>
+
+  <textarea id="csvB" placeholder="CSV B
+user_id,score
+1,90
+2,75"></textarea>
+
+  <div class="controls">
+    <input id="joinA" placeholder="Join column in CSV A">
+    <input id="joinB" placeholder="Join column in CSV B">
+    <input id="filterCol" placeholder="Filter column name">
+    <input id="filterVal" placeholder="Filter value">
+  </div>
+
+  <button onclick="runEngine()">Run Analysis</button>
+
+  <div id="output" class="output"></div>
+</div>
+
+<script>
+function parseCSV(text){
+  var lines = text.trim().split("\n");
+  var headers = lines[0].split(",");
+  var rows = [];
+  var i = 1;
+
+  while(i < lines.length){
+    var values = lines[i].split(",");
+    var row = {};
+    var j = 0;
+
+    while(j < headers.length){
+      row[headers[j]] = values[j];
+      j = j + 1;
+    }
+
+    rows.push(row);
+    i = i + 1;
+  }
+
+  return { headers: headers, rows: rows };
+}
+
+function runEngine(){
+  var out = document.getElementById("output");
+  out.textContent = "";
+
+  var dataA = parseCSV(document.getElementById("csvA").value);
+  var dataB = parseCSV(document.getElementById("csvB").value);
+
+  var keyA = document.getElementById("joinA").value;
+  var keyB = document.getElementById("joinB").value;
+  var filterCol = document.getElementById("filterCol").value;
+  var filterVal = document.getElementById("filterVal").value;
+
+  if(keyA === "" || keyB === ""){
+    out.textContent = "Join columns required.";
+    return;
+  }
+
+  var joined = [];
+  var i = 0;
+
+  while(i < dataA.rows.length){
+    var rowA = dataA.rows[i];
+    var j = 0;
+
+    while(j < dataB.rows.length){
+      var rowB = dataB.rows[j];
+
+      if(rowA[keyA] === rowB[keyB]){
+        var merged = {};
+        var h = 0;
+
+        while(h < dataA.headers.length){
+          merged[dataA.headers[h]] = rowA[dataA.headers[h]];
+          h = h + 1;
+        }
+
+        h = 0;
+        while(h < dataB.headers.length){
+          merged[dataB.headers[h]] = rowB[dataB.headers[h]];
+          h = h + 1;
+        }
+
+        joined.push(merged);
+      }
+
+      j = j + 1;
+    }
+
+    i = i + 1;
+  }
+
+  if(filterCol !== "" && filterVal !== ""){
+    var filtered = [];
+    i = 0;
+
+    while(i < joined.length){
+      if(joined[i][filterCol] === filterVal){
+        filtered.push(joined[i]);
+      }
+      i = i + 1;
+    }
+
+    joined = filtered;
+  }
+
+  if(joined.length === 0){
+    out.textContent = "No matching records.";
+    return;
+  }
+
+  var table = "<table><tr>";
+  var keys = Object.keys(joined[0]);
+  i = 0;
+
+  while(i < keys.length){
+    table = table + "<th>" + keys[i] + "</th>";
+    i = i + 1;
+  }
+
+  table = table + "</tr>";
+
+  i = 0;
+  while(i < joined.length){
+    table = table + "<tr>";
+    var k = 0;
+
+    while(k < keys.length){
+      table = table + "<td>" + joined[i][keys[k]] + "</td>";
+      k = k + 1;
+    }
+
+    table = table + "</tr>";
+    i = i + 1;
+  }
+
+  table = table + "</table>";
+  out.innerHTML = table;
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE56() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Offline Execution Sandbox</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  background:#0b1020;
+  color:#e8ebff;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+
+.shell{
+  width:100%;
+  max-width:1200px;
+  background:#141a38;
+  padding:24px;
+  border-radius:14px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.6);
+}
+
+h1{
+  margin:0 0 10px;
+}
+
+p{
+  color:#9aa3c7;
+  font-size:14px;
+}
+
+textarea{
+  width:100%;
+  min-height:200px;
+  background:#0b1028;
+  border:1px solid #1f2755;
+  border-radius:10px;
+  color:#e8ebff;
+  padding:12px;
+  font-size:13px;
+}
+
+button{
+  margin-top:14px;
+  padding:14px;
+  width:100%;
+  border:none;
+  border-radius:12px;
+  background:#4da3ff;
+  color:#00162d;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.output{
+  margin-top:16px;
+  background:#0b1028;
+  border:1px solid #1f2755;
+  border-radius:12px;
+  padding:14px;
+  max-height:260px;
+  overflow:auto;
+  font-size:13px;
+}
+
+.good{ color:#4dff9a; }
+.bad{ color:#ff6b6b; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <h1>Offline Execution Sandbox</h1>
+  <p>
+    Instruction execution environment. No browser features beyond JavaScript.
+  </p>
+
+  <textarea id="program" placeholder="
+SET x 5
+SET y 10
+ADD x y result
+PRINT result
+"></textarea>
+
+  <button onclick="runProgram()">Execute Program</button>
+
+  <div id="output" class="output"></div>
+</div>
+
+<script>
+var memory = {};
+var trace = [];
+
+function runProgram(){
+  memory = {};
+  trace = [];
+
+  var source = document.getElementById("program").value;
+  var lines = source.split("\n");
+  var index = 0;
+
+  while(index < lines.length){
+    executeLine(lines[index].trim(), index + 1);
+    index = index + 1;
+  }
+
+  renderOutput();
+}
+
+function executeLine(line, lineNumber){
+  if(line === ""){
+    return;
+  }
+
+  var parts = line.split(" ");
+  var instruction = parts[0];
+
+  if(instruction === "SET"){
+    memory[parts[1]] = parseInt(parts[2], 10);
+    trace.push("Line " + lineNumber + ": SET " + parts[1]);
+  }
+  else if(instruction === "ADD"){
+    var a = memory[parts[1]];
+    var b = memory[parts[2]];
+    memory[parts[3]] = a + b;
+    trace.push("Line " + lineNumber + ": ADD result");
+  }
+  else if(instruction === "PRINT"){
+    trace.push("OUTPUT: " + memory[parts[1]]);
+  }
+  else{
+    trace.push("ERROR line " + lineNumber + ": Unknown instruction");
+  }
+}
+
+function renderOutput(){
+  var out = document.getElementById("output");
+  var text = "";
+
+  var i = 0;
+  while(i < trace.length){
+    text = text + trace[i] + "<br>";
+    i = i + 1;
+  }
+
+  out.innerHTML = text;
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE57() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>God-Level CSS Cards</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(120deg, #1e3c72, #2a5298);
+    perspective: 1500px;
+  }
+
+  .card-stack {
+    display: flex;
+    gap: 30px;
+    transform-style: preserve-3d;
+  }
+
+  .card {
+    width: 200px;
+    height: 300px;
+    background: linear-gradient(145deg, #ff6a00, #ee0979);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    transition: transform 0.6s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .card::before,
+  .card::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    top: 0;
+    left: 0;
+    transition: all 0.6s ease;
+    z-index: -1;
+  }
+
+  .card::before {
+    background: rgba(255,255,255,0.1);
+    transform: rotateY(10deg) translateZ(-30px);
+  }
+
+  .card::after {
+    background: rgba(0,0,0,0.1);
+    transform: rotateX(10deg) translateZ(-30px);
+  }
+
+  .card:hover {
+    transform: rotateY(25deg) rotateX(10deg) scale(1.1);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+  }
+
+  .card-content {
+    color: #fff;
+    padding: 20px;
+    transform: translateZ(50px);
+    text-align: center;
+  }
+
+  .card-content h2 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .card-content p {
+    margin-top: 10px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  /* Extra hover glow effect */
+  .card:hover::before {
+    transform: rotateY(0deg) translateZ(20px);
+    background: rgba(255,255,255,0.2);
+  }
+
+  .card:hover::after {
+    transform: rotateX(0deg) translateZ(20px);
+    background: rgba(0,0,0,0.2);
+  }
+</style>
+</head>
+<body>
+<div class="card-stack">
+  <div class="card">
+    <div class="card-content">
+      <h2>Card One</h2>
+      <p>Hover me for 3D magic.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <h2>Card Two</h2>
+      <p>Pure CSS, no JS.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-content">
+      <h2>Card Three</h2>
+      <p>Look at that shadow and depth!</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
