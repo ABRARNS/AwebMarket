@@ -10473,3 +10473,341 @@ function copyCODE57() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE58() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Neural Network Visualizer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #0b0f1a;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#info {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    color: #9ecbff;
+    font-size: 14px;
+    opacity: 0.8;
+}
+</style>
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+<div id="info">Neural Network • Move Mouse</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let width;
+let height;
+let mouseX = 0;
+let mouseY = 0;
+
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+window.addEventListener("mousemove", function(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
+
+class Node {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = 2 + Math.random() * 2;
+        this.vx = (Math.random() - 0.5) * 0.3;
+        this.vy = (Math.random() - 0.5) * 0.3;
+    }
+
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#4da3ff";
+        ctx.fill();
+    }
+}
+
+const nodes = [];
+const NODE_COUNT = Math.min(180, Math.floor(window.innerWidth / 6));
+
+for (let i = 0; i < NODE_COUNT; i++) {
+    nodes.push(
+        new Node(
+            Math.random() * width,
+            Math.random() * height
+        )
+    );
+}
+
+function drawConnections() {
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 120) {
+                const alpha = 1 - dist / 120;
+                ctx.strokeStyle = "rgba(100,170,255," + alpha * 0.5 + ")";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function drawMouseInfluence() {
+    for (let node of nodes) {
+        const dx = mouseX - node.x;
+        const dy = mouseY - node.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 150) {
+            ctx.strokeStyle = "rgba(255,120,120,0.6)";
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.stroke();
+        }
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    for (let node of nodes) {
+        node.update();
+        node.draw();
+    }
+
+    drawConnections();
+    drawMouseInfluence();
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE59() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live System Monitor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+    --bg: #05080f;
+    --card: rgba(255,255,255,0.06);
+    --border: rgba(120,200,255,0.25);
+    --text: #d9ecff;
+    --accent: #6fd3ff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at top, #0b1324, #05080f);
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
+}
+
+.container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.title {
+    font-size: 22px;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 25px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.08),
+        rgba(255,255,255,0.02)
+    );
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 25px rgba(0,150,255,0.08);
+    transition: transform 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.label {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 8px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--accent);
+}
+
+.small {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.footer {
+    margin-top: 30px;
+    opacity: 0.4;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <div class="title">LIVE SYSTEM MONITOR</div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="label">FPS</div>
+            <div class="value" id="fps">0</div>
+        </div>
+
+        <div class="card">
+            <div class="label">JS Heap Used</div>
+            <div class="value" id="memory">N/A</div>
+            <div class="small">Real browser memory</div>
+        </div>
+
+        <div class="card">
+            <div class="label">CPU Load (est.)</div>
+            <div class="value" id="cpu">0%</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Device</div>
+            <div class="small" id="device"></div>
+        </div>
+
+        <div class="card">
+            <div class="label">Resolution</div>
+            <div class="value" id="res"></div>
+        </div>
+
+        <div class="card">
+            <div class="label">Local Time</div>
+            <div class="value" id="time"></div>
+        </div>
+    </div>
+
+    <div class="footer">Real-time browser & device data</div>
+</div>
+
+<script>
+const fpsEl = document.getElementById("fps");
+const memEl = document.getElementById("memory");
+const cpuEl = document.getElementById("cpu");
+const deviceEl = document.getElementById("device");
+const resEl = document.getElementById("res");
+const timeEl = document.getElementById("time");
+
+deviceEl.textContent = navigator.userAgent;
+resEl.textContent = window.screen.width + " × " + window.screen.height;
+
+let lastFrame = performance.now();
+let frames = 0;
+let lastTime = performance.now();
+
+function updateFPS(now) {
+    frames++;
+    if (now - lastTime >= 1000) {
+        fpsEl.textContent = frames;
+        cpuEl.textContent = Math.min(100, frames * 1.6).toFixed(0) + "%";
+        frames = 0;
+        lastTime = now;
+    }
+}
+
+function updateMemory() {
+    if (performance.memory) {
+        const used = performance.memory.usedJSHeapSize / 1048576;
+        memEl.textContent = used.toFixed(1) + " MB";
+    }
+}
+
+function updateTime() {
+    const d = new Date();
+    timeEl.textContent =
+        d.getHours().toString().padStart(2, "0") + ":" +
+        d.getMinutes().toString().padStart(2, "0") + ":" +
+        d.getSeconds().toString().padStart(2, "0");
+}
+
+function loop(now) {
+    updateFPS(now);
+    updateMemory();
+    updateTime();
+    requestAnimationFrame(loop);
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
