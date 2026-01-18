@@ -10811,3 +10811,341 @@ requestAnimationFrame(loop);
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE60() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GenZ Focus</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Space Grotesk',sans-serif}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.glow{
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle,#00f2ff55,transparent 70%);
+  filter:blur(60px);
+  animation:float 8s infinite alternate ease-in-out;
+}
+
+@keyframes float{
+  from{transform:translate(-50px,-50px)}
+  to{transform:translate(50px,50px)}
+}
+
+.card{
+  width:350px;
+  padding:30px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  box-shadow:0 0 40px #00f2ff44;
+  color:white;
+  text-align:center;
+}
+
+h1{
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+.timer{
+  font-size:60px;
+  margin:20px 0;
+  letter-spacing:2px;
+}
+
+button{
+  margin:10px;
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#00f2ff,#7f00ff);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px #00f2ff;
+}
+
+.quote{
+  margin-top:20px;
+  font-size:14px;
+  opacity:0.8;
+}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="card">
+  <h1>⚡ GenZ Focus</h1>
+  <p>Lock in. No distractions.</p>
+
+  <div class="timer" id="timer">25:00</div>
+
+  <button onclick="start()">Start</button>
+  <button onclick="reset()">Reset</button>
+
+  <div class="quote" id="quote">“Small steps every day.”</div>
+</div>
+
+<script>
+let time = 1500;
+let interval;
+
+const quotes = [
+  "Discipline > Motivation.",
+  "You’re building your future self.",
+  "Focus now, flex later.",
+  "No grind, no glow.",
+  "Be addicted to progress."
+];
+
+function update(){
+  let min = Math.floor(time / 60);
+  let sec = time % 60;
+  document.getElementById("timer").textContent =
+    String(min).padStart(2,'0') + ":" + String(sec).padStart(2,'0');
+
+  if(time === 0){
+    clearInterval(interval);
+    document.getElementById("quote").textContent = "Session complete. W.";
+  }
+  time--;
+}
+
+function start(){
+  if(interval) return;
+  interval = setInterval(update,1000);
+  document.getElementById("quote").textContent =
+    quotes[Math.floor(Math.random()*quotes.length)];
+}
+
+function reset(){
+  clearInterval(interval);
+  interval = null;
+  time = 1500;
+  update();
+}
+
+update();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE61() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Workday Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,Arial,sans-serif}
+
+body{
+  min-height:100vh;
+  background:#f4f6f9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.dashboard{
+  width:720px;
+  background:white;
+  border-radius:8px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  padding:30px;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+header h1{
+  font-size:22px;
+  color:#1f2933;
+}
+
+header span{
+  color:#4b5563;
+  font-size:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.card{
+  border:1px solid #e5e7eb;
+  border-radius:6px;
+  padding:20px;
+}
+
+.card h2{
+  font-size:16px;
+  margin-bottom:10px;
+  color:#111827;
+}
+
+.card p{
+  color:#374151;
+  font-size:14px;
+}
+
+.time{
+  font-size:36px;
+  font-weight:600;
+  margin-top:10px;
+}
+
+button{
+  margin-top:10px;
+  padding:8px 14px;
+  border:none;
+  border-radius:4px;
+  background:#2563eb;
+  color:white;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#1d4ed8;
+}
+
+ul{
+  list-style:none;
+  margin-top:10px;
+}
+
+li{
+  padding:6px 0;
+  border-bottom:1px solid #e5e7eb;
+  font-size:14px;
+}
+
+input{
+  width:100%;
+  padding:8px;
+  border:1px solid #d1d5db;
+  border-radius:4px;
+  margin-top:8px;
+}
+</style>
+</head>
+<body>
+
+<div class="dashboard">
+
+<header>
+  <h1>Daily Work Dashboard</h1>
+  <span id="date"></span>
+</header>
+
+<div class="grid">
+
+  <!-- Clock -->
+  <div class="card">
+    <h2>Current Time</h2>
+    <div class="time" id="clock">--:--:--</div>
+  </div>
+
+  <!-- Focus Timer -->
+  <div class="card">
+    <h2>25-Minute Focus</h2>
+    <p id="focusTime">25:00</p>
+    <button onclick="startFocus()">Start</button>
+  </div>
+
+  <!-- Tasks -->
+  <div class="card">
+    <h2>Top Priorities</h2>
+    <input id="taskInput" placeholder="Add task and press Enter">
+    <ul id="tasks"></ul>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+document.getElementById("date").textContent =
+  new Date().toDateString();
+
+function updateClock(){
+  const now = new Date();
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString();
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// Focus timer
+let focus = 1500;
+let focusInterval;
+
+function startFocus(){
+  if(focusInterval) return;
+  focusInterval = setInterval(()=>{
+    let min = Math.floor(focus/60);
+    let sec = focus % 60;
+    document.getElementById("focusTime").textContent =
+      String(min).padStart(2,'0') + ":" + String(sec).padStart(2,'0');
+
+    if(focus === 0){
+      clearInterval(focusInterval);
+      focusInterval = null;
+      alert("Focus session complete.");
+      focus = 1500;
+    }
+    focus--;
+  },1000);
+}
+
+// Task list
+document.getElementById("taskInput").addEventListener("keypress", e=>{
+  if(e.key === "Enter" && e.target.value.trim() !== ""){
+    const li = document.createElement("li");
+    li.textContent = e.target.value;
+    document.getElementById("tasks").appendChild(li);
+    e.target.value = "";
+  }
+});
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
