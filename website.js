@@ -11162,3 +11162,192 @@ document.getElementById("taskInput").addEventListener("keypress", e=>{
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE62() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Number Guessing Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #2b1055, #000);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
+  .game {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    width: 340px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    animation: pop 0.6s ease;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 26px;
+  }
+
+  p {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  input {
+    width: 85%;
+    padding: 12px;
+    font-size: 17px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  button {
+    margin-top: 12px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,255,255,0.4);
+  }
+
+  .msg {
+    margin-top: 15px;
+    min-height: 24px;
+    font-size: 16px;
+    animation: fade 0.4s ease;
+  }
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .attempts {
+    margin-top: 6px;
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  .restart {
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: #fff;
+    margin-top: 10px;
+  }
+
+  .footer {
+    margin-top: 18px;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+
+  .verified {
+    color: #00ff9c;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="game">
+  <h1>🎯 Guess the Number</h1>
+  <p>Pick a number between <b>1</b> and <b>100</b></p>
+
+  <input type="number" id="guess" placeholder="Enter your guess" min="1" max="100">
+
+  <button onclick="check()">Guess</button>
+
+  <div class="msg" id="msg"></div>
+  <div class="attempts" id="attempts">Attempts: 0</div>
+
+  <button class="restart" onclick="restart()">🔁 Restart</button>
+
+  <div class="footer">
+    <div class="verified">✔ Verified Product</div>
+    © A Web Market
+  </div>
+</div>
+
+<!-- Sounds -->
+<audio id="low" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3"></audio>
+<audio id="high" src="https://assets.mixkit.co/sfx/preview/mixkit-error-tone-494.mp3"></audio>
+<audio id="win" src="https://assets.mixkit.co/sfx/preview/mixkit-game-level-completed-2059.mp3"></audio>
+
+<script>
+  let number = Math.floor(Math.random() * 100) + 1;
+  let tries = 0;
+
+  function check() {
+    const input = document.getElementById("guess");
+    const msg = document.getElementById("msg");
+    const attempts = document.getElementById("attempts");
+    const value = Number(input.value);
+
+    if (!value || value < 1 || value > 100) {
+      msg.textContent = "⚠ Enter a number between 1 and 100!";
+      return;
+    }
+
+    tries++;
+    attempts.textContent = "Attempts: " + tries;
+
+    if (value === number) {
+      document.getElementById("win").play();
+      msg.textContent = "🎉 Correct! You won!";
+      msg.style.color = "#00ff9c";
+    } 
+    else if (value < number) {
+      document.getElementById("low").play();
+      msg.textContent = "📉 Too low!";
+      msg.style.color = "#ffd54f";
+    } 
+    else {
+      document.getElementById("high").play();
+      msg.textContent = "📈 Too high!";
+      msg.style.color = "#ff8a80";
+    }
+  }
+
+  function restart() {
+    number = Math.floor(Math.random() * 100) + 1;
+    tries = 0;
+    document.getElementById("msg").textContent = "";
+    document.getElementById("attempts").textContent = "Attempts: 0";
+    document.getElementById("guess").value = "";
+  }
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
