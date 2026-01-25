@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const s = document.getElementById("search");
+  const items = document.querySelectorAll(".code, .paidcode");
+
+  s.oninput = () => {
+    const q = s.value.toLowerCase();
+    items.forEach(i => {
+      i.style.display = i.textContent.toLowerCase().includes(q)
+        ? ""
+        : "none";
+    });
+  };
+});
 function copyCODE() {
   const code = `<!DOCTYPE html>
 <html lang="en">
