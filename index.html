@@ -8,7 +8,9 @@
         <meta name="google-site-verification" content="RfzYC2w3yEced_hI8d1MGpZDBiAta-zNLDPoerXiy5k" />
         <meta name="google-site-verification" content="RfzYC2w3yEced_hI8d1MGpZDBiAta-zNLDPoerXiy5k" />
         <meta name="description" content="AwebMarket is a login-free online marketplace where users can discover, copy, or purchase free and paid website templates and code. Perfect for web developers, designers, and hobbyists looking for ready-to-use HTML, CSS, and JavaScript projects.">
-        <style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+
             .sellarea{
                 background-color:white;
                 border: 2px solid white;
@@ -294,21 +296,32 @@
                 
 }
 .Search{
-    padding-left:25%;
-    padding-right:25%;
+    padding-left:15%;
+    padding-right:15%;
     padding-bottom:1%;
     padding-top:1%;
     margin:0 auto;
     margin-bottom: 2%;
-    display:block;
+    display: flex;
     border-radius: 10px;
-    border: 3px solid grey;
-    box-shadow : 15px 10px 35px red;
-    transition: 0.5s;
+    border: 1px solid #4cc9f0 ;
+    transition: 2s;
+    box-shadow: 10px 10px 30px ;
+
 }
 .Search:hover{
-        animation: loki 30s infinite alternate;
+       border-color: purple;
 }
+.Search:active{
+       border : 1px solid purple;
+}
+.Search::placeholder{
+    animation: loki 2s  infinite alternate;
+}
+.s-div{
+    display: relative;
+}
+
         </style>
     </head>
     <body>
@@ -318,8 +331,9 @@
         WELCOME TO AwebMarket🎉
       </p>
       <p>By using AwebMarket, you agree to our <a href="https://sites.google.com/view/awebmarket-termsandconditions/home" class="term-link">Terms & Privacy Policy</a></p>
-      <input id="search" placeholder="Search AwebMarket..." class="Search">
-
+<div class="s-div"> 
+    <input id="search" placeholder="Search AwebMarket..." class="Search" >
+</div>
        <div class="code">
         <p class="p1">
             FlagSmith:Offline Feature Flag Manager <span class="codespan">BY TAKIR</span>
