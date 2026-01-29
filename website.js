@@ -11351,3 +11351,315 @@ function copyCODE62() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE63() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Log Inspector</title>
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+  }
+  header {
+    padding: 16px 24px;
+    background: #020617;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  main {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    height: calc(100vh - 56px);
+  }
+  textarea {
+    width: 100%;
+    height: 100%;
+    background: #020617;
+    color: #e5e7eb;
+    border: none;
+    padding: 16px;
+    font-family: monospace;
+    resize: none;
+    outline: none;
+  }
+  aside {
+    background: #020617;
+    border-left: 1px solid #1e293b;
+    padding: 16px;
+  }
+  .stat {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .stat h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #94a3b8;
+  }
+  .stat p {
+    margin: 4px 0 0;
+    font-size: 22px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<header>Log Inspector</header>
+
+<main>
+  <textarea id="logs" placeholder="Paste logs here..."></textarea>
+
+  <aside>
+    <div class="stat">
+      <h3>Total Lines</h3>
+      <p id="total">0</p>
+    </div>
+    <div class="stat">
+      <h3>Errors</h3>
+      <p id="errors">0</p>
+    </div>
+    <div class="stat">
+      <h3>Warnings</h3>
+      <p id="warnings">0</p>
+    </div>
+    <div class="stat">
+      <h3>Info</h3>
+      <p id="info">0</p>
+    </div>
+  </aside>
+</main>
+
+<script>
+  const logs = document.getElementById("logs");
+  const total = document.getElementById("total");
+  const errors = document.getElementById("errors");
+  const warnings = document.getElementById("warnings");
+  const info = document.getElementById("info");
+
+  logs.addEventListener("input", () => {
+    const lines = logs.value.split("\n");
+    total.textContent = lines.length;
+    errors.textContent = lines.filter(l => l.includes("ERROR")).length;
+    warnings.textContent = lines.filter(l => l.includes("WARN")).length;
+    info.textContent = lines.filter(l => l.includes("INFO")).length;
+  });
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE64() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Event Debugger</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2937;
+  }
+
+  header {
+    background-color: #111827;
+    color: #ffffff;
+    padding: 16px 24px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .container {
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .form-box {
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  button {
+    margin-top: 16px;
+    padding: 10px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    background-color: #2563eb;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #1d4ed8;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+  }
+
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f9fafb;
+  }
+
+  .empty {
+    text-align: center;
+    color: #6b7280;
+    padding: 20px;
+  }
+</style>
+</head>
+
+<body>
+
+<header>Analytics Event Debugger</header>
+
+<div class="container">
+
+  <div class="form-box">
+    <label for="eventName">Event Name</label>
+    <input id="eventName" type="text" placeholder="e.g. signup_completed">
+
+    <label for="eventData">Event Data (JSON)</label>
+    <textarea id="eventData" rows="4" placeholder='{"plan":"pro","source":"landing"}'></textarea>
+
+    <button id="addEventBtn">Log Event</button>
+  </div>
+
+  <table id="eventTable">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Event</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody id="eventBody">
+      <tr>
+        <td colspan="3" class="empty">No events logged</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+  var eventNameInput = document.getElementById("eventName");
+  var eventDataInput = document.getElementById("eventData");
+  var addEventButton = document.getElementById("addEventBtn");
+  var eventBody = document.getElementById("eventBody");
+
+  var events = [];
+
+  function renderTable() {
+    eventBody.innerHTML = "";
+
+    if (events.length === 0) {
+      var row = document.createElement("tr");
+      var cell = document.createElement("td");
+      cell.colSpan = 3;
+      cell.className = "empty";
+      cell.innerText = "No events logged";
+      row.appendChild(cell);
+      eventBody.appendChild(row);
+      return;
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      var tr = document.createElement("tr");
+
+      var tdTime = document.createElement("td");
+      tdTime.innerText = events[i].time;
+
+      var tdName = document.createElement("td");
+      tdName.innerText = events[i].name;
+
+      var tdData = document.createElement("td");
+      tdData.innerText = events[i].data;
+
+      tr.appendChild(tdTime);
+      tr.appendChild(tdName);
+      tr.appendChild(tdData);
+
+      eventBody.appendChild(tr);
+    }
+  }
+
+  addEventButton.onclick = function () {
+    var name = eventNameInput.value;
+    var data = eventDataInput.value;
+
+    if (name === "") {
+      alert("Event name is required");
+      return;
+    }
+
+    var now = new Date().toLocaleTimeString();
+
+    events.push({
+      time: now,
+      name: name,
+      data: data
+    });
+
+    eventNameInput.value = "";
+    eventDataInput.value = "";
+
+    renderTable();
+  };
+
+  renderTable();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
