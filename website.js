@@ -11663,3 +11663,635 @@ function copyCODE64() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE65() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { background: #eef2f7; padding: 20px; }
+  .container { max-width: 900px; margin: auto; background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  h1 { text-align: center; margin-bottom: 18px; color: #2a6f97; }
+  .section { margin-bottom: 25px; }
+  input, select, textarea { width: 100%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 6px; }
+  button { background: #2a6f97; color: #fff; padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; }
+  button:hover { background: #1f566f; }
+  ul { list-style: none; margin-top: 10px; }
+  li { background: #f7f9fb; padding: 10px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+  .delete { background: #e74c3c; padding: 5px 8px; border-radius: 4px; cursor: pointer; color: white; }
+  .flash { cursor: pointer; font-weight: bold; display: block; }
+  #timerDisplay { font-size: 28px; text-align: center; margin: 10px 0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Student Dashboard</h1>
+
+  <div class="section">
+    <input type="text" id="searchInput" placeholder="Search Notes or Flashcards" onkeyup="searchAll()">
+  </div>
+
+  <div class="section">
+    <h2>Add Note</h2>
+    <select id="subjectSelect">
+      <option value="General">General</option>
+      <option value="Math">Math</option>
+      <option value="Science">Science</option>
+      <option value="History">History</option>
+      <option value="Language">Language</option>
+    </select>
+    <textarea id="noteText" placeholder="Write your note here"></textarea>
+    <button onclick="addNote()">Add Note</button>
+    <ul id="notesList"></ul>
+  </div>
+
+  <div class="section">
+    <h2>Flashcards</h2>
+    <input type="text" id="flashFront" placeholder="Flashcard Front (Question)">
+    <input type="text" id="flashBack" placeholder="Flashcard Back (Answer)">
+    <button onclick="addFlashcard()">Add Flashcard</button>
+    <ul id="flashList"></ul>
+  </div>
+
+  <div class="section">
+    <h2>Study Timer (Pomodoro)</h2>
+    <div id="timerDisplay">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+</div>
+
+<script>
+  // Variables
+  var notes = [];
+  var flashcards = [];
+  var timer;
+  var totalSeconds = 25 * 60;
+
+  // Notes Functions
+  function renderNotes() {
+    var list = document.getElementById('notesList');
+    list.innerHTML = '';
+    for(var i=0; i<notes.length; i=i+1) {
+      var li = document.createElement('li');
+      var span = document.createElement('span');
+      span.innerHTML = '[' + notes[i].subject + '] ' + notes[i].text;
+      var del = document.createElement('span');
+      del.className = 'delete';
+      del.innerHTML = 'Delete';
+      del.setAttribute('onclick', 'removeNote(' + i + ')');
+      li.appendChild(span);
+      li.appendChild(del);
+      list.appendChild(li);
+    }
+  }
+
+  function addNote() {
+    var text = document.getElementById('noteText').value;
+    var subj = document.getElementById('subjectSelect').value;
+    if(text === '') { alert('Please write a note!'); return; }
+    notes.push({subject: subj, text: text});
+    document.getElementById('noteText').value = '';
+    renderNotes();
+  }
+
+  function removeNote(index) {
+    notes.splice(index, 1);
+    renderNotes();
+  }
+
+  // Flashcards Functions
+  function renderFlashcards() {
+    var list = document.getElementById('flashList');
+    list.innerHTML = '';
+    for(var i=0; i<flashcards.length; i=i+1) {
+      var li = document.createElement('li');
+      var span = document.createElement('span');
+      span.className = 'flash';
+      span.innerHTML = 'Q: ' + flashcards[i].front;
+      span.setAttribute('onclick', 'flipCard(this, ' + i + ')');
+      var del = document.createElement('span');
+      del.className = 'delete';
+      del.innerHTML = 'Delete';
+      del.setAttribute('onclick', 'removeFlash(' + i + ')');
+      li.appendChild(span);
+      li.appendChild(del);
+      list.appendChild(li);
+    }
+  }
+
+  function addFlashcard() {
+    var front = document.getElementById('flashFront').value;
+    var back = document.getElementById('flashBack').value;
+    if(front === '' || back === '') { alert('Fill both fields'); return; }
+    flashcards.push({front: front, back: back});
+    document.getElementById('flashFront').value = '';
+    document.getElementById('flashBack').value = '';
+    renderFlashcards();
+  }
+
+  function flipCard(element, index) {
+    if(element.innerHTML.indexOf('Q:') === 0) {
+      element.innerHTML = 'A: ' + flashcards[index].back;
+    } else {
+      element.innerHTML = 'Q: ' + flashcards[index].front;
+    }
+  }
+
+  function removeFlash(index) {
+    flashcards.splice(index, 1);
+    renderFlashcards();
+  }
+
+  // Search Function
+  function searchAll() {
+    var term = document.getElementById('searchInput').value.toLowerCase();
+    var notesList = document.getElementById('notesList').getElementsByTagName('li');
+    var flashList = document.getElementById('flashList').getElementsByTagName('li');
+
+    for(var i=0; i<notesList.length; i=i+1) {
+      if(notesList[i].textContent.toLowerCase().indexOf(term) !== -1) {
+        notesList[i].style.display = '';
+      } else {
+        notesList[i].style.display = 'none';
+      }
+    }
+
+    for(var i=0; i<flashList.length; i=i+1) {
+      if(flashList[i].textContent.toLowerCase().indexOf(term) !== -1) {
+        flashList[i].style.display = '';
+      } else {
+        flashList[i].style.display = 'none';
+      }
+    }
+  }
+
+  // Timer Functions
+  function updateTimer() {
+    var minutes = Math.floor(totalSeconds / 60);
+    var seconds = totalSeconds % 60;
+    var display = document.getElementById('timerDisplay');
+    display.innerHTML = (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+    if(totalSeconds > 0) {
+      totalSeconds = totalSeconds - 1;
+    } else {
+      clearInterval(timer);
+    }
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(updateTimer, 1000);
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    totalSeconds = 25 * 60;
+    updateTimer();
+  }
+
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE66() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Concept Map Builder</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { background: #f0f2f5; padding: 20px; }
+  h1 { text-align: center; color: #2a6f97; margin-bottom: 20px; }
+  
+  #controls { margin-bottom: 20px; display: flex; justify-content: space-between; }
+  #controls input, #controls select, #controls button { padding: 10px; border-radius: 6px; border: 1px solid #ccc; }
+  #controls button { background: #2a6f97; color: #fff; border: none; cursor: pointer; }
+  #controls button:hover { background: #1f566f; }
+
+  #mapArea { position: relative; width: 100%; height: 600px; background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden; }
+  .node { position: absolute; padding: 10px 15px; border-radius: 8px; color: #fff; cursor: move; min-width: 80px; text-align: center; user-select: none; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+  .link { position: absolute; background: #2a6f97; height: 3px; transform-origin: 0 50%; }
+
+</style>
+</head>
+<body>
+
+<h1>Student Concept Map Builder</h1>
+
+<div id="controls">
+  <input type="text" id="nodeText" placeholder="Concept Name">
+  <select id="subjectSelect">
+    <option value="Math">Math</option>
+    <option value="Science">Science</option>
+    <option value="History">History</option>
+    <option value="Language">Language</option>
+    <option value="General">General</option>
+  </select>
+  <button onclick="addNode()">Add Concept</button>
+</div>
+
+<div id="mapArea"></div>
+
+<script>
+  var nodes = JSON.parse(localStorage.getItem('nodes')) || [];
+  var links = JSON.parse(localStorage.getItem('links')) || [];
+  var mapArea = document.getElementById('mapArea');
+  var selectedNode = null;
+  var offsetX = 0;
+  var offsetY = 0;
+
+  function getColor(subject) {
+    if(subject === "Math") return "#f39c12";
+    if(subject === "Science") return "#27ae60";
+    if(subject === "History") return "#8e44ad";
+    if(subject === "Language") return "#e67e22";
+    return "#3498db";
+  }
+
+  function addNode() {
+    var text = document.getElementById('nodeText').value.trim();
+    var subject = document.getElementById('subjectSelect').value;
+    if(text === "") { alert("Enter a concept name"); return; }
+    var node = {id: Date.now(), text: text, subject: subject, x: 50, y: 50};
+    nodes.push(node);
+    saveAndRender();
+    document.getElementById('nodeText').value = "";
+  }
+
+  function saveAndRender() {
+    localStorage.setItem('nodes', JSON.stringify(nodes));
+    localStorage.setItem('links', JSON.stringify(links));
+    render();
+  }
+
+  function render() {
+    mapArea.innerHTML = "";
+    // Draw links
+    for(var i=0; i<links.length; i=i+1) {
+      var from = findNode(links[i].from);
+      var to = findNode(links[i].to);
+      if(from && to) drawLink(from,to);
+    }
+    // Draw nodes
+    for(var i=0; i<nodes.length; i=i+1) {
+      var nodeDiv = document.createElement('div');
+      nodeDiv.className = 'node';
+      nodeDiv.style.left = nodes[i].x + "px";
+      nodeDiv.style.top = nodes[i].y + "px";
+      nodeDiv.style.background = getColor(nodes[i].subject);
+      nodeDiv.innerHTML = nodes[i].text;
+      nodeDiv.setAttribute('data-id', nodes[i].id);
+      nodeDiv.onmousedown = startDrag;
+      nodeDiv.ondblclick = function() { selectNode(this); };
+      mapArea.appendChild(nodeDiv);
+    }
+  }
+
+  function findNode(id) {
+    for(var i=0; i<nodes.length; i=i+1) { if(nodes[i].id === id) return nodes[i]; }
+    return null;
+  }
+
+  function startDrag(e) {
+    selectedNode = this;
+    offsetX = e.clientX - selectedNode.offsetLeft;
+    offsetY = e.clientY - selectedNode.offsetTop;
+    document.onmousemove = dragNode;
+    document.onmouseup = stopDrag;
+  }
+
+  function dragNode(e) {
+    if(selectedNode) {
+      selectedNode.style.left = (e.clientX - offsetX) + "px";
+      selectedNode.style.top = (e.clientY - offsetY) + "px";
+      var id = parseInt(selectedNode.getAttribute('data-id'));
+      var node = findNode(id);
+      if(node) { node.x = e.clientX - offsetX; node.y = e.clientY - offsetY; saveAndRender(); }
+    }
+  }
+
+  function stopDrag() { selectedNode = null; document.onmousemove = null; document.onmouseup = null; }
+
+  var linkStart = null;
+  function selectNode(element) {
+    var id = parseInt(element.getAttribute('data-id'));
+    if(linkStart === null) { linkStart = id; element.style.border = "2px solid #fff"; }
+    else {
+      if(linkStart !== id) {
+        links.push({from: linkStart, to: id});
+        linkStart = null;
+        saveAndRender();
+      }
+    }
+  }
+
+  function drawLink(from, to) {
+    var x1 = from.x + 50; // approx center
+    var y1 = from.y + 20;
+    var x2 = to.x + 50;
+    var y2 = to.y + 20;
+    var length = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+    var angle = Math.atan2(y2-y1,x2-x1) * 180 / Math.PI;
+    var linkDiv = document.createElement('div');
+    linkDiv.className = 'link';
+    linkDiv.style.width = length + "px";
+    linkDiv.style.left = x1 + "px";
+    linkDiv.style.top = y1 + "px";
+    linkDiv.style.transform = "rotate(" + angle + "deg)";
+    mapArea.appendChild(linkDiv);
+  }
+
+  render();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE67() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Quiz Generator</title>
+<style>
+  body { background: #121212; color: #e0e0e0; font-family: Arial, sans-serif; padding: 20px; }
+  h1 { text-align: center; color: #90caf9; margin-bottom: 20px; }
+  .container { max-width: 900px; margin: auto; }
+  input, textarea, select, button { padding: 10px; border-radius: 6px; border: none; margin: 5px 0; }
+  input, textarea, select { width: 100%; background: #1e1e1e; color: #e0e0e0; border: 1px solid #333; }
+  button { background: #90caf9; color: #121212; cursor: pointer; transition: 0.2s; }
+  button:hover { background: #64b5f6; }
+  .section { background: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+  ul { list-style: none; margin-top: 10px; padding: 0; }
+  li { background: #272727; padding: 10px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; color: #e0e0e0; }
+  .delete { background: #ef5350; color: #121212; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+  .quizCard { background: #212121; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+  .optionBtn { display: block; margin: 5px 0; padding: 8px; background: #424242; border-radius: 6px; cursor: pointer; color: #e0e0e0; border: none; transition: 0.2s; text-align: left; }
+  .optionBtn:hover { background: #616161; }
+  .correct { background: #66bb6a !important; color: #121212; }
+  .wrong { background: #ef5350 !important; color: #121212; }
+</style>
+</head>
+<body>
+
+<h1>Dark Quiz Generator</h1>
+<div class="container">
+
+  <!-- Add Question -->
+  <div class="section">
+    <h2>Add Question</h2>
+    <textarea id="questionText" placeholder="Enter your question"></textarea>
+    <input type="text" id="optionA" placeholder="Option A">
+    <input type="text" id="optionB" placeholder="Option B">
+    <input type="text" id="optionC" placeholder="Option C">
+    <input type="text" id="optionD" placeholder="Option D">
+    <select id="correctOption">
+      <option value="A">Correct Answer: A</option>
+      <option value="B">Correct Answer: B</option>
+      <option value="C">Correct Answer: C</option>
+      <option value="D">Correct Answer: D</option>
+    </select>
+    <button onclick="addQuestion()">Add Question</button>
+    <ul id="questionList"></ul>
+  </div>
+
+  <!-- Take Quiz -->
+  <div class="section">
+    <h2>Take Quiz</h2>
+    <div id="quizArea"></div>
+  </div>
+
+</div>
+
+<script>
+  var questions = JSON.parse(localStorage.getItem('questions')) || [];
+
+  function saveQuestions() {
+    localStorage.setItem('questions', JSON.stringify(questions));
+    renderQuestionList();
+  }
+
+  function renderQuestionList() {
+    var list = document.getElementById('questionList');
+    list.innerHTML = '';
+    for(var i=0; i<questions.length; i=i+1) {
+      var li = document.createElement('li');
+      li.innerHTML = questions[i].text + ' <span class="delete" onclick="deleteQuestion(' + i + ')">Delete</span>';
+      list.appendChild(li);
+    }
+  }
+
+  function addQuestion() {
+    var qText = document.getElementById('questionText').value.trim();
+    var a = document.getElementById('optionA').value.trim();
+    var b = document.getElementById('optionB').value.trim();
+    var c = document.getElementById('optionC').value.trim();
+    var d = document.getElementById('optionD').value.trim();
+    var correct = document.getElementById('correctOption').value;
+    if(qText === '' || a === '' || b === '' || c === '' || d === '') { alert('Fill all fields'); return; }
+    questions.push({text: qText, A: a, B: b, C: c, D: d, correct: correct});
+    saveQuestions();
+    document.getElementById('questionText').value = '';
+    document.getElementById('optionA').value = '';
+    document.getElementById('optionB').value = '';
+    document.getElementById('optionC').value = '';
+    document.getElementById('optionD').value = '';
+    renderQuiz();
+  }
+
+  function deleteQuestion(index) {
+    questions.splice(index,1);
+    saveQuestions();
+    renderQuiz();
+  }
+
+  function renderQuiz() {
+    var quizArea = document.getElementById('quizArea');
+    quizArea.innerHTML = '';
+    for(var i=0; i<questions.length; i=i+1) {
+      var qDiv = document.createElement('div');
+      qDiv.className = 'quizCard';
+      var qText = document.createElement('p');
+      qText.innerHTML = (i+1) + '. ' + questions[i].text;
+      qDiv.appendChild(qText);
+
+      ['A','B','C','D'].forEach(function(opt) {
+        var btn = document.createElement('button');
+        btn.className = 'optionBtn';
+        btn.innerHTML = opt + ': ' + questions[i][opt];
+        btn.onclick = (function(index,optBtn,opt) {
+          return function() {
+            if(opt === questions[index].correct) { optBtn.className = 'optionBtn correct'; }
+            else { optBtn.className = 'optionBtn wrong'; }
+          };
+        })(i, btn, opt);
+        qDiv.appendChild(btn);
+      });
+
+      quizArea.appendChild(qDiv);
+    }
+  }
+
+  renderQuestionList();
+  renderQuiz();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE68() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Focus Tracker - Upgraded</title>
+<style>
+  body { background: #121212; color: #e0e0e0; font-family: Arial, sans-serif; padding: 20px; }
+  h1 { text-align: center; color: #90caf9; margin-bottom: 20px; }
+  .container { max-width: 900px; margin: auto; }
+
+  #controls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  input, button { padding: 10px; border-radius: 6px; border: none; }
+  input { background: #1e1e1e; color: #e0e0e0; border: 1px solid #333; flex: 1; min-width: 120px; }
+  button { background: #90caf9; color: #121212; cursor: pointer; transition: 0.2s; }
+  button:hover { background: #64b5f6; }
+
+  .subjects { display: flex; flex-wrap: wrap; gap: 20px; }
+  .subjectCard { background: #1e1e1e; border-radius: 10px; padding: 15px; flex: 1; min-width: 250px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); position: relative; }
+  .subjectCard h2 { margin-bottom: 10px; }
+  .progressBar { width: 100%; background: #272727; border-radius: 6px; height: 20px; margin: 10px 0; overflow: hidden; }
+  .progressFill { height: 100%; width: 0%; background: #66bb6a; border-radius: 6px; transition: width 0.3s; }
+
+  .timerBtn { margin-top: 5px; padding: 8px 12px; background: #90caf9; color: #121212; border: none; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+  .timerBtn:hover { background: #64b5f6; }
+
+  #stats { margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Study Focus Tracker</h1>
+<div class="container">
+
+  <div id="controls">
+    <input type="text" id="subjectName" placeholder="Subject Name">
+    <input type="number" id="studyGoal" placeholder="Goal Minutes">
+    <button onclick="addSubject()">Add Subject</button>
+  </div>
+
+  <div class="subjects" id="subjectsContainer"></div>
+
+  <div id="stats">
+    <h2>Overall Stats</h2>
+    <p id="totalTime">Total Study Time: 0 minutes</p>
+    <p id="totalGoals">Total Goal Time: 0 minutes</p>
+  </div>
+
+</div>
+
+<script>
+  var subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+
+  function saveSubjects() {
+    localStorage.setItem('subjects', JSON.stringify(subjects));
+    renderSubjects();
+    updateStats();
+  }
+
+  function addSubject() {
+    var name = document.getElementById('subjectName').value.trim();
+    var goal = parseInt(document.getElementById('studyGoal').value);
+    if(name === '' || isNaN(goal) || goal <= 0) { alert('Enter valid name and goal'); return; }
+    subjects.push({name: name, goal: goal, studiedSeconds: 0, timer: null});
+    document.getElementById('subjectName').value = '';
+    document.getElementById('studyGoal').value = '';
+    saveSubjects();
+  }
+
+  function startTimer(index) {
+    if(subjects[index].timer) { 
+      clearInterval(subjects[index].timer); 
+      subjects[index].timer = null; 
+      saveSubjects(); 
+      return; 
+    }
+    subjects[index].timer = setInterval(function() {
+      subjects[index].studiedSeconds = subjects[index].studiedSeconds + 1;
+      updateProgress(index);
+      updateStats();
+      localStorage.setItem('subjects', JSON.stringify(subjects));
+    }, 1000); // tick every second
+    renderSubjects();
+  }
+
+  function updateProgress(index) {
+    var fill = document.getElementById('progressFill' + index);
+    var percent = Math.min((subjects[index].studiedSeconds/60)/subjects[index].goal * 100, 100);
+    fill.style.width = percent + '%';
+    fill.parentElement.nextSibling.innerHTML = 'Studied: ' + Math.floor(subjects[index].studiedSeconds/60) + ' min';
+  }
+
+  function renderSubjects() {
+    var container = document.getElementById('subjectsContainer');
+    container.innerHTML = '';
+    for(var i=0; i<subjects.length; i=i+1) {
+      var card = document.createElement('div');
+      card.className = 'subjectCard';
+      card.innerHTML = '<h2>' + subjects[i].name + '</h2>' +
+        '<p>Goal: ' + subjects[i].goal + ' min</p>' +
+        '<p id="studied' + i + '">Studied: ' + Math.floor(subjects[i].studiedSeconds/60) + ' min</p>' +
+        '<div class="progressBar"><div id="progressFill' + i + '" class="progressFill"></div></div>' +
+        '<button class="timerBtn" onclick="startTimer(' + i + ')">' + (subjects[i].timer ? 'Stop' : 'Start') + ' Timer</button>';
+      container.appendChild(card);
+      updateProgress(i);
+    }
+  }
+
+  function updateStats() {
+    var totalStudied = 0;
+    var totalGoal = 0;
+    for(var i=0; i<subjects.length; i=i+1) {
+      totalStudied += Math.floor(subjects[i].studiedSeconds/60);
+      totalGoal += subjects[i].goal;
+    }
+    document.getElementById('totalTime').innerHTML = 'Total Study Time: ' + totalStudied + ' minutes';
+    document.getElementById('totalGoals').innerHTML = 'Total Goal Time: ' + totalGoal + ' minutes';
+  }
+
+  renderSubjects();
+  updateStats();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
