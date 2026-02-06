@@ -12295,3 +12295,458 @@ function copyCODE68() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+
+function copyCODE69() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UnitFlow — Data & Speed Converter</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Offline data size and transfer speed calculator">
+
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --panel: #12182a;
+      --border: #1e2642;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #60a5fa;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: 0.3px;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #0c1225;
+      color: var(--text);
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .result {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 800px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>UnitFlow</h1>
+</header>
+
+<main>
+  <!-- DATA CONVERTER -->
+  <div class="card">
+    <label>Data amount</label>
+    <input id="dataValue" type="number" min="0" step="any">
+
+    <label>Unit</label>
+    <select id="dataUnit">
+      <option value="B">Bytes (B)</option>
+      <option value="KB">Kilobytes (KB)</option>
+      <option value="MB">Megabytes (MB)</option>
+      <option value="GB">Gigabytes (GB)</option>
+      <option value="TB">Terabytes (TB)</option>
+      <option value="KiB">Kibibytes (KiB)</option>
+      <option value="MiB">Mebibytes (MiB)</option>
+      <option value="GiB">Gibibytes (GiB)</option>
+    </select>
+
+    <div class="result" id="dataResult">—</div>
+  </div>
+
+  <!-- SPEED CALCULATOR -->
+  <div class="card">
+    <label>File size (MB)</label>
+    <input id="fileSize" type="number" min="0" step="any">
+
+    <label>Speed (Mbps)</label>
+    <input id="speed" type="number" min="0" step="any">
+
+    <div class="result" id="timeResult">—</div>
+  </div>
+
+  <footer>
+    Fully offline • Accurate decimal & binary math
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const dataInput = document.getElementById('dataValue');
+  const unitSelect = document.getElementById('dataUnit');
+  const dataResult = document.getElementById('dataResult');
+
+  const fileSizeInput = document.getElementById('fileSize');
+  const speedInput = document.getElementById('speed');
+  const timeResult = document.getElementById('timeResult');
+
+  const decimal = {
+    B: 1,
+    KB: 1e3,
+    MB: 1e6,
+    GB: 1e9,
+    TB: 1e12
+  };
+
+  const binary = {
+    KiB: 1024,
+    MiB: 1024 ** 2,
+    GiB: 1024 ** 3
+  };
+
+  function toBytes(value, unit) {
+    if (decimal[unit]) return value * decimal[unit];
+    if (binary[unit]) return value * binary[unit];
+    return 0;
+  }
+
+  function updateData() {
+    const value = Number(dataInput.value);
+    const unit = unitSelect.value;
+
+    if (!value || value < 0) {
+      dataResult.textContent = '—';
+      return;
+    }
+
+    const bytes = toBytes(value, unit);
+
+    dataResult.textContent =
+      'Bytes: ' + bytes.toFixed(0) +
+      '\nMB: ' + (bytes / 1e6).toFixed(3) +
+      '\nMiB: ' + (bytes / (1024 ** 2)).toFixed(3);
+  }
+
+  function updateTime() {
+    const sizeMB = Number(fileSizeInput.value);
+    const speedMbps = Number(speedInput.value);
+
+    if (!sizeMB || !speedMbps || speedMbps <= 0) {
+      timeResult.textContent = '—';
+      return;
+    }
+
+    const bits = sizeMB * 8 * 1e6;
+    const seconds = bits / (speedMbps * 1e6);
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+
+    timeResult.textContent =
+      'Estimated time: ' + mins + ' min ' + secs + ' sec';
+  }
+
+  dataInput.addEventListener('input', updateData);
+  unitSelect.addEventListener('change', updateData);
+  fileSizeInput.addEventListener('input', updateTime);
+  speedInput.addEventListener('input', updateTime);
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
+function copyCODE70() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ImageScope — Offline Image Analyzer</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Offline image metadata and dimension analyzer">
+
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --panel: #12182a;
+      --border: #1e2642;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 20px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: 0.3px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: #0c1225;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .preview {
+      width: 100%;
+      height: 300px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0c1225;
+      overflow: hidden;
+    }
+
+    .preview img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>ImageScope</h1>
+</header>
+
+<main>
+
+  <!-- INPUT -->
+  <div class="card">
+    <input id="fileInput" type="file" accept="image/*">
+
+    <div class="preview" id="preview">
+      <span class="muted">No image loaded</span>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="card">
+    <div class="row"><span>Width</span><span id="width">—</span></div>
+    <div class="row"><span>Height</span><span id="height">—</span></div>
+    <div class="row"><span>Aspect Ratio</span><span id="ratio">—</span></div>
+    <div class="row"><span>Orientation</span><span id="orientation">—</span></div>
+    <div class="row"><span>File Size</span><span id="size">—</span></div>
+    <div class="row"><span>Megapixels</span><span id="mp">—</span></div>
+  </div>
+
+  <footer>
+    Fully offline • No uploads • Safe preview
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.getElementById('preview');
+
+  const widthEl = document.getElementById('width');
+  const heightEl = document.getElementById('height');
+  const ratioEl = document.getElementById('ratio');
+  const orientationEl = document.getElementById('orientation');
+  const sizeEl = document.getElementById('size');
+  const mpEl = document.getElementById('mp');
+
+  let currentURL = null;
+
+  function reset() {
+    widthEl.textContent = '—';
+    heightEl.textContent = '—';
+    ratioEl.textContent = '—';
+    orientationEl.textContent = '—';
+    sizeEl.textContent = '—';
+    mpEl.textContent = '—';
+    preview.innerHTML = '<span>No image loaded</span>';
+  }
+
+  fileInput.addEventListener('change', function () {
+    const file = fileInput.files[0];
+    if (!file || !file.type.startsWith('image/')) {
+      reset();
+      return;
+    }
+
+    if (currentURL) {
+      URL.revokeObjectURL(currentURL);
+    }
+
+    const img = new Image();
+    currentURL = URL.createObjectURL(file);
+
+    img.onload = function () {
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
+
+      widthEl.textContent = w + ' px';
+      heightEl.textContent = h + ' px';
+
+      const gcd = (a, b) => b === 0 ? a : gcd(b, a % b);
+      const d = gcd(w, h);
+
+      ratioEl.textContent = (w / d) + ':' + (h / d);
+      orientationEl.textContent =
+        w === h ? 'Square' : w > h ? 'Landscape' : 'Portrait';
+
+      sizeEl.textContent =
+        file.size > 1e6
+          ? (file.size / 1e6).toFixed(2) + ' MB'
+          : (file.size / 1e3).toFixed(1) + ' KB';
+
+      mpEl.textContent = ((w * h) / 1e6).toFixed(2) + ' MP';
+
+      preview.innerHTML = '';
+      preview.appendChild(img);
+    };
+
+    img.onerror = function () {
+      reset();
+    };
+
+    img.src = currentURL;
+  });
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
