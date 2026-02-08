@@ -12750,3 +12750,1039 @@ function copyCODE70() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+
+function copyCODE71() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scenario Timeline Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0f1220;
+  --panel: #171a2e;
+  --panel-2: #1f2440;
+  --text: #eef1ff;
+  --muted: #9aa1c7;
+  --accent: #6c7cff;
+  --border: #2b3160;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+}
+
+aside {
+  width: 260px;
+  padding: 16px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+}
+
+aside h1 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+aside button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.scenario-list {
+  margin-top: 12px;
+}
+
+.scenario {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.scenario:hover {
+  background: var(--panel-2);
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.score {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.timeline {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.event {
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--panel);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.event.positive {
+  border-left: 4px solid #4caf50;
+}
+
+.event.negative {
+  border-left: 4px solid #ff5f5f;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+select, button.add {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+button.add {
+  background: var(--accent);
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<aside>
+  <h1>Scenarios</h1>
+  <button id="newScenarioBtn" type="button">New Scenario</button>
+  <div class="scenario-list" id="scenarioList"></div>
+</aside>
+
+<main>
+  <header>
+    <h2 id="scenarioTitle">No scenario selected</h2>
+    <div class="score" id="scoreDisplay">Score: 0</div>
+  </header>
+
+  <div class="timeline" id="timeline"></div>
+
+  <div class="controls">
+    <input id="eventInput" type="text" placeholder="Event description">
+    <select id="impactSelect">
+      <option value="5">Positive</option>
+      <option value="-5">Negative</option>
+    </select>
+    <button class="add" id="addEventBtn" type="button">Add</button>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "scenario_simulator_data";
+  var data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  var activeIndex = -1;
+
+  var scenarioList = document.getElementById("scenarioList");
+  var timeline = document.getElementById("timeline");
+  var titleEl = document.getElementById("scenarioTitle");
+  var scoreEl = document.getElementById("scoreDisplay");
+
+  var eventInput = document.getElementById("eventInput");
+  var impactSelect = document.getElementById("impactSelect");
+
+  document.getElementById("newScenarioBtn").addEventListener("click", createScenario);
+  document.getElementById("addEventBtn").addEventListener("click", addEvent);
+
+  function save() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function createScenario() {
+    data.push({ name: "New Scenario", events: [] });
+    activeIndex = data.length - 1;
+    save();
+    render();
+  }
+
+  function addEvent() {
+    if (activeIndex < 0 || !eventInput.value) {
+      return;
+    }
+
+    data[activeIndex].events.push({
+      text: eventInput.value,
+      impact: Number(impactSelect.value)
+    });
+
+    eventInput.value = "";
+    save();
+    render();
+  }
+
+  function render() {
+    scenarioList.innerHTML = "";
+    timeline.innerHTML = "";
+
+    data.forEach(function (s, i) {
+      var div = document.createElement("div");
+      div.className = "scenario";
+      div.textContent = s.name;
+      div.addEventListener("click", function () {
+        activeIndex = i;
+        render();
+      });
+      scenarioList.appendChild(div);
+    });
+
+    if (activeIndex < 0) {
+      titleEl.textContent = "No scenario selected";
+      scoreEl.textContent = "Score: 0";
+      return;
+    }
+
+    var scenario = data[activeIndex];
+    titleEl.textContent = scenario.name;
+
+    var score = 0;
+    scenario.events.forEach(function (e) {
+      score += e.impact;
+
+      var ev = document.createElement("div");
+      ev.className = "event " + (e.impact > 0 ? "positive" : "negative");
+      ev.textContent = e.text;
+      timeline.appendChild(ev);
+    });
+
+    scoreEl.textContent = "Score: " + score;
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>
+
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE72() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Life Area Balance Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0e1020;
+  --panel: #161a33;
+  --panel-2: #1e2350;
+  --text: #eef0ff;
+  --muted: #a3aad9;
+  --accent: #6f7dff;
+  --border: #2c3270;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 900px;
+  max-width: 95%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+h1 {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 18px;
+}
+
+.area {
+  background: var(--panel-2);
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.area label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+input[type="range"] {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.summary {
+  grid-column: 1 / -1;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--panel-2);
+  font-size: 14px;
+}
+
+.balance {
+  margin-top: 8px;
+  color: var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>Life Area Balance</h1>
+
+  <div class="area">
+    <label>Health <span id="v-health">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="health">
+  </div>
+
+  <div class="area">
+    <label>Money <span id="v-money">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="money">
+  </div>
+
+  <div class="area">
+    <label>Learning <span id="v-learning">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="learning">
+  </div>
+
+  <div class="area">
+    <label>Social <span id="v-social">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="social">
+  </div>
+
+  <div class="area">
+    <label>Rest <span id="v-rest">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="rest">
+  </div>
+
+  <div class="area">
+    <label>Purpose <span id="v-purpose">0</span></label>
+    <input type="range" min="0" max="100" value="0" id="purpose">
+  </div>
+
+  <div class="summary">
+    <strong>Total Energy:</strong> <span id="total">0</span> / 100
+    <div class="balance" id="feedback"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var areas = ["health", "money", "learning", "social", "rest", "purpose"];
+  var totalEl = document.getElementById("total");
+  var feedbackEl = document.getElementById("feedback");
+
+  function update() {
+    var total = 0;
+
+    areas.forEach(function (name) {
+      var input = document.getElementById(name);
+      var value = Number(input.value);
+      document.getElementById("v-" + name).textContent = value;
+      total += value;
+    });
+
+    totalEl.textContent = total;
+
+    if (total < 100) {
+      feedbackEl.textContent = "You are under-allocating your energy.";
+    } else if (total > 100) {
+      feedbackEl.textContent = "You are spreading yourself too thin.";
+    } else {
+      feedbackEl.textContent = "Your energy is consciously balanced.";
+    }
+  }
+
+  areas.forEach(function (name) {
+    document.getElementById(name).addEventListener("input", update);
+  });
+
+  update();
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE73() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Decision Trade-Off Matrix</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0e1022;
+  --panel: #171a36;
+  --panel-2: #1f2350;
+  --text: #eef0ff;
+  --muted: #a5acd9;
+  --accent: #6c7cff;
+  --border: #2d3270;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 1000px;
+  max-width: 96%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 180px repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cell {
+  background: var(--panel-2);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.header {
+  font-weight: 600;
+  text-align: center;
+}
+
+input[type="number"],
+input[type="text"] {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  padding: 6px;
+}
+
+.weight {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.summary {
+  margin-top: 16px;
+  padding: 14px;
+  background: var(--panel-2);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>Decision Trade-Off Matrix</h1>
+
+  <div class="grid" id="matrix">
+    <div class="cell"></div>
+    <div class="cell header">Option A</div>
+    <div class="cell header">Option B</div>
+    <div class="cell header">Option C</div>
+  </div>
+
+  <div class="summary">
+    <div>Best weighted option: <strong id="best">—</strong></div>
+    <div>Total clarity improves when weights differ.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var criteria = ["Time", "Money", "Stress", "Growth", "Freedom"];
+  var matrixEl = document.getElementById("matrix");
+  var bestEl = document.getElementById("best");
+
+  var values = [];
+
+  function createRow(label, rowIndex) {
+    var labelCell = document.createElement("div");
+    labelCell.className = "cell";
+    labelCell.textContent = label;
+    matrixEl.appendChild(labelCell);
+
+    for (var i = 0; i < 3; i += 1) {
+      var cell = document.createElement("div");
+      cell.className = "cell";
+
+      var input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.max = "10";
+      input.value = "5";
+
+      input.addEventListener("input", calculate);
+
+      cell.appendChild(input);
+      matrixEl.appendChild(cell);
+
+      if (!values[rowIndex]) {
+        values[rowIndex] = [];
+      }
+      values[rowIndex][i] = input;
+    }
+  }
+
+  function calculate() {
+    var totals = [0, 0, 0];
+
+    for (var r = 0; r < values.length; r += 1) {
+      for (var c = 0; c < 3; c += 1) {
+        totals[c] += Number(values[r][c].value);
+      }
+    }
+
+    var max = Math.max.apply(null, totals);
+    var index = totals.indexOf(max);
+
+    bestEl.textContent = ["Option A", "Option B", "Option C"][index];
+  }
+
+  criteria.forEach(function (c, i) {
+    createRow(c, i);
+  });
+
+  calculate();
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
+function copyCODE74() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Identity Conflict Mapper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0b0d17;
+  --panel: #141833;
+  --panel-2: #1c2150;
+  --text: #eef0ff;
+  --muted: #a2a8d9;
+  --accent: #6f7dff;
+  --border: #2b3168;
+  --conflict: #ff6b6b;
+  --align: #4caf50;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 960px;
+  max-width: 96%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+h1 {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  margin: 0;
+}
+
+.section {
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.section h2 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.analysis {
+  grid-column: 1 / -1;
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.result {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.align {
+  color: var(--align);
+}
+
+.conflict {
+  color: var(--conflict);
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>Identity Conflict Mapper</h1>
+
+  <div class="section">
+    <h2>Who I want to be</h2>
+    <input id="ideal1" type="text" placeholder="e.g. Disciplined">
+    <input id="ideal2" type="text" placeholder="e.g. Free">
+    <input id="ideal3" type="text" placeholder="e.g. Respected">
+  </div>
+
+  <div class="section">
+    <h2>What I value</h2>
+    <input id="value1" type="text" placeholder="e.g. Stability">
+    <input id="value2" type="text" placeholder="e.g. Growth">
+    <input id="value3" type="text" placeholder="e.g. Independence">
+  </div>
+
+  <div class="section">
+    <h2>What I actually do</h2>
+    <input id="action1" type="text" placeholder="e.g. Avoid risks">
+    <input id="action2" type="text" placeholder="e.g. Work long hours">
+    <input id="action3" type="text" placeholder="e.g. Delay decisions">
+  </div>
+
+  <div class="analysis">
+    <strong>Conflict Analysis</strong>
+    <div id="analysisResult" class="result"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var inputs = document.querySelectorAll("input");
+  var output = document.getElementById("analysisResult");
+
+  function analyze() {
+    var ideals = [
+      document.getElementById("ideal1").value,
+      document.getElementById("ideal2").value,
+      document.getElementById("ideal3").value
+    ].filter(Boolean);
+
+    var values = [
+      document.getElementById("value1").value,
+      document.getElementById("value2").value,
+      document.getElementById("value3").value
+    ].filter(Boolean);
+
+    var actions = [
+      document.getElementById("action1").value,
+      document.getElementById("action2").value,
+      document.getElementById("action3").value
+    ].filter(Boolean);
+
+    if (ideals.length === 0 || values.length === 0 || actions.length === 0) {
+      output.textContent = "Fill all sections to reveal internal alignment or conflict.";
+      return;
+    }
+
+    if (values.length > actions.length) {
+      output.textContent = "You value more than you currently act on.";
+      output.className = "result conflict";
+      return;
+    }
+
+    if (actions.length > values.length) {
+      output.textContent = "Your actions exceed your stated values — possible burnout risk.";
+      output.className = "result conflict";
+      return;
+    }
+
+    output.textContent = "Your identity, values, and actions are structurally aligned.";
+    output.className = "result align";
+  }
+
+  inputs.forEach(function (input) {
+    input.addEventListener("input", analyze);
+  });
+
+  analyze();
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE75() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Identity × Environment Friction Analyzer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --bg: #0a0c18;
+  --panel: #141834;
+  --panel-2: #1c214a;
+  --text: #eef0ff;
+  --muted: #a2a9d9;
+  --border: #2b316a;
+  --good: #4caf50;
+  --bad: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 1000px;
+  max-width: 96%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+h1 {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  margin: 0;
+}
+
+.section {
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.section h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.analysis {
+  grid-column: 1 / -1;
+  background: var(--panel-2);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.result {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.good {
+  color: var(--good);
+}
+
+.bad {
+  color: var(--bad);
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <h1>Identity × Environment Friction</h1>
+
+  <div class="section">
+    <h2>Identity Traits</h2>
+    <input id="i1" type="text" placeholder="e.g. Focused">
+    <input id="i2" type="text" placeholder="e.g. Independent">
+    <input id="i3" type="text" placeholder="e.g. Creative">
+  </div>
+
+  <div class="section">
+    <h2>Environmental Forces</h2>
+
+    <div class="row">
+      <input id="e1" type="text" placeholder="e.g. Constant notifications">
+      <select id="p1">
+        <option value="-1">Resists</option>
+        <option value="1">Supports</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <input id="e2" type="text" placeholder="e.g. Family expectations">
+      <select id="p2">
+        <option value="-1">Resists</option>
+        <option value="1">Supports</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <input id="e3" type="text" placeholder="e.g. Quiet workspace">
+      <select id="p3">
+        <option value="1">Supports</option>
+        <option value="-1">Resists</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="analysis">
+    <strong>Structural Analysis</strong>
+    <div id="output" class="result"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var output = document.getElementById("output");
+  var inputs = document.querySelectorAll("input, select");
+
+  function analyze() {
+    var identityCount = 0;
+    var support = 0;
+    var resist = 0;
+
+    ["i1", "i2", "i3"].forEach(function (id) {
+      if (document.getElementById(id).value.trim()) {
+        identityCount += 1;
+      }
+    });
+
+    ["p1", "p2", "p3"].forEach(function (id) {
+      var value = Number(document.getElementById(id).value);
+      if (value > 0) {
+        support += 1;
+      } else {
+        resist += 1;
+      }
+    });
+
+    if (identityCount === 0) {
+      output.textContent = "Define identity traits to reveal environmental pressure.";
+      output.className = "result";
+      return;
+    }
+
+    if (resist > support) {
+      output.textContent =
+        "Your environment structurally resists who you are. Effort alone will not solve this.";
+      output.className = "result bad";
+      return;
+    }
+
+    if (support > resist) {
+      output.textContent =
+        "Your environment supports your identity. Progress depends on consistency, not force.";
+      output.className = "result good";
+      return;
+    }
+
+    output.textContent =
+      "Your environment is neutral. Small changes could create momentum.";
+    output.className = "result";
+  }
+
+  inputs.forEach(function (el) {
+    el.addEventListener("input", analyze);
+    el.addEventListener("change", analyze);
+  });
+
+  analyze();
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
