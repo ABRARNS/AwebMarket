@@ -13786,3 +13786,1040 @@ select {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE76() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signal Ledger</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --card: #020617;
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 900px;
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    p {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 15px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #020617;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+
+    li {
+      background: #020617;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .output {
+      margin-top: 15px;
+      background: #020617;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="app">
+    <h1>Signal Ledger</h1>
+    <p>Track patterns. Not opinions.</p>
+
+    <section class="row">
+      <div class="card">
+        <h2>Add Signal</h2>
+        <input id="signalInput" placeholder="Signal name">
+        <button id="addSignalBtn" type="button">Add Signal</button>
+        <ul id="signalList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Summary</h2>
+        <div class="output" id="summary">
+          No signals yet.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var signalInput = document.getElementById('signalInput');
+      var addSignalBtn = document.getElementById('addSignalBtn');
+      var signalList = document.getElementById('signalList');
+      var summary = document.getElementById('summary');
+
+      var signals = [];
+
+      function render() {
+        signalList.innerHTML = '';
+
+        if (signals.length === 0) {
+          summary.textContent = 'No signals yet.';
+          return;
+        }
+
+        var total = signals.length;
+        summary.textContent = 'Total signals recorded: ' + total;
+
+        signals.forEach(function (name) {
+          var li = document.createElement('li');
+          var spanName = document.createElement('span');
+          var spanIndex = document.createElement('span');
+
+          spanName.textContent = name;
+          spanIndex.textContent = '#';
+
+          li.appendChild(spanName);
+          li.appendChild(spanIndex);
+          signalList.appendChild(li);
+        });
+      }
+
+      addSignalBtn.addEventListener('click', function () {
+        var value = signalInput.value.trim();
+
+        if (value === '') {
+          return;
+        }
+
+        signals.push(value);
+        signalInput.value = '';
+        render();
+      });
+    });
+  </script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE77() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Constraint Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg:#020617;
+      --panel:#0f172a;
+      --card:#020617;
+      --accent:#22d3ee;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --good:#22c55e;
+      --bad:#ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--accent);
+      font-size: 24px;
+    }
+
+    p {
+      margin: 6px 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    section {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 15px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #020617;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0;
+    }
+
+    li {
+      background: #020617;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .result {
+      margin-top: 20px;
+      background: #020617;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 15px;
+    }
+
+    .winner {
+      color: var(--good);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1>Constraint Engine</h1>
+  <p>Find the best option that survives all constraints.</p>
+
+  <div class="grid">
+    <section>
+      <h2>Options</h2>
+      <input id="optionInput" placeholder="Option name">
+      <button id="addOption" type="button">Add Option</button>
+      <ul id="optionList"></ul>
+    </section>
+
+    <section>
+      <h2>Constraints (min score)</h2>
+      <input id="constraintInput" placeholder="Constraint (1–10)">
+      <button id="addConstraint" type="button">Add Constraint</button>
+      <ul id="constraintList"></ul>
+    </section>
+  </div>
+
+  <div class="result" id="result">
+    No evaluation yet.
+  </div>
+</main>
+
+<script>
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var optionInput = document.getElementById('optionInput');
+    var constraintInput = document.getElementById('constraintInput');
+    var optionList = document.getElementById('optionList');
+    var constraintList = document.getElementById('constraintList');
+    var result = document.getElementById('result');
+    var addOptionBtn = document.getElementById('addOption');
+    var addConstraintBtn = document.getElementById('addConstraint');
+
+    var options = [];
+    var constraints = [];
+
+    function evaluate() {
+      optionList.innerHTML = '';
+      constraintList.innerHTML = '';
+
+      if (options.length === 0 || constraints.length === 0) {
+        result.textContent = 'Add options and constraints to evaluate.';
+        return;
+      }
+
+      var survivors = options.filter(function (opt) {
+        return constraints.every(function (c) {
+          return opt.score >= c;
+        });
+      });
+
+      options.forEach(function (opt) {
+        var li = document.createElement('li');
+        li.textContent = opt.name + ' — score ' + opt.score;
+        optionList.appendChild(li);
+      });
+
+      constraints.forEach(function (c) {
+        var li = document.createElement('li');
+        li.textContent = 'Minimum score: ' + c;
+        constraintList.appendChild(li);
+      });
+
+      if (survivors.length === 0) {
+        result.innerHTML = '<span style="color:#ef4444">No option satisfies all constraints.</span>';
+        return;
+      }
+
+      var best = survivors.reduce(function (a, b) {
+        return a.score > b.score ? a : b;
+      });
+
+      result.innerHTML =
+        'Best viable option: <span class="winner">' +
+        best.name +
+        '</span> (score ' +
+        best.score +
+        ')';
+    }
+
+    addOptionBtn.addEventListener('click', function () {
+      var name = optionInput.value.trim();
+      if (name === '') {
+        return;
+      }
+
+      options.push({
+        name: name,
+        score: Math.floor(Math.random() * 10) + 1
+      });
+
+      optionInput.value = '';
+      evaluate();
+    });
+
+    addConstraintBtn.addEventListener('click', function () {
+      var value = Number(constraintInput.value);
+      if (Number.isNaN(value) || value < 1 || value > 10) {
+        return;
+      }
+
+      constraints.push(value);
+      constraintInput.value = '';
+      evaluate();
+    });
+  });
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE78() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ReasonCLI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #d1d5db;
+      --accent: #22c55e;
+      --muted: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Consolas, monospace;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .terminal {
+      width: 100%;
+      max-width: 900px;
+      background: #020617;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+    }
+
+    .output {
+      min-height: 300px;
+      max-height: 60vh;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .line {
+      color: var(--muted);
+    }
+
+    .accent {
+      color: var(--accent);
+    }
+
+    .input-row {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    .prompt {
+      color: var(--accent);
+      margin-right: 6px;
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="terminal">
+  <div class="output" id="output"></div>
+  <div class="input-row">
+    <span class="prompt">&gt;</span>
+    <input id="commandInput" autocomplete="off" placeholder="type 'help'">
+  </div>
+</div>
+
+<script>
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var output = document.getElementById('output');
+    var input = document.getElementById('commandInput');
+
+    var assumptions = [];
+    var conclusions = [];
+
+    function print(text, accent) {
+      var div = document.createElement('div');
+      div.textContent = text;
+      if (accent) {
+        div.classList.add('accent');
+      }
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function help() {
+      print('Commands:', true);
+      print('assume <text>   → add an assumption');
+      print('conclude <text> → add a conclusion');
+      print('list            → show all entries');
+      print('clear           → reset session');
+    }
+
+    function listAll() {
+      if (assumptions.length === 0 && conclusions.length === 0) {
+        print('Nothing recorded.');
+        return;
+      }
+
+      print('Assumptions:', true);
+      assumptions.forEach(function (a, i) {
+        print((i + 1) + '. ' + a);
+      });
+
+      print('Conclusions:', true);
+      conclusions.forEach(function (c, i) {
+        print((i + 1) + '. ' + c);
+      });
+    }
+
+    function clearAll() {
+      assumptions = [];
+      conclusions = [];
+      output.innerHTML = '';
+      print('Session cleared.', true);
+    }
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter') {
+        return;
+      }
+
+      var value = input.value.trim();
+      input.value = '';
+
+      if (value === '') {
+        return;
+      }
+
+      print('> ' + value);
+
+      if (value === 'help') {
+        help();
+        return;
+      }
+
+      if (value === 'list') {
+        listAll();
+        return;
+      }
+
+      if (value === 'clear') {
+        clearAll();
+        return;
+      }
+
+      if (value.startsWith('assume ')) {
+        assumptions.push(value.slice(7));
+        print('Assumption added.', true);
+        return;
+      }
+
+      if (value.startsWith('conclude ')) {
+        conclusions.push(value.slice(9));
+        print('Conclusion added.', true);
+        return;
+      }
+
+      print('Unknown command. Type "help".');
+    });
+
+    print('ReasonCLI initialized.', true);
+    print('Type "help" to begin.');
+  });
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE79() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thought Weave</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --node: #111827;
+      --border: #1f2933;
+      --text: #e5e7eb;
+      --accent: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+    }
+
+    .node {
+      position: absolute;
+      min-width: 140px;
+      padding: 10px;
+      background: var(--node);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .node:active {
+      cursor: grabbing;
+    }
+
+    .node input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #9ca3af;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="lines"></canvas>
+<div class="hint">Click to create • Drag to move • Double-click to edit</div>
+
+<script>
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var canvas = document.getElementById('lines');
+    var ctx = canvas.getContext('2d');
+
+    var nodes = [];
+    var connections = [];
+    var dragging = null;
+    var offsetX = 0;
+    var offsetY = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      drawLines();
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    function drawLines() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#374151';
+      ctx.lineWidth = 1;
+
+      connections.forEach(function (pair) {
+        ctx.beginPath();
+        ctx.moveTo(pair.a.x + 70, pair.a.y + 20);
+        ctx.lineTo(pair.b.x + 70, pair.b.y + 20);
+        ctx.stroke();
+      });
+    }
+
+    function createNode(x, y) {
+      var el = document.createElement('div');
+      el.className = 'node';
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+
+      var input = document.createElement('input');
+      input.value = 'New thought';
+      el.appendChild(input);
+
+      document.body.appendChild(el);
+
+      var node = { el: el, x: x, y: y };
+      nodes.push(node);
+
+      if (nodes.length > 1) {
+        connections.push({ a: nodes[nodes.length - 2], b: node });
+      }
+
+      el.addEventListener('mousedown', function (e) {
+        dragging = node;
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+      });
+
+      el.addEventListener('dblclick', function () {
+        input.focus();
+        input.select();
+      });
+
+      drawLines();
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      if (!dragging) {
+        return;
+      }
+
+      dragging.x = e.pageX - offsetX;
+      dragging.y = e.pageY - offsetY;
+      dragging.el.style.left = dragging.x + 'px';
+      dragging.el.style.top = dragging.y + 'px';
+
+      drawLines();
+    });
+
+    document.addEventListener('mouseup', function () {
+      dragging = null;
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target !== document.body && e.target !== canvas) {
+        return;
+      }
+      createNode(e.pageX - 70, e.pageY - 20);
+    });
+  });
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE80() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TimeLens</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    :root {
+      --bg: #05070c;
+      --panel: #0f172a;
+      --line: #1f2937;
+      --accent: #38bdf8;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.7);
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--accent);
+      font-size: 22px;
+    }
+
+    p {
+      margin: 6px 0 20px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #020617;
+      color: var(--text);
+    }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .timeline {
+      margin: 20px 0;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .events {
+      margin-top: 20px;
+      border-top: 1px solid var(--line);
+      padding-top: 15px;
+    }
+
+    .event {
+      padding: 10px;
+      border-left: 3px solid var(--accent);
+      margin-bottom: 10px;
+      background: #020617;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .time {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <h1>TimeLens</h1>
+  <p>Review decisions through time, not memory.</p>
+
+  <div class="input-row">
+    <input id="eventInput" type="text" placeholder="Log an event">
+    <button id="addBtn" type="button">Add</button>
+  </div>
+
+  <div class="timeline">
+    <input id="scrubber" type="range" min="0" max="0" value="0">
+    <div class="ticks">
+      <span>Start</span>
+      <span>Now</span>
+    </div>
+  </div>
+
+  <div class="events" id="eventList"></div>
+</main>
+
+<script>
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var input = document.getElementById('eventInput');
+    var addBtn = document.getElementById('addBtn');
+    var scrubber = document.getElementById('scrubber');
+    var eventList = document.getElementById('eventList');
+
+    var events = [];
+    var startTime = Date.now();
+
+    function render() {
+      eventList.innerHTML = '';
+
+      var maxTime = scrubber.value;
+
+      events
+        .filter(function (e) {
+          return e.time <= maxTime;
+        })
+        .forEach(function (e) {
+          var div = document.createElement('div');
+          div.className = 'event';
+
+          var t = document.createElement('div');
+          t.className = 'time';
+          t.textContent = 'T+' + e.time + ' ms';
+
+          var txt = document.createElement('div');
+          txt.textContent = e.text;
+
+          div.appendChild(t);
+          div.appendChild(txt);
+          eventList.appendChild(div);
+        });
+    }
+
+    addBtn.addEventListener('click', function () {
+      var value = input.value.trim();
+      if (value === '') {
+        return;
+      }
+
+      var time = Date.now() - startTime;
+      events.push({ text: value, time: time });
+
+      scrubber.max = String(time);
+      scrubber.value = scrubber.max;
+
+      input.value = '';
+      render();
+    });
+
+    scrubber.addEventListener('input', render);
+  });
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
