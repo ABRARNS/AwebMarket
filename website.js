@@ -14823,3 +14823,778 @@ function copyCODE80() {
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE81() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safe Math Solver</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  justify-content:center;
+  padding:40px 10px;
+}
+.app{
+  width:560px;
+  background:#020617;
+  padding:24px;
+  border-radius:14px;
+}
+h2{margin-top:0}
+label{font-size:14px;color:#cbd5e1}
+input,select{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  margin-bottom:14px;
+  border:none;
+  border-radius:8px;
+  background:#0f172a;
+  color:white;
+}
+button{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+.result{
+  margin-top:18px;
+  padding:14px;
+  border-radius:10px;
+  background:#0f172a;
+  line-height:1.6;
+}
+.error{background:#7f1d1d}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+<h2>🧠 Safe Math Solver</h2>
+
+<label>Mode</label>
+<select id="mode">
+<option value="linear">Linear (ax + b = c)</option>
+<option value="quadratic">Quadratic (ax² + bx + c = 0)</option>
+</select>
+
+<label>A</label>
+<input id="inputA" placeholder="Enter A">
+
+<label>B</label>
+<input id="inputB" placeholder="Enter B">
+
+<label>C</label>
+<input id="inputC" placeholder="Enter C">
+
+<button id="solveBtn">Solve</button>
+
+<div id="output" class="result"></div>
+</div>
+
+<script>
+"use strict";
+
+(function(){
+
+/* DOM CACHE */
+const modeEl = document.getElementById("mode");
+const aEl = document.getElementById("inputA");
+const bEl = document.getElementById("inputB");
+const cEl = document.getElementById("inputC");
+const outEl = document.getElementById("output");
+const btn = document.getElementById("solveBtn");
+
+/* UTIL */
+function toNumber(value){
+  const n = Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+
+function show(message,isError){
+  outEl.className = isError ? "result error" : "result";
+  outEl.innerHTML = message;
+}
+
+/* LINEAR SOLVER */
+function solveLinear(A,B,C){
+
+  if(A === 0){
+    if(B === C){
+      show("Infinite solutions (identity equation).",false);
+    }else{
+      show("No solution exists.",true);
+    }
+    return;
+  }
+
+  const step1 = C - B;
+  const x = step1 / A;
+
+  show(
+    "Step 1: Move B → " + C + " - " + B + " = " + step1 + "<br>" +
+    "Step 2: Divide by A → " + step1 + " / " + A + "<br><br>" +
+    "<b>x = " + x + "</b>"
+  ,false);
+}
+
+/* QUADRATIC SOLVER */
+function solveQuadratic(A,B,C){
+
+  if(A === 0){
+    show("A cannot be 0 in quadratic equation.",true);
+    return;
+  }
+
+  const discriminant = (B*B) - (4*A*C);
+
+  if(discriminant < 0){
+    show(
+      "Discriminant = " + discriminant + "<br>" +
+      "No real roots."
+    ,true);
+    return;
+  }
+
+  const sqrtD = Math.sqrt(discriminant);
+  const x1 = (-B + sqrtD)/(2*A);
+  const x2 = (-B - sqrtD)/(2*A);
+
+  show(
+    "Discriminant = b² − 4ac = " + discriminant + "<br>" +
+    "√D = " + sqrtD + "<br><br>" +
+    "<b>x₁ = " + x1 + "<br>x₂ = " + x2 + "</b>"
+  ,false);
+}
+
+/* MAIN HANDLER */
+btn.addEventListener("click",function(){
+
+  const A = toNumber(aEl.value.trim());
+  const B = toNumber(bEl.value.trim());
+  const C = toNumber(cEl.value.trim());
+
+  if(A === null || B === null || C === null){
+    show("Please enter valid numbers in all fields.",true);
+    return;
+  }
+
+  const mode = modeEl.value;
+
+  if(mode === "linear"){
+    solveLinear(A,B,C);
+  }else{
+    solveQuadratic(A,B,C);
+  }
+
+});
+
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE82() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probability Lab</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  justify-content:center;
+  padding:40px 10px;
+}
+.app{
+  width:520px;
+  background:#020617;
+  padding:24px;
+  border-radius:12px;
+}
+h2{margin-top:0}
+input,select{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border:0;
+  border-radius:8px;
+  background:#0f172a;
+  color:white;
+}
+button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+.result{
+  margin-top:18px;
+  padding:14px;
+  border-radius:10px;
+  background:#0f172a;
+  line-height:1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+<h2>Probability Simulator</h2>
+
+<select id="mode">
+<option value="coin">Coin flip</option>
+<option value="dice">Dice roll</option>
+<option value="custom">Custom win probability</option>
+</select>
+
+<input id="prob" placeholder="Win % (only for custom)">
+<input id="trials" placeholder="Number of trials (ex: 1000)">
+
+<button id="run">Run Simulation</button>
+
+<div id="out" class="result"></div>
+</div>
+
+<script>
+"use strict";
+
+(function(){
+
+var modeEl=document.getElementById("mode");
+var probEl=document.getElementById("prob");
+var trialsEl=document.getElementById("trials");
+var outEl=document.getElementById("out");
+var btn=document.getElementById("run");
+
+function num(v){
+  var n=parseFloat(v);
+  if(isNaN(n)){return null;}
+  if(!isFinite(n)){return null;}
+  return n;
+}
+
+function simulate(){
+
+  var trials=num(trialsEl.value);
+  if(trials===null||trials<=0){
+    outEl.innerHTML="Enter valid trial count.";
+    return;
+  }
+
+  var wins=0;
+  var mode=modeEl.value;
+
+  if(mode==="coin"){
+    for(var i=0;i<trials;i++){
+      if(Math.random()<0.5){wins++;}
+    }
+    outEl.innerHTML=
+      "Expected: 50%<br>"+
+      "Actual: "+((wins/trials)*100).toFixed(2)+"%";
+    return;
+  }
+
+  if(mode==="dice"){
+    for(var j=0;j<trials;j++){
+      var roll=Math.floor(Math.random()*6)+1;
+      if(roll===6){wins++;}
+    }
+    outEl.innerHTML=
+      "Chance of rolling 6 = 16.67%<br>"+
+      "Actual: "+((wins/trials)*100).toFixed(2)+"%";
+    return;
+  }
+
+  if(mode==="custom"){
+    var p=num(probEl.value);
+    if(p===null||p<0||p>100){
+      outEl.innerHTML="Enter valid probability 0–100.";
+      return;
+    }
+
+    for(var k=0;k<trials;k++){
+      if(Math.random()<p/100){wins++;}
+    }
+
+    outEl.innerHTML=
+      "Expected: "+p+"%<br>"+
+      "Actual: "+((wins/trials)*100).toFixed(2)+"%";
+  }
+}
+
+btn.addEventListener("click",simulate);
+
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE83() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Motion Lab</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  justify-content:center;
+  padding:40px 10px;
+}
+.app{
+  width:680px;
+  background:#020617;
+  padding:24px;
+  border-radius:12px;
+}
+canvas{
+  width:100%;
+  height:260px;
+  background:#0f172a;
+  border-radius:10px;
+  display:block;
+  margin-top:10px;
+}
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:0;
+  border-radius:8px;
+  background:#0f172a;
+  color:white;
+}
+button{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  margin-top:12px;
+  cursor:pointer;
+}
+.result{
+  margin-top:12px;
+  padding:12px;
+  border-radius:8px;
+  background:#0f172a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+<h2>Physics Motion Lab</h2>
+
+<input id="vel" placeholder="Initial velocity (m/s)">
+<input id="acc" placeholder="Acceleration (m/s^2)">
+<input id="time" placeholder="Simulation time (seconds)">
+
+<button id="run">Run Simulation</button>
+
+<canvas id="sim" width="640" height="260"></canvas>
+<canvas id="graph" width="640" height="260"></canvas>
+
+<div id="out" class="result"></div>
+</div>
+
+<script>
+"use strict";
+
+(function(){
+
+var velEl=document.getElementById("vel");
+var accEl=document.getElementById("acc");
+var timeEl=document.getElementById("time");
+var btn=document.getElementById("run");
+var simCanvas=document.getElementById("sim");
+var simCtx=simCanvas.getContext("2d");
+var graphCanvas=document.getElementById("graph");
+var graphCtx=graphCanvas.getContext("2d");
+var out=document.getElementById("out");
+
+function num(v){
+  var n=parseFloat(v);
+  if(isNaN(n)||!isFinite(n)){return null;}
+  return n;
+}
+
+function clear(ctx,canvas){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+function run(){
+
+  var v0=num(velEl.value);
+  var a=num(accEl.value);
+  var T=num(timeEl.value);
+
+  if(v0===null||a===null||T===null||T<=0){
+    out.innerHTML="Enter valid numbers.";
+    return;
+  }
+
+  clear(simCtx,simCanvas);
+  clear(graphCtx,graphCanvas);
+
+  var steps=200;
+  var dt=T/steps;
+
+  var x=0;
+  var t=0;
+
+  graphCtx.beginPath();
+  graphCtx.moveTo(0,260);
+
+  for(var i=0;i<=steps;i++){
+
+    /* physics formula: x = v0*t + 0.5*a*t^2 */
+    x=v0*t+0.5*a*t*t;
+
+    /* draw object */
+    clear(simCtx,simCanvas);
+    simCtx.beginPath();
+    simCtx.arc(30+x*2,130,10,0,Math.PI*2);
+    simCtx.fillStyle="#22c55e";
+    simCtx.fill();
+
+    /* graph */
+    var gx=(i/steps)*640;
+    var gy=260-(x*2);
+    graphCtx.lineTo(gx,gy);
+
+    t+=dt;
+  }
+
+  graphCtx.strokeStyle="#60a5fa";
+  graphCtx.stroke();
+
+  var final=v0*T+0.5*a*T*T;
+
+  out.innerHTML=
+    "Final distance: "+final.toFixed(2)+" meters";
+}
+
+btn.addEventListener("click",run);
+
+})();
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE84() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reaction Time Tester</title>
+
+<style>
+body{
+    background-color:#0b1220;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    text-align:center;
+    padding:40px;
+}
+
+#box{
+    width:320px;
+    height:200px;
+    margin:30px auto;
+    background-color:#374151;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    cursor:pointer;
+    user-select:none;
+}
+
+button{
+    padding:10px 18px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background-color:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background-color:#1d4ed8;
+}
+
+#result{
+    margin-top:20px;
+    font-size:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Human Reaction Time Tester</h1>
+<p>Click start. Wait for green. Click as fast as possible.</p>
+
+<button onclick="startTest()">Start Test</button>
+
+<div id="box">Click Start</div>
+
+<div id="result"></div>
+
+<script>
+var startTime = 0;
+var waiting = false;
+var ready = false;
+var timeoutID = null;
+
+function startTest(){
+
+    var box = document.getElementById("box");
+    var result = document.getElementById("result");
+
+    box.style.backgroundColor = "#374151";
+    box.textContent = "Wait for green...";
+    result.textContent = "";
+
+    waiting = true;
+    ready = false;
+
+    var randomDelay = Math.floor(Math.random()*4000) + 1500;
+
+    timeoutID = setTimeout(function(){
+        box.style.backgroundColor = "#16a34a";
+        box.textContent = "CLICK!";
+        startTime = Date.now();
+        ready = true;
+        waiting = false;
+    }, randomDelay);
+}
+
+document.getElementById("box").onclick = function(){
+
+    var result = document.getElementById("result");
+
+    if(waiting === true){
+        clearTimeout(timeoutID);
+        this.textContent = "Too early!";
+        this.style.backgroundColor = "#dc2626";
+        result.textContent = "You clicked before the signal.";
+        waiting = false;
+        return;
+    }
+
+    if(ready === true){
+        var reaction = Date.now() - startTime;
+        this.textContent = "Done!";
+        this.style.backgroundColor = "#374151";
+        result.textContent = "Reaction Time: " + reaction + " ms";
+        ready = false;
+    }
+};
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE85() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Projectile Simulator</title>
+
+<style>
+body{
+    background:#0b1220;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    text-align:center;
+    padding:20px;
+}
+
+.controls{
+    margin-bottom:20px;
+}
+
+input{
+    padding:6px;
+    margin:5px;
+    width:80px;
+}
+
+button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+canvas{
+    background:#020617;
+    border-radius:10px;
+    margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Projectile Trajectory Simulator</h2>
+
+<div class="controls">
+    Angle (deg):
+    <input id="angle" type="number" value="45">
+
+    Speed (m/s):
+    <input id="speed" type="number" value="20">
+
+    Gravity (m/s²):
+    <input id="gravity" type="number" value="9.8">
+
+    <br>
+    <button onclick="simulate()">Launch</button>
+</div>
+
+<canvas id="canvas" width="700" height="350"></canvas>
+
+<script>
+function simulate(){
+
+    var angleDeg = parseFloat(document.getElementById("angle").value);
+    var speed = parseFloat(document.getElementById("speed").value);
+    var g = parseFloat(document.getElementById("gravity").value);
+
+    if(isNaN(angleDeg) || isNaN(speed) || isNaN(g)){
+        alert("Enter valid numbers");
+        return;
+    }
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    var angleRad = angleDeg * Math.PI / 180;
+
+    var vx = speed * Math.cos(angleRad);
+    var vy = speed * Math.sin(angleRad);
+
+    var time = 0;
+    var step = 0.05;
+
+    var scale = 8;        // pixels per meter
+    var ground = canvas.height - 30;
+
+    ctx.beginPath();
+
+    var firstPoint = true;
+
+    while(true){
+
+        var x = vx * time;
+        var y = (vy * time) - (0.5 * g * time * time);
+
+        if(y < 0){
+            break;
+        }
+
+        var drawX = 40 + x * scale;
+        var drawY = ground - y * scale;
+
+        if(firstPoint){
+            ctx.moveTo(drawX, drawY);
+            firstPoint = false;
+        }else{
+            ctx.lineTo(drawX, drawY);
+        }
+
+        time = time + step;
+
+        if(drawX > canvas.width){
+            break;
+        }
+    }
+
+    ctx.strokeStyle = "#22c55e";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    /* draw ground line */
+    ctx.beginPath();
+    ctx.moveTo(0,ground);
+    ctx.lineTo(canvas.width,ground);
+    ctx.strokeStyle = "#64748b";
+    ctx.stroke();
+}
+</script>
+
+</body>
+</html>
+
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
