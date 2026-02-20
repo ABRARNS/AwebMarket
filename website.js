@@ -15598,3 +15598,931 @@ function simulate(){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE86() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Friction Analyzer</title>
+
+<style>
+:root{
+    --bg:#0f172a;
+    --card:#111827;
+    --soft:#1f2937;
+    --accent:#22c55e;
+    --text:#e5e7eb;
+}
+*{
+    box-sizing:border-box;
+}
+body{
+    margin:0;
+    font-family:system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background:linear-gradient(140deg,#020617,var(--bg));
+    color:var(--text);
+    padding:24px;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+}
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+.card{
+    background:var(--card);
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.4);
+}
+label{
+    display:block;
+    margin-top:10px;
+    font-size:14px;
+}
+input,select,button{
+    width:100%;
+    padding:10px;
+    margin-top:6px;
+    border-radius:8px;
+    border:none;
+    font-size:14px;
+}
+input,select{
+    background:var(--soft);
+    color:white;
+}
+button{
+    background:var(--accent);
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:12px;
+}
+button:hover{
+    filter:brightness(1.1);
+}
+.session{
+    background:var(--soft);
+    padding:10px;
+    border-radius:8px;
+    margin-top:8px;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+    margin-top:12px;
+}
+.stat{
+    background:#020617;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+}
+.big{
+    font-size:22px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Work Friction Analyzer</h1>
+
+<div class="card">
+<h3>Log Work Session</h3>
+
+<label for="type">Work Type</label>
+<select id="type">
+<option value="Deep Work">Deep Work</option>
+<option value="Meeting">Meeting</option>
+<option value="Admin">Admin</option>
+<option value="Communication">Communication</option>
+</select>
+
+<label for="minutes">Minutes Spent</label>
+<input id="minutes" type="number" min="1" placeholder="e.g. 45">
+
+<label for="energy">Energy After Task</label>
+<select id="energy">
+<option value="1">Drained 😫</option>
+<option value="2">Tired 😐</option>
+<option value="3">Okay 🙂</option>
+<option value="4">Good 😀</option>
+<option value="5">Energized ⚡</option>
+</select>
+
+<button id="addBtn">Add Session</button>
+
+<div id="list"></div>
+</div>
+
+<div class="card">
+<h3>Workday Insight</h3>
+
+<div class="stats">
+<div class="stat">Total Time<div id="time" class="big">0m</div></div>
+<div class="stat">Friction Score<div id="friction" class="big">0</div></div>
+<div class="stat">Burnout Risk<div id="risk" class="big">Low</div></div>
+<div class="stat">Deep Work Ratio<div id="ratio" class="big">0%</div></div>
+</div>
+
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const sessions=[];
+const typeEl=document.getElementById("type");
+const minEl=document.getElementById("minutes");
+const energyEl=document.getElementById("energy");
+const listEl=document.getElementById("list");
+
+const timeEl=document.getElementById("time");
+const frictionEl=document.getElementById("friction");
+const riskEl=document.getElementById("risk");
+const ratioEl=document.getElementById("ratio");
+
+document.getElementById("addBtn").addEventListener("click",addSession);
+
+function addSession(){
+    const minutes=parseInt(minEl.value,10);
+    const energy=parseInt(energyEl.value,10);
+    const type=typeEl.value;
+
+    if(!minutes || minutes<1) return;
+
+    sessions.push({type,minutes,energy});
+    minEl.value="";
+    render();
+}
+
+function render(){
+    listEl.innerHTML="";
+    let total=0;
+    let deep=0;
+    let friction=0;
+
+    sessions.forEach(s=>{
+        total+=s.minutes;
+        if(s.type==="Deep Work") deep+=s.minutes;
+
+        const f=s.minutes*(6-s.energy);
+        friction+=f;
+
+        const div=document.createElement("div");
+        div.className="session";
+        div.textContent=s.type+" — "+s.minutes+"m (energy "+s.energy+")";
+        listEl.appendChild(div);
+    });
+
+    const ratio= total===0 ? 0 : Math.round((deep/total)*100);
+    const frictionScore=Math.round(friction/10);
+
+    let risk="Low";
+    if(frictionScore>80) risk="High";
+    else if(frictionScore>40) risk="Medium";
+
+    timeEl.textContent=total+"m";
+    frictionEl.textContent=frictionScore;
+    riskEl.textContent=risk;
+    ratioEl.textContent=ratio+"%";
+}
+})();
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE87() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cognitive Load Scheduler</title>
+
+<style>
+:root{
+    --bg:#0b1220;
+    --card:#111827;
+    --soft:#1f2937;
+    --accent:#6366f1;
+    --text:#e5e7eb;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:system-ui,Segoe UI,Roboto,sans-serif;
+    background:linear-gradient(135deg,#020617,var(--bg));
+    color:var(--text);
+    padding:24px;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+}
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+.card{
+    background:var(--card);
+    padding:18px;
+    border-radius:14px;
+    margin-bottom:18px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.45);
+}
+label{
+    display:block;
+    margin-top:10px;
+    font-size:14px;
+}
+input,select,button{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    margin-top:6px;
+    font-size:14px;
+}
+input,select{
+    background:var(--soft);
+    color:white;
+}
+button{
+    background:var(--accent);
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:12px;
+}
+button:hover{
+    filter:brightness(1.1);
+}
+.task{
+    background:var(--soft);
+    padding:10px;
+    border-radius:8px;
+    margin-top:8px;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:12px;
+    margin-top:12px;
+}
+.stat{
+    background:#020617;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+}
+.big{
+    font-size:22px;
+    font-weight:bold;
+}
+.warning{
+    color:#f87171;
+    font-weight:bold;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Cognitive Load Scheduler</h1>
+
+<div class="card">
+<h3>Add Task</h3>
+
+<label for="taskName">Task name</label>
+<input id="taskName" type="text" placeholder="Write report">
+
+<label for="taskMinutes">Minutes needed</label>
+<input id="taskMinutes" type="number" min="1" placeholder="45">
+
+<label for="taskLoad">Mental Load</label>
+<select id="taskLoad">
+<option value="3">Heavy (Deep thinking)</option>
+<option value="2">Medium (Normal work)</option>
+<option value="1">Light (Routine)</option>
+</select>
+
+<button id="addTaskBtn">Add Task</button>
+
+<div id="taskList"></div>
+</div>
+
+<div class="card">
+<h3>Brain Load Insight</h3>
+
+<div class="stats">
+<div class="stat">Total Time<div id="totalTime" class="big">0m</div></div>
+<div class="stat">Fatigue Score<div id="fatigue" class="big">0</div></div>
+<div class="stat">Burnout Risk<div id="risk" class="big">Low</div></div>
+<div class="stat">Heavy Blocks<div id="heavyBlocks" class="big">0</div></div>
+</div>
+
+<div id="warn" class="warning"></div>
+
+</div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+const tasks=[];
+const nameEl=document.getElementById("taskName");
+const minEl=document.getElementById("taskMinutes");
+const loadEl=document.getElementById("taskLoad");
+const listEl=document.getElementById("taskList");
+
+const timeEl=document.getElementById("totalTime");
+const fatigueEl=document.getElementById("fatigue");
+const riskEl=document.getElementById("risk");
+const heavyEl=document.getElementById("heavyBlocks");
+const warnEl=document.getElementById("warn");
+
+document.getElementById("addTaskBtn").addEventListener("click",addTask);
+
+function addTask(){
+    const name=nameEl.value.trim();
+    const minutes=parseInt(minEl.value,10);
+    const load=parseInt(loadEl.value,10);
+
+    if(!name || !minutes || minutes<1) return;
+
+    tasks.push({name,minutes,load});
+    nameEl.value="";
+    minEl.value="";
+    render();
+}
+
+function render(){
+    listEl.innerHTML="";
+    let total=0;
+    let fatigue=0;
+    let heavyBlocks=0;
+    let previousHeavy=false;
+
+    tasks.forEach(t=>{
+        total+=t.minutes;
+        fatigue+=t.minutes*t.load;
+
+        if(t.load===3){
+            if(previousHeavy) heavyBlocks++;
+            previousHeavy=true;
+        }else{
+            previousHeavy=false;
+        }
+
+        const div=document.createElement("div");
+        div.className="task";
+        div.textContent=t.name+" — "+t.minutes+"m";
+        listEl.appendChild(div);
+    });
+
+    const fatigueScore=Math.round(fatigue/20);
+
+    let risk="Low";
+    if(fatigueScore>80) risk="High";
+    else if(fatigueScore>40) risk="Medium";
+
+    timeEl.textContent=total+"m";
+    fatigueEl.textContent=fatigueScore;
+    riskEl.textContent=risk;
+    heavyEl.textContent=heavyBlocks;
+
+    warnEl.textContent=heavyBlocks>1
+        ? "Warning: Too many heavy tasks stacked together."
+        : "";
+}
+})();
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE88() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SalaryScope – Workday Financial Analyzer</title>
+<style>
+:root{
+  --bg:#0b1220;
+  --card:#111827;
+  --soft:#1f2937;
+  --accent:#6366f1;
+  --text:#e5e7eb;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,sans-serif;
+  background:linear-gradient(135deg,#020617,var(--bg));
+  color:var(--text);
+  padding:24px;
+}
+.container{max-width:900px;margin:auto;}
+h1{text-align:center;margin-bottom:20px;}
+.card{
+  background:var(--card);
+  padding:18px;
+  border-radius:14px;
+  margin-bottom:18px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.45);
+}
+label{display:block;margin-top:10px;font-size:14px;}
+input,button{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-top:6px;
+  font-size:14px;
+}
+input{background:var(--soft);color:white;}
+button{
+  background:var(--accent);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:12px;
+}
+button:hover{filter:brightness(1.1);}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+.stat{
+  background:#020617;
+  padding:14px;
+  border-radius:10px;
+  text-align:center;
+}
+.big{font-size:22px;font-weight:bold;}
+.warning{
+  margin-top:10px;
+  color:#f87171;
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>SalaryScope – Workday Financial Analyzer</h1>
+<div class="card">
+<h3>Enter Your Work Details</h3>
+<label for="salary">Monthly Salary</label>
+<input id="salary" type="number" placeholder="e.g. 50000">
+<label for="hours">Work Hours per Day</label>
+<input id="hours" type="number" placeholder="e.g. 8">
+<label for="meetings">Meeting Hours per Day</label>
+<input id="meetings" type="number" placeholder="e.g. 2">
+<label for="overtime">Unpaid Overtime Hours</label>
+<input id="overtime" type="number" placeholder="e.g. 1">
+<button id="calcBtn">Analyze Workday</button>
+</div>
+<div class="card">
+<h3>Results</h3>
+<div class="stats">
+<div class="stat">True Hourly Value<div id="hourly" class="big">0</div></div>
+<div class="stat">Meeting Cost / Day<div id="meetingCost" class="big">0</div></div>
+<div class="stat">Lost Overtime Value<div id="overtimeCost" class="big">0</div></div>
+<div class="stat">Effective Hourly Pay<div id="effective" class="big">0</div></div>
+</div>
+<div id="warn" class="warning"></div>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+const salaryEl=document.getElementById("salary");
+const hoursEl=document.getElementById("hours");
+const meetingsEl=document.getElementById("meetings");
+const overtimeEl=document.getElementById("overtime");
+const hourlyEl=document.getElementById("hourly");
+const meetingCostEl=document.getElementById("meetingCost");
+const overtimeCostEl=document.getElementById("overtimeCost");
+const effectiveEl=document.getElementById("effective");
+const warnEl=document.getElementById("warn");
+
+document.getElementById("calcBtn").addEventListener("click",calculate);
+
+function calculate(){
+  const salary=parseFloat(salaryEl.value);
+  const hours=parseFloat(hoursEl.value);
+  const meetings=parseFloat(meetingsEl.value)||0;
+  const overtime=parseFloat(overtimeEl.value)||0;
+  if(!salary||!hours) return;
+  
+  const workDays=22;
+  const totalHours=hours*workDays;
+  const hourly=salary/totalHours;
+  const meetingCost=hourly*meetings;
+  const overtimeCost=hourly*overtime;
+  const effective=salary/(totalHours+(overtime*workDays));
+  
+  hourlyEl.textContent=hourly.toFixed(2);
+  meetingCostEl.textContent=meetingCost.toFixed(2);
+  overtimeCostEl.textContent=overtimeCost.toFixed(2);
+  effectiveEl.textContent=effective.toFixed(2);
+  
+  warnEl.textContent=
+    effective<hourly*0.75
+    ? "⚠️ Warning: Unpaid work heavily reduces your real income."
+    : "";
+}
+})();
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE89() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskOptimizer – Focus & Time Analyzer</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --soft: #1f2937;
+  --accent: #6366f1;
+  --text: #e5e7eb;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Segoe UI, Roboto, sans-serif;
+  background: linear-gradient(135deg, #020617, var(--bg));
+  color: var(--text);
+  padding: 24px;
+}
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.45);
+}
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 6px;
+  font-size: 14px;
+}
+input {
+  background: var(--soft);
+  color: white;
+}
+button {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button:hover {
+  filter: brightness(1.1);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.stat {
+  background: #020617;
+  padding: 14px;
+  border-radius: 10px;
+  text-align: center;
+}
+.big {
+  font-size: 22px;
+  font-weight: bold;
+}
+.warning {
+  margin-top: 10px;
+  color: #f87171;
+  font-weight: bold;
+}
+.task {
+  background: var(--soft);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>TaskOptimizer – Focus & Time Analyzer</h1>
+
+<div class="card">
+<h3>Add Work Session</h3>
+<form id="workForm">
+<label for="taskName">Task Name</label>
+<input type="text" id="taskName" required placeholder="Enter task name">
+<label for="taskMinutes">Minutes Spent</label>
+<input type="number" id="taskMinutes" required min="1" placeholder="45">
+<label for="taskInterruptions">Interruptions</label>
+<input type="number" id="taskInterruptions" min="0" placeholder="0">
+<button type="submit">Add Session</button>
+</form>
+<div id="taskList"></div>
+</div>
+
+<div class="card">
+<h3>Daily Productivity Stats</h3>
+<div class="stats">
+<div class="stat">Total Time<div id="totalTime" class="big">0m</div></div>
+<div class="stat">Lost Time<div id="lostTime" class="big">0m</div></div>
+<div class="stat">Focus Efficiency<div id="focusEfficiency" class="big">0%</div></div>
+</div>
+<div id="warning" class="warning"></div>
+</div>
+
+</div>
+
+<script>
+"use strict";
+
+var sessions = [];
+
+var workForm = document.getElementById('workForm');
+var taskNameInput = document.getElementById('taskName');
+var taskMinutesInput = document.getElementById('taskMinutes');
+var taskInterruptionsInput = document.getElementById('taskInterruptions');
+var taskList = document.getElementById('taskList');
+var totalTimeEl = document.getElementById('totalTime');
+var lostTimeEl = document.getElementById('lostTime');
+var focusEfficiencyEl = document.getElementById('focusEfficiency');
+var warningEl = document.getElementById('warning');
+
+function renderSessions() {
+  taskList.innerHTML = "";
+  var totalMinutes = 0;
+  var lostMinutes = 0;
+  var i;
+  for (i = 0; i < sessions.length; i++) {
+    var session = sessions[i];
+    totalMinutes += session.minutes;
+    lostMinutes += session.interruptions * 3;
+    var div = document.createElement('div');
+    div.className = 'task';
+    div.textContent = session.name + " — " + session.minutes + "m, interruptions: " + session.interruptions;
+    taskList.appendChild(div);
+  }
+  var efficiency = 0;
+  if (totalMinutes > 0) {
+    efficiency = Math.max(0, Math.round((totalMinutes - lostMinutes) / totalMinutes * 100));
+  }
+  totalTimeEl.textContent = totalMinutes + "m";
+  lostTimeEl.textContent = lostMinutes + "m";
+  focusEfficiencyEl.textContent = efficiency + "%";
+  if (efficiency < 50) {
+    warningEl.textContent = "⚠️ Low focus efficiency today!";
+  } else {
+    warningEl.textContent = "";
+  }
+}
+
+workForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  var name = taskNameInput.value.trim();
+  var minutes = parseInt(taskMinutesInput.value, 10);
+  var interruptions = parseInt(taskInterruptionsInput.value, 10);
+  if (isNaN(interruptions)) {
+    interruptions = 0;
+  }
+  if (name !== "" && minutes > 0) {
+    var sessionObj = {name: name, minutes: minutes, interruptions: interruptions};
+    sessions.push(sessionObj);
+    taskNameInput.value = "";
+    taskMinutesInput.value = "";
+    taskInterruptionsInput.value = "";
+    renderSessions();
+  }
+});
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE90() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailyHabitTracker</title>
+<style>
+:root {
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --accent: #6366f1;
+  --text: #111827;
+  --success: #22c55e;
+  --fail: #ef4444;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: system-ui, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 24px;
+}
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.card {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+label {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  margin-top: 6px;
+  font-size: 14px;
+}
+input { background: #f9fafb; }
+button {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button:hover { filter: brightness(1.1); }
+.habit {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 6px;
+  background: #f9fafb;
+}
+.success { color: var(--success); font-weight: bold; }
+.fail { color: var(--fail); font-weight: bold; }
+.stats { margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>DailyHabitTracker</h1>
+
+<div class="card">
+<h3>Add a Habit</h3>
+<form id="habitForm">
+<label for="habitName">Habit / Task Name</label>
+<input type="text" id="habitName" required placeholder="e.g. Read 30 min">
+<button type="submit">Add Habit</button>
+</form>
+<div id="habitList"></div>
+</div>
+
+<div class="card">
+<h3>Stats</h3>
+<div class="stats">
+<div>Total Habits: <span id="totalCount">0</span></div>
+<div>Completed: <span id="completedCount">0</span></div>
+<div>Success Rate: <span id="successRate">0%</span></div>
+</div>
+</div>
+</div>
+
+<script>
+"use strict";
+var habits = [];
+var habitForm = document.getElementById('habitForm');
+var habitNameInput = document.getElementById('habitName');
+var habitList = document.getElementById('habitList');
+var totalCountEl = document.getElementById('totalCount');
+var completedCountEl = document.getElementById('completedCount');
+var successRateEl = document.getElementById('successRate');
+
+function renderHabits() {
+  habitList.innerHTML = '';
+  var completed = 0;
+  var i;
+  for (i = 0; i < habits.length; i++) {
+    var h = habits[i];
+    var div = document.createElement('div');
+    div.className = 'habit';
+    var nameSpan = document.createElement('span');
+    nameSpan.textContent = h.name;
+    var statusButton = document.createElement('button');
+    if (h.done) {
+      statusButton.textContent = 'Done';
+      statusButton.className = 'success';
+      completed++;
+    } else {
+      statusButton.textContent = 'Pending';
+      statusButton.className = 'fail';
+    }
+    statusButton.addEventListener('click', (function(index){
+      return function(){
+        habits[index].done = !habits[index].done;
+        renderHabits();
+      };
+    })(i));
+    div.appendChild(nameSpan);
+    div.appendChild(statusButton);
+    habitList.appendChild(div);
+  }
+  totalCountEl.textContent = habits.length;
+  completedCountEl.textContent = completed;
+  var rate = habits.length === 0 ? 0 : Math.round((completed / habits.length) * 100);
+  successRateEl.textContent = rate + '%';
+}
+
+habitForm.addEventListener('submit', function(event){
+  event.preventDefault();
+  var name = habitNameInput.value.trim();
+  if (name !== '') {
+    habits.push({name: name, done: false});
+    habitNameInput.value = '';
+    renderHabits();
+  }
+});
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
