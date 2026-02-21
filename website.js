@@ -16526,3 +16526,674 @@ habitForm.addEventListener('submit', function(event){
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE91() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Symmetry Toy</title>
+<style>
+    body {
+        margin: 0;
+        background: #0f1220;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 {
+        margin: 10px 0;
+        font-weight: normal;
+    }
+    canvas {
+        background: #111;
+        border: 2px solid #333;
+        display: block;
+        margin: 0 auto;
+        cursor: crosshair;
+    }
+    .controls {
+        margin: 10px;
+    }
+    button {
+        padding: 8px 14px;
+        margin: 5px;
+        border: none;
+        background: #4b7cff;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #355ee0;
+    }
+</style>
+</head>
+<body>
+
+<h1>Symmetry Toy</h1>
+
+<canvas id="board" width="700" height="450"></canvas>
+
+<div class="controls">
+    <button onclick="clearBoard()">Clear</button>
+    <button onclick="changeMode()">Change Symmetry</button>
+</div>
+
+<script>
+var canvas = document.getElementById("board");
+var ctx = canvas.getContext("2d");
+
+var symmetry = 4;
+var centerX = canvas.width / 2;
+var centerY = canvas.height / 2;
+
+function draw(x, y) {
+    var dx = x - centerX;
+    var dy = y - centerY;
+
+    for (var i = 0; i < symmetry; i++) {
+        var angle = (Math.PI * 2 / symmetry) * i;
+        var rx = dx * Math.cos(angle) - dy * Math.sin(angle);
+        var ry = dx * Math.sin(angle) + dy * Math.cos(angle);
+
+        ctx.beginPath();
+        ctx.arc(centerX + rx, centerY + ry, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "hsl(" + (Date.now() % 360) + ",80%,60%)";
+        ctx.fill();
+    }
+}
+
+canvas.addEventListener("mousemove", function(e) {
+    if (e.buttons === 1) {
+        var rect = canvas.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        draw(x, y);
+    }
+});
+
+function clearBoard() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function changeMode() {
+    symmetry = symmetry + 2;
+    if (symmetry > 12) {
+        symmetry = 2;
+    }
+    alert("Symmetry: " + symmetry);
+}
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE92() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Chain Reaction Sandbox</title>
+
+<style>
+body{
+    margin:0;
+    background:#0b0f1a;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+h2{margin:10px;}
+canvas{
+    background:#111;
+    border:2px solid #333;
+    display:block;
+    margin:auto;
+}
+button{
+    margin:10px;
+    padding:8px 14px;
+    border:none;
+    background:#4b7cff;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+button:hover{background:#2f5de0;}
+</style>
+</head>
+
+<body>
+
+<h2>Chain Reaction Sandbox</h2>
+<canvas id="c" width="720" height="450"></canvas>
+<button onclick="resetGame()">Reset</button>
+
+<script>
+
+var canvas = document.getElementById("c");
+var ctx = canvas.getContext("2d");
+
+var balls = [];
+var maxBalls = 400;
+
+function Ball(x,y,dx,dy,r){
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+    this.r = r;
+}
+
+canvas.addEventListener("mousedown", function(e){
+
+    if(balls.length > maxBalls){ return; }
+
+    var rect = canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+
+    spawnBall(x,y);
+});
+
+function spawnBall(x,y){
+
+    var dx = (Math.random()*4)-2;
+    var dy = (Math.random()*4)-2;
+
+    if(dx===0){dx=1;}
+    if(dy===0){dy=-1;}
+
+    balls.push(new Ball(x,y,dx,dy,8));
+}
+
+function update(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    var i;
+    var j;
+
+    for(i=0;i<balls.length;i++){
+
+        var b = balls[i];
+
+        b.x += b.dx;
+        b.y += b.dy;
+
+        if(b.x < b.r || b.x > canvas.width-b.r){ b.dx *= -1; }
+        if(b.y < b.r || b.y > canvas.height-b.r){ b.dy *= -1; }
+
+        for(j=i+1;j<balls.length;j++){
+
+            var o = balls[j];
+
+            var dx = b.x - o.x;
+            var dy = b.y - o.y;
+            var dist = Math.sqrt(dx*dx + dy*dy);
+
+            if(dist < b.r + o.r){
+
+                if(balls.length < maxBalls){
+                    spawnBall(b.x,b.y);
+                }
+
+                b.dx *= -1;
+                b.dy *= -1;
+                o.dx *= -1;
+                o.dy *= -1;
+            }
+        }
+
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+        ctx.fillStyle = "hsl("+(i*15%360)+",70%,60%)";
+        ctx.fill();
+    }
+
+    requestAnimationFrame(update);
+}
+
+function resetGame(){
+    balls = [];
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+update();
+
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE93() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cube Dash</title>
+
+<style>
+body{
+    margin:0;
+    background:#0a0f1f;
+    font-family:Arial;
+    color:white;
+    text-align:center;
+}
+
+h2{margin:12px 0;}
+
+canvas{
+    background:#0b1022;
+    display:block;
+    margin:auto;
+    border-top:2px solid #1f2a55;
+    border-bottom:2px solid #1f2a55;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Cube Dash</h2>
+<div>Press SPACE or CLICK</div>
+
+<canvas id="game" width="800" height="420"></canvas>
+
+<script>
+
+var canvas = document.getElementById("game");
+var ctx = canvas.getContext("2d");
+
+/* PLAYER */
+var px = 120;
+var py = 300;
+var size = 30;
+var dy = 0;
+var gravity = 0.7;
+var jumpPower = -12;
+var grounded = true;
+var rotation = 0;
+
+/* GAME */
+var obstacles = [];
+var frame = 0;
+var score = 0;
+var gameOver = false;
+
+/* INPUT */
+document.onkeydown = function(e){
+    if(e.keyCode === 32){ jump(); }
+};
+canvas.onclick = jump;
+
+function jump(){
+    if(gameOver){
+        restart();
+        return;
+    }
+    if(grounded){
+        dy = jumpPower;
+        grounded = false;
+    }
+}
+
+/* OBSTACLE */
+function spawn(){
+    var h = 30 + Math.random()*50;
+    obstacles.push({
+        x:canvas.width,
+        y:330-h,
+        w:22,
+        h:h
+    });
+}
+
+/* LOOP */
+function loop(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* FLOOR */
+    ctx.fillStyle="#1a2244";
+    ctx.fillRect(0,330,canvas.width,90);
+
+    /* PLAYER PHYSICS */
+    dy += gravity;
+    py += dy;
+
+    if(py >= 300){
+        py = 300;
+        dy = 0;
+        grounded = true;
+        rotation = 0;
+    } else {
+        rotation += 0.15;
+    }
+
+    /* SPAWN */
+    frame++;
+    if(frame % 95 === 0){
+        spawn();
+    }
+
+    /* MOVE OBSTACLES */
+    var i;
+    for(i=0;i<obstacles.length;i++){
+        obstacles[i].x -= 6;
+    }
+
+    /* REMOVE */
+    if(obstacles.length>0 && obstacles[0].x < -40){
+        obstacles.shift();
+        score++;
+    }
+
+    /* COLLISION */
+    for(i=0;i<obstacles.length;i++){
+        var o = obstacles[i];
+        if(px < o.x+o.w &&
+           px+size > o.x &&
+           py < o.y+o.h &&
+           py+size > o.y){
+            gameOver = true;
+        }
+    }
+
+    /* DRAW PLAYER (ROTATING CUBE) */
+    ctx.save();
+    ctx.translate(px+size/2, py+size/2);
+    ctx.rotate(rotation);
+    ctx.fillStyle="#6cf";
+    ctx.fillRect(-size/2,-size/2,size,size);
+    ctx.restore();
+
+    /* DRAW OBSTACLES */
+    ctx.fillStyle="#f54";
+    for(i=0;i<obstacles.length;i++){
+        ctx.fillRect(obstacles[i].x,obstacles[i].y,obstacles[i].w,obstacles[i].h);
+    }
+
+    /* SCORE */
+    ctx.fillStyle="white";
+    ctx.font="16px Arial";
+    ctx.fillText("Score: "+score,20,30);
+
+    /* GAME OVER SCREEN */
+    if(gameOver){
+        ctx.fillStyle="rgba(0,0,0,0.6)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle="white";
+        ctx.font="32px Arial";
+        ctx.fillText("Game Over",320,180);
+
+        ctx.font="18px Arial";
+        ctx.fillText("Press SPACE or CLICK to restart",240,230);
+    }
+
+    requestAnimationFrame(loop);
+}
+
+/* RESTART */
+function restart(){
+    obstacles = [];
+    frame = 0;
+    score = 0;
+    dy = 0;
+    py = 300;
+    grounded = true;
+    gameOver = false;
+}
+
+/* START */
+loop();
+
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE94() {
+  const code = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cube Dash Pro</title>
+
+<style>
+body{
+    margin:0;
+    background:#0a0f1f;
+    color:white;
+    font-family:Arial;
+    text-align:center;
+}
+h2{margin:10px;}
+canvas{
+    display:block;
+    margin:auto;
+    background:#0b1022;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Cube Dash PRO</h2>
+<div>SPACE / CLICK to jump</div>
+<canvas id="game" width="900" height="420"></canvas>
+
+<script>
+
+var canvas=document.getElementById("game");
+var ctx=canvas.getContext("2d");
+
+/* PLAYER */
+var px=140;
+var py=300;
+var size=32;
+var dy=0;
+var gravity=0.75;
+var jumpPower=-13;
+var grounded=true;
+var rot=0;
+
+/* GAME */
+var spikes=[];
+var particles=[];
+var frame=0;
+var score=0;
+var speed=7;
+var gameOver=false;
+
+/* INPUT */
+document.onkeydown=function(e){
+    if(e.keyCode===32){jump();}
+};
+canvas.onclick=jump;
+
+function jump(){
+    if(gameOver){restart();return;}
+    if(grounded){
+        dy=jumpPower;
+        grounded=false;
+        spawnParticles();
+    }
+}
+
+/* PARTICLES */
+function spawnParticles(){
+    var i;
+    for(i=0;i<8;i++){
+        particles.push({
+            x:px,
+            y:py+size,
+            dx:(Math.random()*4)-2,
+            dy:-Math.random()*3,
+            life:30
+        });
+    }
+}
+
+/* SPIKES */
+function spawnSpike(){
+    spikes.push({
+        x:canvas.width,
+        y:330,
+        w:28,
+        h:30
+    });
+}
+
+/* LOOP */
+function loop(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    /* MOVING FLOOR GRID */
+    ctx.fillStyle="#1a2244";
+    ctx.fillRect(0,330,canvas.width,90);
+
+    ctx.strokeStyle="#2b3570";
+    var g;
+    for(g=-frame%40;g<canvas.width;g+=40){
+        ctx.beginPath();
+        ctx.moveTo(g,330);
+        ctx.lineTo(g+40,420);
+        ctx.stroke();
+    }
+
+    /* PLAYER PHYSICS */
+    dy+=gravity;
+    py+=dy;
+
+    if(py>=300){
+        py=300;
+        dy=0;
+        grounded=true;
+        rot=0;
+    }else{
+        rot+=0.17;
+    }
+
+    /* SPAWN SPIKES */
+    frame++;
+    if(frame%85===0){spawnSpike();}
+
+    /* MOVE SPIKES */
+    var i;
+    for(i=0;i<spikes.length;i++){
+        spikes[i].x-=speed;
+    }
+
+    /* REMOVE SPIKES */
+    if(spikes.length>0 && spikes[0].x<-40){
+        spikes.shift();
+        score++;
+        speed+=0.1;
+    }
+
+    /* COLLISION */
+    for(i=0;i<spikes.length;i++){
+        var s=spikes[i];
+        if(px+size>s.x && px<s.x+s.w && py+size>330-s.h){
+            gameOver=true;
+        }
+    }
+
+    /* DRAW SPIKES */
+    ctx.fillStyle="#ff5577";
+    for(i=0;i<spikes.length;i++){
+        var sp=spikes[i];
+        ctx.beginPath();
+        ctx.moveTo(sp.x,330);
+        ctx.lineTo(sp.x+sp.w/2,330-sp.h);
+        ctx.lineTo(sp.x+sp.w,330);
+        ctx.fill();
+    }
+
+    /* DRAW PLAYER */
+    ctx.save();
+    ctx.translate(px+size/2,py+size/2);
+    ctx.rotate(rot);
+    ctx.fillStyle="#6cf";
+    ctx.fillRect(-size/2,-size/2,size,size);
+    ctx.restore();
+
+    /* PARTICLES */
+    for(i=0;i<particles.length;i++){
+        var p=particles[i];
+        p.x+=p.dx;
+        p.y+=p.dy;
+        p.dy+=0.2;
+        p.life--;
+
+        ctx.fillStyle="rgba(120,200,255,"+(p.life/30)+")";
+        ctx.fillRect(p.x,p.y,4,4);
+    }
+
+    /* CLEAN PARTICLES */
+    particles=particles.filter(function(p){return p.life>0;});
+
+    /* SCORE */
+    ctx.fillStyle="white";
+    ctx.font="18px Arial";
+    ctx.fillText("Score: "+score,20,30);
+
+    /* GAME OVER */
+    if(gameOver){
+        ctx.fillStyle="rgba(0,0,0,0.6)";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.fillStyle="white";
+        ctx.font="40px Arial";
+        ctx.fillText("GAME OVER",340,190);
+
+        ctx.font="20px Arial";
+        ctx.fillText("Click or press SPACE to restart",300,240);
+    }
+
+    requestAnimationFrame(loop);
+}
+
+/* RESTART */
+function restart(){
+    spikes=[];
+    particles=[];
+    frame=0;
+    score=0;
+    speed=7;
+    dy=0;
+    py=300;
+    grounded=true;
+    gameOver=false;
+}
+
+loop();
+
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}function copyCODE95() {
+  const code = `
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
