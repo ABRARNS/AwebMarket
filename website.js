@@ -17191,9 +17191,941 @@ loop();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }function copyCODE95() {
-  const code = `
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LightForge</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#0b1020;
+    font-family:Arial, sans-serif;
+}
+#info{
+    position:fixed;
+    top:10px;
+    left:10px;
+    color:white;
+    background:rgba(0,0,0,0.4);
+    padding:10px 14px;
+    border-radius:10px;
+    backdrop-filter:blur(6px);
+    font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+<div id="info">
+Move mouse = light<br>
+Click = add wall<br>
+Right click = remove nearest wall
+</div>
+
+<script>
+var canvas=document.getElementById("c");
+var ctx=canvas.getContext("2d");
+
+function resize(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+resize();
+window.onresize=resize;
+
+var light={x:300,y:300};
+
+var walls=[
+    {x1:200,y1:150,x2:600,y2:200},
+    {x1:400,y1:450,x2:750,y2:350}
+];
+
+canvas.onmousemove=function(e){
+    light.x=e.clientX;
+    light.y=e.clientY;
+};
+
+canvas.oncontextmenu=function(e){
+    e.preventDefault();
+    if(walls.length===0){return;}
+    var closest=0;
+    var best=999999;
+    for(var i=0;i<walls.length;i++){
+        var mx=(walls[i].x1+walls[i].x2)/2;
+        var my=(walls[i].y1+walls[i].y2)/2;
+        var d=Math.hypot(mx-e.clientX,my-e.clientY);
+        if(d<best){best=d;closest=i;}
+    }
+    walls.splice(closest,1);
+};
+
+canvas.onclick=function(e){
+    var len=80+Math.random()*120;
+    var angle=Math.random()*Math.PI*2;
+    var x1=e.clientX;
+    var y1=e.clientY;
+    var x2=x1+Math.cos(angle)*len;
+    var y2=y1+Math.sin(angle)*len;
+    walls.push({x1:x1,y1:y1,x2:x2,y2:y2});
+};
+
+function intersect(ray,seg){
+    var x1=ray.x1,y1=ray.y1,x2=ray.x2,y2=ray.y2;
+    var x3=seg.x1,y3=seg.y1,x4=seg.x2,y4=seg.y2;
+
+    var den=(x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
+    if(den===0){return null;}
+
+    var t=((x1-x3)*(y3-y4)-(y1-y3)*(x3-x4))/den;
+    var u=-((x1-x2)*(y1-y3)-(y1-y2)*(x1-x3))/den;
+
+    if(t>0 && u>0 && u<1){
+        return{
+            x:x1+t*(x2-x1),
+            y:y1+t*(y2-y1),
+            dist:t
+        };
+    }
+    return null;
+}
+
+function cast(){
+    var rays=[];
+    for(var a=0;a<360;a+=0.5){
+        var ang=a*Math.PI/180;
+        var dx=Math.cos(ang);
+        var dy=Math.sin(ang);
+
+        var ray={
+            x1:light.x,
+            y1:light.y,
+            x2:light.x+dx*2000,
+            y2:light.y+dy*2000
+        };
+
+        var closest=null;
+
+        for(var i=0;i<walls.length;i++){
+            var hit=intersect(ray,walls[i]);
+            if(hit){
+                if(!closest || hit.dist<closest.dist){
+                    closest=hit;
+                }
+            }
+        }
+
+        if(closest){
+            rays.push(closest);
+        }else{
+            rays.push({x:ray.x2,y:ray.y2});
+        }
+    }
+    return rays;
+}
+
+function draw(){
+    ctx.fillStyle="#0b1020";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    var rays=cast();
+
+    ctx.beginPath();
+    ctx.moveTo(rays[0].x,rays[0].y);
+    for(var i=1;i<rays.length;i++){
+        ctx.lineTo(rays[i].x,rays[i].y);
+    }
+    ctx.closePath();
+
+    var g=ctx.createRadialGradient(
+        light.x,light.y,0,
+        light.x,light.y,600
+    );
+    g.addColorStop(0,"rgba(255,255,200,0.9)");
+    g.addColorStop(1,"rgba(255,255,200,0)");
+
+    ctx.fillStyle=g;
+    ctx.fill();
+
+    ctx.strokeStyle="#9aa6ff";
+    ctx.lineWidth=3;
+    for(var i=0;i<walls.length;i++){
+        ctx.beginPath();
+        ctx.moveTo(walls[i].x1,walls[i].y1);
+        ctx.lineTo(walls[i].x2,walls[i].y2);
+        ctx.stroke();
+    }
+
+    ctx.beginPath();
+    ctx.arc(light.x,light.y,6,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+
+    requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
   `;
   navigator.clipboard.writeText(code)
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE96() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classic Data Analyzer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin:0; padding:0;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  h1 {
+    margin-top: 20px;
+  }
+  .container {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  label, input, button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  input {
+    padding: 8px;
+  }
+  button {
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  .stats, .chart {
+    margin-top: 20px;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .bar {
+    background-color: #007bff;
+    height: 20px;
+    margin: 5px 0;
+  }
+</style>
+</head>
+<body>
+
+<h1>Classic Data Analyzer</h1>
+
+<div class="container">
+  <label for="dataInput">Enter numbers (comma separated):</label>
+  <input type="text" id="dataInput" placeholder="e.g. 10,20,30">
+
+  <button id="analyzeBtn">Analyze</button>
+
+  <div class="stats" id="stats">Statistics will appear here.</div>
+  <div class="chart" id="chart">Bar chart will appear here.</div>
+</div>
+
+<script type="text/javascript">
+  window.addEventListener('DOMContentLoaded', function() {
+
+    var dataInput = document.getElementById('dataInput');
+    var analyzeBtn = document.getElementById('analyzeBtn');
+    var statsDiv = document.getElementById('stats');
+    var chartDiv = document.getElementById('chart');
+
+    function parseInput(input) {
+      var parts = input.split(',');
+      var numbers = [];
+      for (var i=0; i<parts.length; i=i+1) {
+        var n = parseFloat(parts[i]);
+        if (isNaN(n)) {
+          throw "Invalid input: only numbers allowed";
+        }
+        numbers.push(n);
+      }
+      if (numbers.length === 0) {
+        throw "No numbers entered";
+      }
+      return numbers;
+    }
+
+    function calculateStats(numbers) {
+      var sum = 0;
+      for (var i=0; i<numbers.length; i=i+1) {
+        sum = sum + numbers[i];
+      }
+      var mean = sum / numbers.length;
+
+      // median
+      var sorted = numbers.slice();
+      for (var i=0; i<sorted.length; i=i+1) {
+        for (var j=i+1; j<sorted.length; j=j+1) {
+          if (sorted[i] > sorted[j]) {
+            var temp = sorted[i];
+            sorted[i] = sorted[j];
+            sorted[j] = temp;
+          }
+        }
+      }
+      var median;
+      var mid = Math.floor(sorted.length/2);
+      if (sorted.length % 2 === 0) {
+        median = (sorted[mid-1] + sorted[mid]) / 2;
+      } else {
+        median = sorted[mid];
+      }
+
+      // mode
+      var freq = {};
+      var maxFreq = 0;
+      var mode = [];
+      for (var i=0; i<numbers.length; i=i+1) {
+        var val = numbers[i];
+        if (freq[val] === undefined) {
+          freq[val] = 1;
+        } else {
+          freq[val] = freq[val] + 1;
+        }
+        if (freq[val] > maxFreq) {
+          maxFreq = freq[val];
+        }
+      }
+      for (var key in freq) {
+        if (freq[key] === maxFreq) {
+          mode.push(key);
+        }
+      }
+
+      return {sum: sum, mean: mean, median: median, mode: mode};
+    }
+
+    function updateChart(numbers) {
+      chartDiv.innerHTML = "";
+      var max = numbers[0];
+      for (var i=1; i<numbers.length; i=i+1) {
+        if (numbers[i] > max) max = numbers[i];
+      }
+      for (var i=0; i<numbers.length; i=i+1) {
+        var bar = document.createElement('div');
+        bar.className = "bar";
+        var widthPercent = (numbers[i]/max)*100;
+        bar.style.width = widthPercent + "%";
+        bar.textContent = numbers[i];
+        chartDiv.appendChild(bar);
+      }
+    }
+
+    function analyze() {
+      try {
+        var numbers = parseInput(dataInput.value);
+        var stats = calculateStats(numbers);
+        statsDiv.innerHTML = 
+          "Sum: " + stats.sum + "<br>" +
+          "Mean: " + stats.mean.toFixed(2) + "<br>" +
+          "Median: " + stats.median + "<br>" +
+          "Mode: " + stats.mode.join(", ");
+        updateChart(numbers);
+      } catch (err) {
+        alert(err);
+      }
+    }
+
+    analyzeBtn.addEventListener('click', analyze);
+
+  });
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE97() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pro Data Analyzer</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin:0; padding:0;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    display: flex; flex-direction: column; align-items: center;
+  }
+  h1 { margin-top:20px; color:#333; }
+  .container {
+    background: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    max-width: 800px;
+    width: 95%;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+  }
+  label { display:block; margin-top:10px; font-weight:600; }
+  input, select, button { width:100%; padding:10px; margin-top:5px; border-radius:8px; border:1px solid #ccc; font-size:16px; }
+  button { background-color:#007bff; color:white; border:none; cursor:pointer; transition:0.3s; }
+  button:hover { background-color:#0056b3; }
+  .stats, .chart { margin-top:20px; background:#f1f1f1; padding:15px; border-radius:10px; }
+  .chart-bar { height:25px; border-radius:5px; margin:5px 0; text-align:right; padding-right:5px; color:white; font-weight:bold; transition: all 0.5s ease; }
+</style>
+</head>
+<body>
+
+<h1>Pro Data Analyzer</h1>
+<div class="container">
+  <label for="dataset1">Dataset 1 (comma-separated numbers):</label>
+  <input type="text" id="dataset1" placeholder="e.g. 10,20,30">
+
+  <label for="dataset2">Dataset 2 (optional, comma-separated):</label>
+  <input type="text" id="dataset2" placeholder="e.g. 15,25,35">
+
+  <button id="analyzeBtn">Analyze & Compare</button>
+
+  <div class="stats" id="stats">Statistics will appear here.</div>
+  <div class="chart" id="chart">Animated bars will appear here.</div>
+</div>
+
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function() {
+  var dataset1Input = document.getElementById('dataset1');
+  var dataset2Input = document.getElementById('dataset2');
+  var analyzeBtn = document.getElementById('analyzeBtn');
+  var statsDiv = document.getElementById('stats');
+  var chartDiv = document.getElementById('chart');
+
+  function parseDataset(input) {
+    var arr = input.split(',');
+    var numbers = [];
+    for (var i=0; i<arr.length; i++) {
+      var n = parseFloat(arr[i]);
+      if (isNaN(n)) throw "Invalid input. Only numbers allowed.";
+      numbers.push(n);
+    }
+    if (numbers.length === 0) throw "No numbers entered.";
+    return numbers;
+  }
+
+  function calculateStats(numbers) {
+    var sum = 0;
+    for (var i=0; i<numbers.length; i++) sum += numbers[i];
+    var mean = sum / numbers.length;
+    var sorted = numbers.slice();
+    for (var i=0; i<sorted.length; i++) {
+      for (var j=i+1; j<sorted.length; j++) {
+        if (sorted[i] > sorted[j]) {
+          var temp = sorted[i];
+          sorted[i] = sorted[j];
+          sorted[j] = temp;
+        }
+      }
+    }
+    var mid = Math.floor(sorted.length/2);
+    var median = (sorted.length%2===0) ? (sorted[mid-1]+sorted[mid])/2 : sorted[mid];
+    var freq = {}, maxFreq=0, mode=[];
+    for (var i=0; i<numbers.length; i++) {
+      var val = numbers[i];
+      freq[val] = (freq[val] || 0) + 1;
+      if (freq[val] > maxFreq) maxFreq=freq[val];
+    }
+    for (var key in freq) if (freq[key]===maxFreq) mode.push(key);
+    return {sum:sum, mean:mean, median:median, mode:mode};
+  }
+
+  function updateChart(data1, data2) {
+    chartDiv.innerHTML = "";
+    var maxVal = Math.max.apply(null, data1.concat(data2 || []));
+    function createBar(value, color) {
+      var bar = document.createElement('div');
+      bar.className = 'chart-bar';
+      bar.style.width = ((value/maxVal)*100) + "%";
+      bar.style.backgroundColor = color;
+      bar.textContent = value;
+      chartDiv.appendChild(bar);
+    }
+    for (var i=0; i<data1.length; i++) createBar(data1[i], '#007bff');
+    if (data2) {
+      for (var i=0; i<data2.length; i++) createBar(data2[i], '#28a745');
+    }
+  }
+
+  analyzeBtn.addEventListener('click', function() {
+    try {
+      var ds1 = parseDataset(dataset1Input.value);
+      var ds2 = dataset2Input.value.trim() ? parseDataset(dataset2Input.value) : null;
+
+      var stats1 = calculateStats(ds1);
+      var stats2 = ds2 ? calculateStats(ds2) : null;
+
+      var statsHtml = "<strong>Dataset 1:</strong><br>";
+      statsHtml += "Sum: "+stats1.sum+"<br>Mean: "+stats1.mean.toFixed(2)+"<br>Median: "+stats1.median+"<br>Mode: "+stats1.mode.join(", ")+"<br>";
+      if (stats2) {
+        statsHtml += "<br><strong>Dataset 2:</strong><br>";
+        statsHtml += "Sum: "+stats2.sum+"<br>Mean: "+stats2.mean.toFixed(2)+"<br>Median: "+stats2.median+"<br>Mode: "+stats2.mode.join(", ");
+      }
+
+      statsDiv.innerHTML = statsHtml;
+      updateChart(ds1, ds2);
+    } catch (err) {
+      alert(err);
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE98() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Interference Simulator</title>
+<style>
+  body {
+    margin:0; padding:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  h1 { margin-top:20px; color:#fff; text-align:center; text-shadow:1px 1px 2px #000; }
+  .container {
+    background:#fff; border-radius:15px; padding:20px;
+    max-width:900px; width:95%; box-shadow:0 10px 25px rgba(0,0,0,0.2); margin-bottom:30px;
+  }
+  label { display:block; margin-top:10px; font-weight:600; }
+  input[type=range] { width:100%; }
+  canvas { display:block; width:100%; height:400px; background:#222; border-radius:10px; margin-top:20px; }
+  .slider-container { margin-top:10px; }
+  .slider-label { display:flex; justify-content:space-between; font-weight:500; }
+</style>
+</head>
+<body>
+
+<h1>Wave Interference Simulator</h1>
+
+<div class="container">
+  <div class="slider-container">
+    <div class="slider-label"><span>Amplitude 1</span><span id="amp1Val">50</span></div>
+    <input type="range" id="amp1" min="10" max="100" value="50">
+  </div>
+  <div class="slider-container">
+    <div class="slider-label"><span>Frequency 1</span><span id="freq1Val">0.02</span></div>
+    <input type="range" id="freq1" min="0.01" max="0.1" step="0.001" value="0.02">
+  </div>
+  <div class="slider-container">
+    <div class="slider-label"><span>Phase 1</span><span id="phase1Val">0</span></div>
+    <input type="range" id="phase1" min="0" max="6.28" step="0.01" value="0">
+  </div>
+
+  <div class="slider-container">
+    <div class="slider-label"><span>Amplitude 2</span><span id="amp2Val">50</span></div>
+    <input type="range" id="amp2" min="10" max="100" value="50">
+  </div>
+  <div class="slider-container">
+    <div class="slider-label"><span>Frequency 2</span><span id="freq2Val">0.02</span></div>
+    <input type="range" id="freq2" min="0.01" max="0.1" step="0.001" value="0.02">
+  </div>
+  <div class="slider-container">
+    <div class="slider-label"><span>Phase 2</span><span id="phase2Val">0</span></div>
+    <input type="range" id="phase2" min="0" max="6.28" step="0.01" value="0">
+  </div>
+
+  <canvas id="waveCanvas"></canvas>
+</div>
+
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function() {
+  var canvas = document.getElementById('waveCanvas');
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  var amp1Slider = document.getElementById('amp1');
+  var freq1Slider = document.getElementById('freq1');
+  var phase1Slider = document.getElementById('phase1');
+  var amp2Slider = document.getElementById('amp2');
+  var freq2Slider = document.getElementById('freq2');
+  var phase2Slider = document.getElementById('phase2');
+
+  var amp1Val = document.getElementById('amp1Val');
+  var freq1Val = document.getElementById('freq1Val');
+  var phase1Val = document.getElementById('phase1Val');
+  var amp2Val = document.getElementById('amp2Val');
+  var freq2Val = document.getElementById('freq2Val');
+  var phase2Val = document.getElementById('phase2Val');
+
+  var t = 0;
+
+  function drawWave() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.beginPath();
+    for (var x=0; x<canvas.width; x=x+1) {
+      var y1 = parseFloat(amp1Slider.value) * Math.sin(freq1Slider.value * x + parseFloat(phase1Slider.value) + t);
+      var y2 = parseFloat(amp2Slider.value) * Math.sin(freq2Slider.value * x + parseFloat(phase2Slider.value) + t);
+      var y = canvas.height/2 + y1 + y2;
+      if (x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = "#00ffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    t += 0.05;
+    requestAnimationFrame(drawWave);
+  }
+
+  drawWave();
+
+  // Update slider labels live
+  function updateLabels() {
+    amp1Val.textContent = amp1Slider.value;
+    freq1Val.textContent = freq1Slider.value;
+    phase1Val.textContent = phase1Slider.value;
+    amp2Val.textContent = amp2Slider.value;
+    freq2Val.textContent = freq2Slider.value;
+    phase2Val.textContent = phase2Slider.value;
+  }
+
+  amp1Slider.addEventListener('input', updateLabels);
+  freq1Slider.addEventListener('input', updateLabels);
+  phase1Slider.addEventListener('input', updateLabels);
+  amp2Slider.addEventListener('input', updateLabels);
+  freq2Slider.addEventListener('input', updateLabels);
+  phase2Slider.addEventListener('input', updateLabels);
+});
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE99() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Wave Interference Simulator</title>
+<style>
+  body {
+    margin:0; padding:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  h1 { margin-top:20px; color:#fff; text-align:center; text-shadow:1px 1px 2px #000; }
+  .container {
+    background:#fff; border-radius:15px; padding:20px;
+    max-width:900px; width:95%; box-shadow:0 10px 25px rgba(0,0,0,0.2); margin-bottom:30px;
+  }
+  canvas { display:block; width:100%; height:400px; background:#222; border-radius:10px; margin-top:20px; }
+  .wave-controls { margin-top:15px; border:1px solid #ccc; padding:10px; border-radius:10px; }
+  .wave-controls h3 { margin:5px 0; }
+  label { display:block; margin-top:5px; font-weight:500; }
+  input[type=range] { width:100%; }
+</style>
+</head>
+<body>
+
+<h1>Multi-Wave Interference Simulator</h1>
+
+<div class="container" id="container">
+  <button id="addWaveBtn">Add Wave</button>
+  <div id="waveSliders"></div>
+  <canvas id="waveCanvas"></canvas>
+</div>
+
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function() {
+  var canvas = document.getElementById('waveCanvas');
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  var waveContainer = document.getElementById('waveSliders');
+  var addWaveBtn = document.getElementById('addWaveBtn');
+
+  var waves = [];
+  var t = 0;
+
+  function createWaveControls(index) {
+    var div = document.createElement('div');
+    div.className = 'wave-controls';
+    div.innerHTML = "<h3>Wave "+(index+1)+"</h3>";
+
+    var ampLabel = document.createElement('label');
+    ampLabel.textContent = 'Amplitude:';
+    var ampSlider = document.createElement('input');
+    ampSlider.type = 'range';
+    ampSlider.min = 10; ampSlider.max = 100; ampSlider.value = 50;
+    div.appendChild(ampLabel); div.appendChild(ampSlider);
+
+    var freqLabel = document.createElement('label');
+    freqLabel.textContent = 'Frequency:';
+    var freqSlider = document.createElement('input');
+    freqSlider.type = 'range'; freqSlider.min=0.01; freqSlider.max=0.1; freqSlider.step=0.001; freqSlider.value=0.02;
+    div.appendChild(freqLabel); div.appendChild(freqSlider);
+
+    var phaseLabel = document.createElement('label');
+    phaseLabel.textContent = 'Phase:';
+    var phaseSlider = document.createElement('input');
+    phaseSlider.type='range'; phaseSlider.min=0; phaseSlider.max=6.28; phaseSlider.step=0.01; phaseSlider.value=0;
+    div.appendChild(phaseLabel); div.appendChild(phaseSlider);
+
+    var colorLabel = document.createElement('label');
+    colorLabel.textContent = 'Color:';
+    var colorInput = document.createElement('input');
+    colorInput.type='color'; colorInput.value="#"+((1<<24)*Math.random()|0).toString(16);
+    div.appendChild(colorLabel); div.appendChild(colorInput);
+
+    waveContainer.appendChild(div);
+
+    waves.push({amp:ampSlider, freq:freqSlider, phase:phaseSlider, color:colorInput});
+  }
+
+  addWaveBtn.addEventListener('click', function() {
+    createWaveControls(waves.length);
+  });
+
+  function drawWaves() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.beginPath();
+    var envelope = [];
+    for (var x=0; x<canvas.width; x=x+1) {
+      var ySum = 0;
+      for (var i=0; i<waves.length; i++) {
+        var w = waves[i];
+        var y = parseFloat(w.amp.value) * Math.sin(parseFloat(w.freq.value)*x + parseFloat(w.phase.value) + t);
+        ySum += y;
+      }
+      envelope[x] = canvas.height/2 + ySum;
+      if (x===0) ctx.moveTo(x,envelope[x]); else ctx.lineTo(x,envelope[x]);
+    }
+    ctx.strokeStyle = "#00ffff";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // draw individual waves
+    for (var i=0; i<waves.length; i++) {
+      ctx.beginPath();
+      for (var x=0; x<canvas.width; x=x+1) {
+        var w = waves[i];
+        var y = parseFloat(w.amp.value) * Math.sin(parseFloat(w.freq.value)*x + parseFloat(w.phase.value) + t);
+        var yPos = canvas.height/2 + y;
+        if (x===0) ctx.moveTo(x,yPos); else ctx.lineTo(x,yPos);
+      }
+      ctx.strokeStyle = waves[i].color.value;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    t += 0.05;
+    requestAnimationFrame(drawWaves);
+  }
+
+  drawWaves();
+
+  // Initialize with 2 waves
+  createWaveControls(0);
+  createWaveControls(1);
+});
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE100() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Multi-Wave Interference Simulator</title>
+<style>
+  body {
+    margin:0; padding:0;
+    font-family:'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    display:flex; flex-direction:column; align-items:center;
+  }
+  h1 { margin-top:20px; color:#fff; text-align:center; text-shadow:1px 1px 2px #000; }
+  .container {
+    background:#fff; border-radius:15px; padding:20px;
+    max-width:900px; width:95%; box-shadow:0 10px 25px rgba(0,0,0,0.2); margin-bottom:30px;
+  }
+  canvas { display:block; width:100%; height:400px; background:#222; border-radius:10px; margin-top:20px; }
+  .wave-controls { margin-top:15px; border:1px solid #ccc; padding:10px; border-radius:10px; }
+  .wave-controls h3 { margin:5px 0; }
+  label { display:block; margin-top:5px; font-weight:500; }
+  input[type=range], input[type=color] { width:100%; margin-top:3px; }
+</style>
+</head>
+<body>
+
+<h1>Ultimate Multi-Wave Interference Simulator</h1>
+
+<div class="container" id="container">
+  <button id="addWaveBtn">Add Wave</button>
+  <div id="waveSliders"></div>
+  <canvas id="waveCanvas"></canvas>
+</div>
+
+<script type="text/javascript">
+window.addEventListener('DOMContentLoaded', function() {
+  var canvas = document.getElementById('waveCanvas');
+  var ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+
+  var waveContainer = document.getElementById('waveSliders');
+  var addWaveBtn = document.getElementById('addWaveBtn');
+  var waves = [];
+  var t = 0;
+
+  function createWaveControls(index) {
+    var div = document.createElement('div');
+    div.className = 'wave-controls';
+    div.innerHTML = "<h3>Wave "+(index+1)+"</h3>";
+
+    var ampLabel = document.createElement('label');
+    ampLabel.textContent = 'Amplitude:';
+    var ampSlider = document.createElement('input');
+    ampSlider.type='range'; ampSlider.min=10; ampSlider.max=100; ampSlider.value=50;
+    div.appendChild(ampLabel); div.appendChild(ampSlider);
+
+    var freqLabel = document.createElement('label');
+    freqLabel.textContent='Frequency:';
+    var freqSlider = document.createElement('input');
+    freqSlider.type='range'; freqSlider.min=0.01; freqSlider.max=0.1; freqSlider.step=0.001; freqSlider.value=0.02;
+    div.appendChild(freqLabel); div.appendChild(freqSlider);
+
+    var phaseLabel = document.createElement('label');
+    phaseLabel.textContent='Phase:';
+    var phaseSlider = document.createElement('input');
+    phaseSlider.type='range'; phaseSlider.min=0; phaseSlider.max=6.28; phaseSlider.step=0.01; phaseSlider.value=0;
+    div.appendChild(phaseLabel); div.appendChild(phaseSlider);
+
+    var colorLabel = document.createElement('label');
+    colorLabel.textContent='Color:';
+    var colorInput = document.createElement('input');
+    colorInput.type='color'; colorInput.value="#"+((1<<24)*Math.random()|0).toString(16);
+    div.appendChild(colorLabel); div.appendChild(colorInput);
+
+    waveContainer.appendChild(div);
+    waves.push({amp:ampSlider, freq:freqSlider, phase:phaseSlider, color:colorInput});
+  }
+
+  addWaveBtn.addEventListener('click', function() {
+    createWaveControls(waves.length);
+  });
+
+  function drawWaves() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    var envelope = [];
+    for (var x=0; x<canvas.width; x=x+1) {
+      var ySum = 0;
+      for (var i=0; i<waves.length; i++) {
+        var w = waves[i];
+        // Dynamic phase animation
+        var phaseOffset = parseFloat(w.phase.value) + 0.5 * Math.sin(t/50 + i);
+        var y = parseFloat(w.amp.value) * Math.sin(parseFloat(w.freq.value)*x + phaseOffset + t/10);
+        ySum += y;
+      }
+      envelope[x] = canvas.height/2 + ySum;
+    }
+
+    // Draw amplitude envelope shaded
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height/2);
+    for (var x=0; x<canvas.width; x=x+1) {
+      ctx.lineTo(x, envelope[x]);
+    }
+    ctx.lineTo(canvas.width, canvas.height/2);
+    ctx.closePath();
+    var grad = ctx.createLinearGradient(0,0,0,canvas.height);
+    grad.addColorStop(0,"rgba(0,255,255,0.2)");
+    grad.addColorStop(1,"rgba(0,255,255,0.05)");
+    ctx.fillStyle=grad;
+    ctx.fill();
+
+    // Draw individual waves with trails
+    for (var i=0; i<waves.length; i++) {
+      ctx.beginPath();
+      for (var x=0; x<canvas.width; x=x+1) {
+        var w = waves[i];
+        var phaseOffset = parseFloat(w.phase.value) + 0.5 * Math.sin(t/50 + i);
+        var y = parseFloat(w.amp.value) * Math.sin(parseFloat(w.freq.value)*x + phaseOffset + t/10);
+        var yPos = canvas.height/2 + y;
+        if (x===0) ctx.moveTo(x,yPos); else ctx.lineTo(x,yPos);
+      }
+      ctx.strokeStyle = waves[i].color.value;
+      ctx.lineWidth=1.5;
+      ctx.shadowBlur=5;
+      ctx.shadowColor=waves[i].color.value;
+      ctx.stroke();
+      ctx.shadowBlur=0;
+    }
+
+    t += 1;
+    requestAnimationFrame(drawWaves);
+  }
+
+  drawWaves();
+
+  // Initialize with 2 waves
+  createWaveControls(0);
+  createWaveControls(1);
+});
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
+
