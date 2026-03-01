@@ -18129,3 +18129,497 @@ window.addEventListener('DOMContentLoaded', function() {
 }
 
 
+function copyCODE101() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusVault Pro</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0b0f19;
+    color: #ffffff;
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    font-size: 24px;
+    background-color: #121826;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    background-color: #121826;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1d4ed8;
+}
+
+input, select {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: #1e293b;
+    color: white;
+}
+
+.timer {
+    font-size: 40px;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.stat-box {
+    background-color: #1e293b;
+    padding: 15px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.monk {
+    background-color: black !important;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<header>FocusVault Pro</header>
+
+<div class="container">
+
+<div class="section">
+<h2>Deep Work Engine</h2>
+<input type="number" id="sessionMinutes" placeholder="Session Minutes (e.g. 45)">
+<button onclick="startSession()">Start Session</button>
+<button onclick="logDistraction()">Log Distraction</button>
+<div class="timer" id="timerDisplay">00:00</div>
+<p>Distractions This Session: <span id="distractionCount">0</span></p>
+</div>
+
+<div class="section">
+<h2>Urge Control Log</h2>
+<input type="text" id="urgeTrigger" placeholder="What triggered the urge?">
+<select id="urgeIntensity">
+<option value="1">Low</option>
+<option value="2">Medium</option>
+<option value="3">High</option>
+</select>
+<button onclick="logUrge()">Log Urge</button>
+<p>Total Urges This Week: <span id="urgeCount">0</span></p>
+</div>
+
+<div class="section">
+<h2>Discipline Analytics</h2>
+<div class="stats-grid">
+<div class="stat-box">
+<h3>Total Focus Minutes</h3>
+<p id="totalFocus">0</p>
+</div>
+<div class="stat-box">
+<h3>Focus Streak</h3>
+<p id="streak">0</p>
+</div>
+<div class="stat-box">
+<h3>Weekly Discipline Score</h3>
+<p id="score">0</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>System Controls</h2>
+<button onclick="toggleMonkMode()">Toggle Monk Mode</button>
+<button onclick="resetSystem()">Reset Data</button>
+</div>
+
+</div>
+
+<script>
+let timerInterval = null;
+let remainingSeconds = 0;
+let distractionCounter = 0;
+
+let data = JSON.parse(localStorage.getItem("focusVaultData")) || {
+    totalFocus: 0,
+    streak: 0,
+    urges: 0
+};
+
+updateUI();
+
+function startSession() {
+    const minutes = parseInt(document.getElementById("sessionMinutes").value);
+    if (!minutes || minutes <= 0) {
+        alert("Enter valid minutes.");
+        return;
+    }
+
+    remainingSeconds = minutes * 60;
+    distractionCounter = 0;
+    document.getElementById("distractionCount").textContent = distractionCounter;
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(function() {
+        if (remainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            sessionComplete(minutes);
+        } else {
+            remainingSeconds--;
+            updateTimer();
+        }
+    }, 1000);
+
+    updateTimer();
+}
+
+function updateTimer() {
+    const min = Math.floor(remainingSeconds / 60);
+    const sec = remainingSeconds % 60;
+    document.getElementById("timerDisplay").textContent =
+        String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+}
+
+function logDistraction() {
+    distractionCounter++;
+    document.getElementById("distractionCount").textContent = distractionCounter;
+}
+
+function sessionComplete(minutes) {
+    data.totalFocus += minutes;
+    if (distractionCounter === 0) {
+        data.streak++;
+    } else {
+        data.streak = 0;
+    }
+    saveData();
+    updateUI();
+    calculateScore();
+    alert("Session complete.");
+}
+
+function logUrge() {
+    const trigger = document.getElementById("urgeTrigger").value;
+    if (trigger === "") {
+        alert("Enter trigger.");
+        return;
+    }
+    data.urges++;
+    saveData();
+    updateUI();
+    calculateScore();
+    document.getElementById("urgeTrigger").value = "";
+}
+
+function calculateScore() {
+    const score =
+        (data.totalFocus * 2) +
+        (data.streak * 10) -
+        (data.urges * 5);
+    document.getElementById("score").textContent = score;
+}
+
+function toggleMonkMode() {
+    document.body.classList.toggle("monk");
+}
+
+function resetSystem() {
+    if (confirm("Reset all data?")) {
+        localStorage.removeItem("focusVaultData");
+        location.reload();
+    }
+}
+
+function saveData() {
+    localStorage.setItem("focusVaultData", JSON.stringify(data));
+}
+
+function updateUI() {
+    document.getElementById("totalFocus").textContent = data.totalFocus;
+    document.getElementById("streak").textContent = data.streak;
+    document.getElementById("urgeCount").textContent = data.urges;
+    calculateScore();
+}
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+
+
+function copyCODE102() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Truth Engine</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0e1117;
+    color: #ffffff;
+}
+
+header {
+    background-color: #161b22;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.section {
+    background-color: #161b22;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+textarea, input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #21262d;
+    color: white;
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #238636;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2ea043;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background-color: #21262d;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.score-display {
+    font-size: 32px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.history-item {
+    background-color: #21262d;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>AI Truth Engine — Information Verification Dashboard</header>
+
+<div class="container">
+
+<div class="section">
+<h2>Claim Analysis</h2>
+<textarea id="claim" rows="3" placeholder="Enter main claim..."></textarea>
+
+<label>Source Reliability (0-10)</label>
+<input type="number" id="sourceScore" min="0" max="10">
+
+<label>Evidence Strength (0-10)</label>
+<input type="number" id="evidenceScore" min="0" max="10">
+
+<label>Logical Consistency (0-10)</label>
+<input type="number" id="logicScore" min="0" max="10">
+
+<label>Emotional Manipulation Level (0-10)</label>
+<input type="number" id="emotionScore" min="0" max="10">
+
+<h3>Logical Fallacies Detected</h3>
+<label><input type="checkbox" value="5" class="fallacy"> Strawman</label><br>
+<label><input type="checkbox" value="5" class="fallacy"> False Dilemma</label><br>
+<label><input type="checkbox" value="5" class="fallacy"> Appeal to Emotion</label><br>
+<label><input type="checkbox" value="5" class="fallacy"> Slippery Slope</label><br>
+<label><input type="checkbox" value="5" class="fallacy"> Authority Fallacy</label><br>
+
+<br><br>
+<button onclick="analyzeClaim()">Analyze Claim</button>
+
+<div class="score-display" id="resultScore">Reliability: --%</div>
+</div>
+
+<div class="section">
+<h2>Analysis History</h2>
+<div id="historyContainer"></div>
+<button onclick="exportHistory()">Export History</button>
+<button onclick="clearHistory()">Clear History</button>
+</div>
+
+</div>
+
+<script>
+let historyData = JSON.parse(localStorage.getItem("truthEngineHistory")) || [];
+
+function analyzeClaim() {
+    const claim = document.getElementById("claim").value.trim();
+    if (claim === "") {
+        alert("Enter a claim.");
+        return;
+    }
+
+    const source = parseInt(document.getElementById("sourceScore").value) || 0;
+    const evidence = parseInt(document.getElementById("evidenceScore").value) || 0;
+    const logic = parseInt(document.getElementById("logicScore").value) || 0;
+    const emotion = parseInt(document.getElementById("emotionScore").value) || 0;
+
+    let fallacyPenalty = 0;
+    document.querySelectorAll(".fallacy:checked").forEach(function(cb) {
+        fallacyPenalty += parseInt(cb.value);
+    });
+
+    let rawScore =
+        (source * 0.3) +
+        (evidence * 0.3) +
+        (logic * 0.3) -
+        (emotion * 0.2);
+
+    rawScore = rawScore * 10;
+    rawScore = rawScore - fallacyPenalty;
+
+    if (rawScore < 0) rawScore = 0;
+    if (rawScore > 100) rawScore = 100;
+
+    document.getElementById("resultScore").textContent =
+        "Reliability: " + Math.round(rawScore) + "%";
+
+    const entry = {
+        claim: claim,
+        score: Math.round(rawScore),
+        date: new Date().toLocaleString()
+    };
+
+    historyData.unshift(entry);
+    saveHistory();
+    renderHistory();
+}
+
+function renderHistory() {
+    const container = document.getElementById("historyContainer");
+    container.innerHTML = "";
+
+    historyData.forEach(function(item) {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML =
+            "<strong>Score:</strong> " + item.score + "%<br>" +
+            "<strong>Date:</strong> " + item.date + "<br>" +
+            "<strong>Claim:</strong> " + item.claim;
+        container.appendChild(div);
+    });
+}
+
+function saveHistory() {
+    localStorage.setItem("truthEngineHistory", JSON.stringify(historyData));
+}
+
+function exportHistory() {
+    const blob = new Blob([JSON.stringify(historyData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "verification-history.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+function clearHistory() {
+    if (confirm("Delete all history?")) {
+        historyData = [];
+        saveHistory();
+        renderHistory();
+    }
+}
+
+renderHistory();
+</script>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
