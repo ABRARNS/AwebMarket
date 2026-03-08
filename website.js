@@ -18623,3 +18623,2923 @@ renderHistory();
     .then(() => alert("Copied!"))
     .catch(() => alert("Copy failed"));
 }
+function copyCODE103() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IronFit Gym</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#0f0f0f;
+color:white;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+background:#111;
+border-bottom:1px solid #222;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#ff3c00;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:30px;
+}
+
+nav ul li a{
+text-decoration:none;
+color:white;
+font-size:15px;
+transition:.3s;
+}
+
+nav ul li a:hover{
+color:#ff3c00;
+}
+
+/* HERO */
+
+.hero{
+height:85vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.8)),
+url("https://images.unsplash.com/photo-1599058917765-a780eda07a3e");
+background-size:cover;
+background-position:center;
+}
+
+.hero h1{
+font-size:55px;
+margin-bottom:20px;
+}
+
+.hero p{
+color:#ccc;
+margin-bottom:25px;
+}
+
+.hero button{
+padding:14px 32px;
+border:none;
+background:#ff3c00;
+color:white;
+font-size:16px;
+cursor:pointer;
+border-radius:5px;
+transition:.3s;
+}
+
+.hero button:hover{
+background:#ff5e2e;
+}
+
+/* FEATURES */
+
+.features{
+padding:80px 8%;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.feature{
+background:#161616;
+padding:30px;
+border-radius:8px;
+text-align:center;
+transition:.3s;
+}
+
+.feature:hover{
+transform:translateY(-6px);
+background:#1c1c1c;
+}
+
+.feature h3{
+margin-bottom:12px;
+color:#ff3c00;
+}
+
+.feature p{
+color:#aaa;
+font-size:14px;
+}
+
+/* TRAINERS */
+
+.trainers{
+padding:80px 8%;
+text-align:center;
+}
+
+.trainers h2{
+margin-bottom:40px;
+font-size:32px;
+}
+
+.trainer-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+}
+
+.trainer{
+background:#161616;
+padding:20px;
+border-radius:8px;
+}
+
+.trainer img{
+width:100%;
+border-radius:6px;
+margin-bottom:10px;
+}
+
+.trainer h4{
+margin-bottom:5px;
+}
+
+.trainer span{
+color:#ff3c00;
+font-size:14px;
+}
+
+/* PRICING */
+
+.pricing{
+padding:80px 8%;
+background:#111;
+text-align:center;
+}
+
+.pricing h2{
+margin-bottom:40px;
+}
+
+.price-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+}
+
+.plan{
+background:#161616;
+padding:30px;
+border-radius:8px;
+}
+
+.plan h3{
+color:#ff3c00;
+margin-bottom:10px;
+}
+
+.plan h1{
+margin:15px 0;
+}
+
+.plan p{
+color:#aaa;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.plan button{
+margin-top:15px;
+padding:10px 25px;
+background:#ff3c00;
+border:none;
+color:white;
+cursor:pointer;
+border-radius:4px;
+}
+
+/* CONTACT */
+
+.contact{
+padding:80px 8%;
+text-align:center;
+}
+
+.contact h2{
+margin-bottom:20px;
+}
+
+.contact input,
+.contact textarea{
+width:100%;
+max-width:500px;
+padding:12px;
+margin:10px auto;
+display:block;
+border:none;
+border-radius:4px;
+background:#1a1a1a;
+color:white;
+}
+
+.contact button{
+padding:12px 28px;
+background:#ff3c00;
+border:none;
+color:white;
+cursor:pointer;
+border-radius:4px;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:25px;
+background:#0b0b0b;
+color:#777;
+font-size:14px;
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo">IronFit</div>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Features</a></li>
+<li><a href="#">Trainers</a></li>
+<li><a href="#">Pricing</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</nav>
+
+<section class="hero">
+<div>
+<h1>Build Your Dream Body</h1>
+<p>Train with professionals and reach your fitness goals faster.</p>
+<button>Join Now</button>
+</div>
+</section>
+
+<section class="features">
+<div class="feature">
+<h3>Modern Equipment</h3>
+<p>Top quality machines and weights for serious workouts.</p>
+</div>
+
+<div class="feature">
+<h3>Expert Trainers</h3>
+<p>Professional trainers ready to guide your fitness journey.</p>
+</div>
+
+<div class="feature">
+<h3>Healthy Plans</h3>
+<p>Personalized diet and training plans for maximum results.</p>
+</div>
+</section>
+
+<section class="trainers">
+<h2>Our Trainers</h2>
+
+<div class="trainer-grid">
+
+<div class="trainer">
+<img src="https://images.unsplash.com/photo-1605296867424-35fc25c9212a">
+<h4>Mike Johnson</h4>
+<span>Strength Coach</span>
+</div>
+
+<div class="trainer">
+<img src="https://images.unsplash.com/photo-1594737625785-c6c4c8a9f1fa">
+<h4>Sarah Lee</h4>
+<span>Fitness Trainer</span>
+</div>
+
+<div class="trainer">
+<img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e">
+<h4>Daniel Cruz</h4>
+<span>Bodybuilding Coach</span>
+</div>
+
+</div>
+</section>
+
+<section class="pricing">
+<h2>Membership Plans</h2>
+
+<div class="price-grid">
+
+<div class="plan">
+<h3>Basic</h3>
+<h1>$19/mo</h1>
+<p>Gym Access</p>
+<p>Locker Room</p>
+<p>Basic Equipment</p>
+<button>Choose</button>
+</div>
+
+<div class="plan">
+<h3>Pro</h3>
+<h1>$39/mo</h1>
+<p>All Equipment</p>
+<p>Group Classes</p>
+<p>Diet Plan</p>
+<button>Choose</button>
+</div>
+
+<div class="plan">
+<h3>Elite</h3>
+<h1>$59/mo</h1>
+<p>Personal Trainer</p>
+<p>Premium Classes</p>
+<p>Nutrition Plan</p>
+<button>Choose</button>
+</div>
+
+</div>
+</section>
+
+<section class="contact">
+<h2>Contact Us</h2>
+
+<input type="text" placeholder="Your Name">
+<input type="email" placeholder="Your Email">
+<textarea rows="4" placeholder="Message"></textarea>
+<button>Send Message</button>
+
+</section>
+
+<footer>
+© 2026 IronFit Gym — All Rights Reserved
+</footer>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE104() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MAISON — Modern Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F7F4EF;
+    --black: #0E0E0E;
+    --mid: #6B6560;
+    --accent: #C4A882;
+    --border: #E2DDD8;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 48px;
+    background: rgba(247,244,239,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  nav.scrolled { border-color: var(--border); }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  .nav-actions {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .nav-actions button {
+    background: none; border: none; cursor: none;
+    font-size: 12px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--mid);
+    transition: color 0.2s;
+  }
+  .nav-actions button:hover { color: var(--black); }
+
+  .cart-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--black) !important;
+    color: var(--white) !important;
+    padding: 10px 20px !important;
+    border-radius: 2px;
+    font-size: 11px !important;
+    letter-spacing: 0.12em;
+  }
+  .cart-count {
+    background: var(--accent);
+    color: var(--white);
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 80px;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 48px 80px 48px;
+    animation: fadeUp 1s ease both;
+  }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 6vw, 88px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--mid);
+    max-width: 400px;
+    margin-bottom: 48px;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--black);
+    color: var(--white);
+    padding: 16px 40px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s, transform 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: none;
+    color: var(--black);
+    padding: 16px 32px;
+    border: 1px solid var(--border);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: border-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--black); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 1.2s ease both;
+  }
+  .hero-right img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .hero-right-overlay {
+    position: absolute;
+    bottom: 40px; left: 40px;
+    background: rgba(247,244,239,0.9);
+    padding: 20px 28px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-promo-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 4px;
+  }
+  .hero-promo-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--black);
+  }
+
+  /* MARQUEE */
+  .marquee-bar {
+    background: var(--black);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 22s linear infinite;
+  }
+  .marquee-track span {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin: 0 40px;
+  }
+  .marquee-track span.dot {
+    color: var(--accent);
+    margin: 0;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* CATEGORIES */
+  .section { padding: 96px 48px; }
+  .section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 56px;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .section-link {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .section-link:hover { color: var(--black); border-color: var(--black); }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    height: 480px;
+  }
+  .cat-card {
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+  .cat-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .cat-card:hover img { transform: scale(1.04); }
+  .cat-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(14,14,14,0.5) 0%, transparent 50%);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+  }
+  .cat-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .cat-count {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* PRODUCTS */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px 24px;
+  }
+
+  .product-card {
+    cursor: none;
+  }
+  .product-img-wrap {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: var(--white);
+    margin-bottom: 16px;
+  }
+  .product-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .product-card:hover .product-img-wrap img { transform: scale(1.05); }
+
+  .product-badge {
+    position: absolute; top: 14px; left: 14px;
+    background: var(--black);
+    color: var(--white);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+  }
+  .product-badge.sale { background: var(--accent); }
+
+  .product-actions {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px;
+    transform: translateY(100%);
+    transition: transform 0.35s ease;
+    background: rgba(247,244,239,0.95);
+    backdrop-filter: blur(8px);
+    display: flex; gap: 8px;
+  }
+  .product-card:hover .product-actions { transform: translateY(0); }
+  .product-actions button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border);
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.2s;
+  }
+  .product-actions button.add-cart {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--black);
+    flex: 2;
+  }
+  .product-actions button:hover:not(.add-cart) { background: var(--border); }
+  .product-actions button.add-cart:hover { background: var(--accent); border-color: var(--accent); }
+
+  .product-info { padding: 0 4px; }
+  .product-brand {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 4px;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .product-price {
+    display: flex; gap: 10px; align-items: center;
+  }
+  .price-current {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--black);
+  }
+  .price-old {
+    font-size: 13px;
+    color: var(--mid);
+    text-decoration: line-through;
+  }
+
+  /* BANNER */
+  .banner {
+    margin: 0 48px;
+    background: var(--black);
+    padding: 80px 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .banner::before {
+    content: 'SALE';
+    position: absolute;
+    right: -20px; top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 160px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.03);
+    white-space: nowrap;
+    letter-spacing: -0.04em;
+  }
+  .banner-tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .banner-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 60px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .banner-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.8;
+    max-width: 380px;
+  }
+  .banner-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .banner-stat {
+    text-align: right;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .btn-light {
+    background: var(--cream);
+    color: var(--black);
+    padding: 16px 40px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-light:hover { background: var(--accent); color: var(--white); }
+
+  /* FEATURES */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 80px 0;
+  }
+  .feature {
+    padding: 48px 40px;
+    border-right: 1px solid var(--border);
+  }
+  .feature:last-child { border-right: none; }
+  .feature-icon {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .feature-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .feature-desc {
+    font-size: 13px;
+    color: var(--mid);
+    line-height: 1.7;
+  }
+
+  /* NEWSLETTER */
+  .newsletter {
+    padding: 96px 48px;
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .newsletter .section-label { justify-content: center; display: flex; }
+  .newsletter .section-title { text-align: center; margin-bottom: 16px; }
+  .newsletter p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+  .newsletter-form input {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--black);
+    outline: none;
+  }
+  .newsletter-form input::placeholder { color: var(--mid); }
+  .newsletter-form button {
+    padding: 16px 32px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .newsletter-form button:hover { background: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 72px 48px 40px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+  }
+  .footer-brand .nav-logo { color: var(--white); display: block; margin-bottom: 16px; }
+  .footer-brand p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.8;
+    max-width: 260px;
+  }
+  .footer-col h4 {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 12px; }
+  .footer-col ul li a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+  }
+  .footer-socials { display: flex; gap: 20px; }
+  .footer-socials a {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-socials a:hover { color: var(--white); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* PLACEHOLDER IMAGES via CSS */
+  .img-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+  .bg-warm { background: #EDE8E0; }
+  .bg-stone { background: #D8D0C4; }
+  .bg-sage { background: #CDD1C4; }
+  .bg-blush { background: #E8D8D0; }
+  .bg-slate { background: #C8CDD4; }
+  .bg-tan { background: #D4C8B8; }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Maison</a>
+  <ul class="nav-links">
+    <li><a href="#">New In</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Collections</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button>Search</button>
+    <button>Account</button>
+    <button class="cart-btn">Bag <span class="cart-count">3</span></button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">New Collection 2025</div>
+    <h1 class="hero-title">Refined<br/><em>Everyday</em><br/>Essentials</h1>
+    <p class="hero-desc">Thoughtfully crafted pieces designed for modern living. Minimal forms, exceptional materials, lasting quality.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn-primary">Shop Now</a>
+      <a href="#" class="btn-ghost">View Lookbook</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="img-placeholder bg-warm" style="height:100%">
+      <!-- Replace with: <img src="hero.jpg" alt="Hero Image"> -->
+      [Hero Image]
+    </div>
+    <div class="hero-right-overlay">
+      <div class="hero-promo-label">Starting from</div>
+      <div class="hero-promo-val">$49.00</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>Free shipping over $150</span><span class="dot">·</span>
+    <span>New arrivals every Friday</span><span class="dot">·</span>
+    <span>Sustainably sourced materials</span><span class="dot">·</span>
+    <span>Easy 30-day returns</span><span class="dot">·</span>
+    <span>Members get 10% off</span><span class="dot">·</span>
+    <span>Free shipping over $150</span><span class="dot">·</span>
+    <span>New arrivals every Friday</span><span class="dot">·</span>
+    <span>Sustainably sourced materials</span><span class="dot">·</span>
+    <span>Easy 30-day returns</span><span class="dot">·</span>
+    <span>Members get 10% off</span><span class="dot">·</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section reveal">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Browse by</div>
+      <h2 class="section-title">Shop Categories</h2>
+    </div>
+    <a href="#" class="section-link">All Categories →</a>
+  </div>
+  <div class="category-grid">
+    <div class="cat-card">
+      <div class="img-placeholder bg-stone" style="height:100%">[Category Image]</div>
+      <div class="cat-card-overlay">
+        <div class="cat-name">Women's Collection</div>
+        <div class="cat-count">142 Products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="img-placeholder bg-sage" style="height:100%">[Category Image]</div>
+      <div class="cat-card-overlay">
+        <div class="cat-name">Men's Essentials</div>
+        <div class="cat-count">98 Products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="img-placeholder bg-blush" style="height:100%">[Category Image]</div>
+      <div class="cat-card-overlay">
+        <div class="cat-name">Accessories</div>
+        <div class="cat-count">64 Products</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section reveal">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Curated picks</div>
+      <h2 class="section-title">New Arrivals</h2>
+    </div>
+    <a href="#" class="section-link">View All →</a>
+  </div>
+  <div class="product-grid">
+
+    <!-- Product 1 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-placeholder bg-warm">[Product Image]</div>
+        <span class="product-badge">New</span>
+        <div class="product-actions">
+          <button>♡</button>
+          <button class="add-cart">Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Studio Line</div>
+        <div class="product-name">Linen Oversized Blazer</div>
+        <div class="product-price">
+          <span class="price-current">$189.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-placeholder bg-slate">[Product Image]</div>
+        <span class="product-badge sale">−20%</span>
+        <div class="product-actions">
+          <button>♡</button>
+          <button class="add-cart">Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Essentials</div>
+        <div class="product-name">Merino Wool Turtleneck</div>
+        <div class="product-price">
+          <span class="price-current">$112.00</span>
+          <span class="price-old">$140.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-placeholder bg-tan">[Product Image]</div>
+        <div class="product-actions">
+          <button>♡</button>
+          <button class="add-cart">Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Classic</div>
+        <div class="product-name">Tailored Straight Trousers</div>
+        <div class="product-price">
+          <span class="price-current">$134.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <div class="img-placeholder bg-sage">[Product Image]</div>
+        <span class="product-badge">New</span>
+        <div class="product-actions">
+          <button>♡</button>
+          <button class="add-cart">Add to Bag</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Summer Edit</div>
+        <div class="product-name">Cotton Poplin Midi Dress</div>
+        <div class="product-price">
+          <span class="price-current">$158.00</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<div class="banner reveal">
+  <div>
+    <div class="banner-tag">Limited Time Offer</div>
+    <h2 class="banner-title">End of Season<br/>Sale — Up to<br/>40% Off</h2>
+    <p class="banner-desc">Shop our curated selection of past-season favourites at exceptional value. While stocks last.</p>
+    <br/><br/>
+    <a href="#" class="btn-light">Shop the Sale</a>
+  </div>
+  <div class="banner-right">
+    <div class="banner-stat">
+      <div class="stat-num">40%</div>
+      <div class="stat-label">Maximum discount</div>
+    </div>
+    <div class="banner-stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Days remaining</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features reveal">
+  <div class="feature">
+    <div class="feature-icon">✦</div>
+    <div class="feature-title">Free Delivery</div>
+    <p class="feature-desc">Complimentary shipping on all orders over $150 to most destinations worldwide.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">◈</div>
+    <div class="feature-title">Easy Returns</div>
+    <p class="feature-desc">Not satisfied? Return within 30 days for a full refund, no questions asked.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">◇</div>
+    <div class="feature-title">Secure Payment</div>
+    <p class="feature-desc">All transactions are encrypted and secured. We accept all major payment methods.</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">⟡</div>
+    <div class="feature-title">Authentic Quality</div>
+    <p class="feature-desc">Every piece is quality-checked and sourced from sustainable, ethical partners.</p>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter reveal">
+  <div class="section-label">Stay Connected</div>
+  <h2 class="section-title">Join the Maison<br/><em style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:300;">Community</em></h2>
+  <p>Subscribe for early access to new collections, exclusive offers, and style inspiration delivered to your inbox.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="Your email address"/>
+    <button>Subscribe</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Maison</a>
+      <p>A curated fashion destination for those who appreciate quiet luxury and enduring design.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Women</a></li>
+        <li><a href="#">Men</a></li>
+        <li><a href="#">Accessories</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">Shipping & Returns</a></li>
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Maison. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="#">Instagram</a>
+      <a href="#">Pinterest</a>
+      <a href="#">TikTok</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE105() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NOVA — Online Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FAFAFA;
+    --black: #111;
+    --gray: #777;
+    --light: #F0EEE9;
+    --accent: #B8956A;
+    --border: #E5E5E5;
+    --white: #fff;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--black);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  img { display: block; width: 100%; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links {
+    display: flex; gap: 32px; list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--gray);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  .nav-right {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .nav-right a {
+    font-size: 13px;
+    color: var(--gray);
+    transition: color 0.2s;
+  }
+  .nav-right a:hover { color: var(--black); }
+
+  .cart-icon {
+    position: relative;
+  }
+  .cart-dot {
+    position: absolute; top: -4px; right: -6px;
+    width: 14px; height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    font-size: 8px;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--light);
+    padding: 80px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+    min-height: 480px;
+  }
+
+  .hero-text { max-width: 480px; }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--gray);
+    margin-bottom: 36px;
+    max-width: 380px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 14px 36px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .btn-dark { background: var(--black); color: var(--white); }
+  .btn-dark:hover { background: var(--accent); }
+  .btn-outline { background: none; color: var(--black); border: 1px solid var(--border); margin-left: 12px; }
+  .btn-outline:hover { border-color: var(--black); }
+
+  .hero-img {
+    flex: 0 0 340px;
+    height: 380px;
+    background: #DDD8D0;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  /* STRIP */
+  .strip {
+    background: var(--black);
+    padding: 14px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+  }
+  .strip span {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+  .strip span b { color: rgba(255,255,255,0.9); font-weight: 400; }
+
+  /* SECTION */
+  .section { padding: 72px 40px; }
+  .section-top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 40px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+  }
+  .see-all {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+    transition: color 0.2s;
+  }
+  .see-all:hover { color: var(--black); }
+
+  /* PRODUCT GRID */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .product {
+    background: var(--white);
+    border: 1px solid var(--border);
+    transition: box-shadow 0.25s;
+  }
+  .product:hover { box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+
+  .product-img {
+    aspect-ratio: 3 / 4;
+    background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--black); color: var(--white);
+    font-size: 9px; padding: 4px 8px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .product-tag.sale { background: var(--accent); }
+
+  .product-body { padding: 14px 16px 18px; }
+  .product-name {
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    color: var(--black);
+  }
+  .product-price {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+  }
+  .product-price s { font-weight: 300; color: var(--gray); margin-left: 8px; font-size: 13px; }
+
+  .product-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    background: none;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    color: var(--black);
+  }
+  .product-btn:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+  /* CATEGORIES */
+  .cats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .cat {
+    position: relative;
+    height: 260px;
+    background: var(--light);
+    display: flex; align-items: flex-end;
+    padding: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .cat:hover { opacity: 0.9; }
+  .cat-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa;
+  }
+  .cat-label {
+    position: relative;
+    z-index: 1;
+  }
+  .cat-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+  .cat-count {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* PROMO */
+  .promo {
+    background: var(--light);
+    margin: 0 40px 72px;
+    padding: 56px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .promo-text .hero-eyebrow { margin-bottom: 12px; }
+  .promo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 400;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .promo-sub {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 28px;
+  }
+  .promo-right {
+    text-align: center;
+    flex: 0 0 auto;
+  }
+  .promo-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .promo-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 6px;
+  }
+
+  /* FEATURES */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border);
+  }
+  .feat {
+    padding: 40px 32px;
+    border-right: 1px solid var(--border);
+  }
+  .feat:last-child { border-right: none; }
+  .feat-icon { font-size: 20px; margin-bottom: 12px; }
+  .feat-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .feat-desc { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    color: rgba(255,255,255,0.5);
+    padding: 56px 40px 32px;
+  }
+  .footer-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 48px;
+    gap: 40px;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .footer-tagline { font-size: 13px; max-width: 220px; line-height: 1.7; }
+  .footer-col h5 {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: #fff; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+    display: flex; justify-content: space-between;
+    font-size: 12px;
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { flex-direction: column; padding: 48px 20px; }
+    .hero-img { width: 100%; flex: unset; height: 260px; }
+    .products { grid-template-columns: repeat(2, 1fr); }
+    .cats { grid-template-columns: 1fr 1fr; }
+    .features { grid-template-columns: 1fr 1fr; }
+    .promo { flex-direction: column; margin: 0 20px 48px; padding: 40px 32px; }
+    .section { padding: 48px 20px; }
+    .strip { gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .footer-top { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">Nova</span>
+  <ul class="nav-links">
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Sale</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#">Search</a>
+    <a href="#">Account</a>
+    <a href="#" class="cart-icon">
+      Cart
+      <span class="cart-dot">2</span>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">New Arrivals · Spring 2025</div>
+    <h1 class="hero-title">Style That<br/><em>Speaks</em> for Itself</h1>
+    <p class="hero-sub">Clean lines, quality fabrics, and timeless pieces for every occasion.</p>
+    <a href="#" class="btn btn-dark">Shop Now</a>
+    <a href="#" class="btn btn-outline">See Lookbook</a>
+  </div>
+  <div class="hero-img">[Hero Image]</div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <span><b>Free shipping</b> over $100</span>
+  <span><b>30-day</b> returns</span>
+  <span><b>New drops</b> every week</span>
+  <span><b>Secure</b> checkout</span>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section">
+  <div class="section-top">
+    <h2 class="section-title">Shop by Category</h2>
+    <a href="#" class="see-all">All Categories →</a>
+  </div>
+  <div class="cats">
+    <div class="cat" style="background:#E8E2D9">
+      <div class="cat-bg">[Image]</div>
+      <div class="cat-label">
+        <div class="cat-name">Women</div>
+        <div class="cat-count">128 items</div>
+      </div>
+    </div>
+    <div class="cat" style="background:#D4D8DC">
+      <div class="cat-bg">[Image]</div>
+      <div class="cat-label">
+        <div class="cat-name">Men</div>
+        <div class="cat-count">96 items</div>
+      </div>
+    </div>
+    <div class="cat" style="background:#DDD8CE">
+      <div class="cat-bg">[Image]</div>
+      <div class="cat-label">
+        <div class="cat-name">Accessories</div>
+        <div class="cat-count">54 items</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" style="padding-top:0">
+  <div class="section-top">
+    <h2 class="section-title">New Arrivals</h2>
+    <a href="#" class="see-all">View All →</a>
+  </div>
+  <div class="products">
+
+    <div class="product">
+      <div class="product-img" style="background:#EAE5DC">
+        <span class="product-tag">New</span>
+        [Image]
+      </div>
+      <div class="product-body">
+        <div class="product-name">Linen Blazer</div>
+        <div class="product-price">$89.00</div>
+        <button class="product-btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="product-img" style="background:#D8DCE0">
+        <span class="product-tag sale">Sale</span>
+        [Image]
+      </div>
+      <div class="product-body">
+        <div class="product-name">Wool Sweater</div>
+        <div class="product-price">$59.00 <s>$79.00</s></div>
+        <button class="product-btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="product-img" style="background:#E0DDD6">
+        [Image]
+      </div>
+      <div class="product-body">
+        <div class="product-name">Cotton Trousers</div>
+        <div class="product-price">$69.00</div>
+        <button class="product-btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <div class="product-img" style="background:#D8E0D8">
+        <span class="product-tag">New</span>
+        [Image]
+      </div>
+      <div class="product-body">
+        <div class="product-name">Midi Dress</div>
+        <div class="product-price">$75.00</div>
+        <button class="product-btn">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROMO -->
+<div class="promo">
+  <div class="promo-text">
+    <div class="hero-eyebrow">Limited Time</div>
+    <div class="promo-title">End of Season<br/>Sale is Live</div>
+    <p class="promo-sub">Up to 40% off on selected items. Don't miss out.</p>
+    <a href="#" class="btn btn-dark">Shop the Sale</a>
+  </div>
+  <div class="promo-right">
+    <div class="promo-num">40%</div>
+    <div class="promo-label">Off Selected Items</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features">
+  <div class="feat">
+    <div class="feat-icon">📦</div>
+    <div class="feat-title">Free Delivery</div>
+    <p class="feat-desc">Free shipping on all orders over $100.</p>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">↩️</div>
+    <div class="feat-title">Easy Returns</div>
+    <p class="feat-desc">30-day hassle-free return policy.</p>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">🔒</div>
+    <div class="feat-title">Secure Payment</div>
+    <p class="feat-desc">All transactions are fully encrypted.</p>
+  </div>
+  <div class="feat">
+    <div class="feat-icon">⭐</div>
+    <div class="feat-title">Quality Guaranteed</div>
+    <p class="feat-desc">Curated and checked before shipping.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo">Nova</span>
+      <p class="footer-tagline">Simple, clean fashion for everyday life.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Shop</h5>
+      <ul>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Women</a></li>
+        <li><a href="#">Men</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Help</h5>
+      <ul>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Follow</h5>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Pinterest</a></li>
+        <li><a href="#">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Nova. All rights reserved.</span>
+    <span>Privacy · Terms</span>
+  </div>
+</footer>
+
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
+function copyCODE106() {
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inkwell — Magazine & Blog</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #FDFCFA;
+    --black: #141414;
+    --ink: #2C2C2C;
+    --gray: #767676;
+    --light: #F3F0EA;
+    --accent: #C0392B;
+    --border: #E4E0D8;
+    --white: #fff;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Source Sans 3', sans-serif; font-weight: 400; line-height: 1.6; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--black);
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 9px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .topbar a { color: rgba(255,255,255,0.55); transition: color 0.2s; }
+  .topbar a:hover { color: #fff; }
+  .topbar-right { display: flex; gap: 24px; }
+
+  /* ── HEADER ── */
+  header {
+    padding: 28px 40px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 3px solid var(--black);
+    margin-bottom: 0;
+  }
+  .site-logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--black);
+  }
+  .site-logo span { color: var(--accent); }
+
+  .header-meta {
+    text-align: center;
+  }
+  .header-date {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 2px;
+  }
+  .header-tagline {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gray);
+  }
+
+  .header-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .search-input {
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    background: var(--light);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    outline: none;
+    width: 180px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--black); }
+  .search-btn {
+    padding: 8px 16px;
+    background: var(--black);
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: background 0.2s;
+  }
+  .search-btn:hover { background: var(--accent); }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 40px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  nav a {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray);
+    padding: 14px 20px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  nav a:hover, nav a.active { color: var(--black); border-bottom-color: var(--accent); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+    padding: 48px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── FEATURED ── */
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+  .featured-main {
+    position: relative;
+    overflow: hidden;
+  }
+  .featured-img {
+    height: 380px;
+    background: #D8D2C4;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #999;
+    transition: transform 0.5s ease;
+  }
+  .featured-main:hover .featured-img { transform: scale(1.03); }
+  .featured-body {
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--white);
+    border-left: 1px solid var(--border);
+  }
+  .cat-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .feat-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: var(--black);
+    transition: color 0.2s;
+  }
+  .feat-title:hover { color: var(--accent); }
+  .feat-excerpt {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.75;
+    margin-bottom: 20px;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: var(--gray);
+  }
+  .meta-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--light);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: var(--gray);
+    flex-shrink: 0;
+  }
+  .meta-dot { opacity: 0.4; }
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 20px;
+    transition: gap 0.2s;
+  }
+  .read-more:hover { gap: 10px; }
+
+  /* ── ARTICLE GRID ── */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-label a {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .section-label a:hover { border-color: var(--accent); }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-bottom: 48px;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .article-img {
+    height: 190px;
+    background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .article-img-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #aaa;
+    transition: transform 0.45s ease;
+  }
+  .article-card:hover .article-img-inner { transform: scale(1.04); }
+
+  .article-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 8px;
+    color: var(--black);
+    transition: color 0.2s;
+  }
+  .article-card:hover .article-title { color: var(--accent); }
+  .article-excerpt {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 12px;
+    flex: 1;
+  }
+  .article-meta {
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── LIST ARTICLES ── */
+  .article-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+  .article-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .article-row:first-child { border-top: 1px solid var(--border); }
+  .row-img {
+    height: 80px;
+    background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: 0.08em;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .row-img-inner {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: 0.08em;
+    transition: transform 0.4s;
+  }
+  .article-row:hover .row-img-inner { transform: scale(1.06); }
+  .row-body { display: flex; flex-direction: column; gap: 5px; }
+  .row-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--black);
+    transition: color 0.2s;
+  }
+  .article-row:hover .row-title { color: var(--accent); }
+  .row-excerpt { font-size: 13px; color: var(--gray); line-height: 1.6; }
+  .row-meta { font-size: 11px; color: #aaa; }
+
+  /* ── SIDEBAR ── */
+  .sidebar { display: flex; flex-direction: column; gap: 40px; }
+
+  .sidebar-widget {}
+  .widget-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gray);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--black);
+    margin-bottom: 20px;
+  }
+
+  /* Popular */
+  .popular-list { display: flex; flex-direction: column; gap: 0; }
+  .popular-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .popular-item:last-child { border-bottom: none; }
+  .popular-num {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+    transition: color 0.2s;
+  }
+  .popular-item:hover .popular-num { color: var(--accent); }
+  .popular-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--black);
+    margin-bottom: 4px;
+    transition: color 0.2s;
+  }
+  .popular-item:hover .popular-title { color: var(--accent); }
+  .popular-meta { font-size: 11px; color: #aaa; }
+
+  /* Tags */
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tag:hover { background: var(--black); color: #fff; border-color: var(--black); }
+
+  /* Newsletter Widget */
+  .newsletter-widget {
+    background: var(--black);
+    padding: 28px 24px;
+  }
+  .newsletter-widget .widget-title { color: rgba(255,255,255,0.4); border-bottom-color: rgba(255,255,255,0.15); }
+  .newsletter-widget p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .newsletter-widget input {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .newsletter-widget input::placeholder { color: rgba(255,255,255,0.3); }
+  .newsletter-widget input:focus { border-color: rgba(255,255,255,0.4); }
+  .newsletter-widget button {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .newsletter-widget button:hover { opacity: 0.85; }
+
+  /* Social Widget */
+  .social-list { display: flex; flex-direction: column; gap: 0; }
+  .social-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .social-item:hover { color: var(--accent); }
+  .social-name { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; }
+  .social-count { font-size: 12px; color: var(--gray); }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+  .page-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    background: none;
+  }
+  .page-btn:hover, .page-btn.active {
+    background: var(--black);
+    color: #fff;
+    border-color: var(--black);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    color: rgba(255,255,255,0.45);
+    margin-top: 0;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding: 56px 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .footer-logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-about { font-size: 13px; line-height: 1.8; max-width: 240px; }
+  .footer-col h5 {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: #fff; }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    font-size: 12px;
+  }
+
+  /* ── DARK MODE TOGGLE ── */
+  .theme-toggle {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.5);
+    padding: 5px 12px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: #fff; color: #fff; }
+
+  /* ── DARK MODE ── */
+  body.dark {
+    --bg: #111;
+    --black: #F0EDE8;
+    --ink: #D8D4CC;
+    --gray: #888;
+    --light: #1E1C18;
+    --border: #2A2822;
+    --white: #1A1814;
+  }
+  body.dark header, body.dark nav { background: #111; }
+  body.dark .topbar { background: #0A0A0A; }
+  body.dark .site-logo { color: #F0EDE8; }
+  body.dark .newsletter-widget { background: #1A1814; }
+  body.dark footer { background: #0A0A0A; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .main-grid { grid-template-columns: 1fr; padding: 32px 20px; gap: 40px; }
+    .featured { grid-template-columns: 1fr; }
+    .featured-body { border-left: none; border-top: 1px solid var(--border); }
+    .article-grid { grid-template-columns: 1fr 1fr; }
+    .topbar, .header-inner, nav { padding-left: 20px; padding-right: 20px; }
+    .header-meta { display: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; padding: 40px 20px; gap: 32px; }
+    .footer-bottom { padding: 20px; flex-direction: column; gap: 10px; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .article-grid { grid-template-columns: 1fr; }
+    .header-inner { flex-direction: column; gap: 16px; padding: 20px 0; }
+    .header-search { width: 100%; }
+    .search-input { flex: 1; width: auto; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>Sunday, March 8, 2025</span>
+  <div class="topbar-right">
+    <a href="#">Subscribe</a>
+    <a href="#">Newsletter</a>
+    <a href="#">About</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="site-logo">Ink<span>well</span></a>
+    <div class="header-meta">
+      <div class="header-date">Est. 2020 · Independent Media</div>
+      <div class="header-tagline">Stories worth reading, every single day</div>
+    </div>
+    <div class="header-search">
+      <input class="search-input" type="text" placeholder="Search articles…"/>
+      <button class="search-btn">Go</button>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="active">Home</a>
+  <a href="#">World</a>
+  <a href="#">Technology</a>
+  <a href="#">Culture</a>
+  <a href="#">Science</a>
+  <a href="#">Business</a>
+  <a href="#">Opinion</a>
+  <a href="#">Travel</a>
+  <a href="#">Food</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main-grid">
+
+  <!-- CONTENT -->
+  <main>
+
+    <!-- FEATURED -->
+    <div class="featured">
+      <div class="featured-main">
+        <div class="featured-img" style="background:#C8C0B0">[Featured Image]</div>
+      </div>
+      <div class="featured-body">
+        <span class="cat-tag">Technology</span>
+        <a href="#" class="feat-title">The Quiet Revolution Reshaping How We Think About Digital Privacy</a>
+        <p class="feat-excerpt">Across the globe, a generation of engineers and policymakers are rebuilding the internet's foundations — and the consequences will affect everyone.</p>
+        <div class="meta">
+          <div class="meta-avatar">JD</div>
+          <span>James Dolan</span>
+          <span class="meta-dot">·</span>
+          <span>Mar 6, 2025</span>
+          <span class="meta-dot">·</span>
+          <span>8 min read</span>
+        </div>
+        <a href="#" class="read-more">Read Story →</a>
+      </div>
+    </div>
+
+    <!-- LATEST ARTICLES -->
+    <div class="section-label">
+      Latest Stories
+      <a href="#">View all →</a>
+    </div>
+    <div class="article-grid">
+
+      <div class="article-card">
+        <div class="article-img" style="background:#D4CEC4">
+          <div class="article-img-inner">[Image]</div>
+        </div>
+        <span class="cat-tag">Culture</span>
+        <a href="#" class="article-title">Why Slow Cinema Is Having a Major Comeback</a>
+        <p class="article-excerpt">Film festivals from Cannes to Sundance are championing a new generation of directors who prize patience over pace.</p>
+        <div class="article-meta">Sara Lin · Mar 5, 2025 · 5 min</div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-img" style="background:#C8D0CC">
+          <div class="article-img-inner">[Image]</div>
+        </div>
+        <span class="cat-tag">Science</span>
+        <a href="#" class="article-title">Inside the Lab Trying to Grow Coral at Scale</a>
+        <p class="article-excerpt">A small team in Florida believes coral farming could be the last line of defense for dying reef ecosystems.</p>
+        <div class="article-meta">Tom Reeves · Mar 4, 2025 · 6 min</div>
+      </div>
+
+      <div class="article-card">
+        <div class="article-img" style="background:#D8D0C0">
+          <div class="article-img-inner">[Image]</div>
+        </div>
+        <span class="cat-tag">Business</span>
+        <a href="#" class="article-title">The New Rules of Building a Brand in Public</a>
+        <p class="article-excerpt">Transparency used to be a risk. Now the founders who share everything are the ones audiences trust most.</p>
+        <div class="article-meta">Priya Shah · Mar 3, 2025 · 4 min</div>
+      </div>
+
+    </div>
+
+    <!-- MORE READING -->
+    <div class="section-label">
+      More to Read
+      <a href="#">All articles →</a>
+    </div>
+    <div class="article-list">
+
+      <div class="article-row">
+        <div class="row-img" style="background:#DDD6CA">
+          <div class="row-img-inner">[Img]</div>
+        </div>
+        <div class="row-body">
+          <span class="cat-tag">Opinion</span>
+          <a href="#" class="row-title">We Need to Talk About the Loneliness Crisis in Young Men</a>
+          <p class="row-excerpt">The numbers are stark, and the solutions are harder than anyone wants to admit.</p>
+          <div class="row-meta">Marcus Webb · Mar 2, 2025 · 7 min read</div>
+        </div>
+      </div>
+
+      <div class="article-row">
+        <div class="row-img" style="background:#C8D4D0">
+          <div class="row-img-inner">[Img]</div>
+        </div>
+        <div class="row-body">
+          <span class="cat-tag">Travel</span>
+          <a href="#" class="row-title">The Forgotten Villages of Northern Portugal That Tourists Haven't Found Yet</a>
+          <p class="row-excerpt">Before the crowds arrive, there are still corners of Europe untouched by mass tourism.</p>
+          <div class="row-meta">Elena Sousa · Mar 1, 2025 · 5 min read</div>
+        </div>
+      </div>
+
+      <div class="article-row">
+        <div class="row-img" style="background:#D0CCC4">
+          <div class="row-img-inner">[Img]</div>
+        </div>
+        <div class="row-body">
+          <span class="cat-tag">Food</span>
+          <a href="#" class="row-title">Fermentation Is the Flavour of the Decade — Here's Why</a>
+          <p class="row-excerpt">From kimchi to kombucha, the ancient art of fermentation is transforming modern cooking.</p>
+          <div class="row-meta">Chloe Park · Feb 28, 2025 · 4 min read</div>
+        </div>
+      </div>
+
+      <div class="article-row">
+        <div class="row-img" style="background:#D4D0C8">
+          <div class="row-img-inner">[Img]</div>
+        </div>
+        <div class="row-body">
+          <span class="cat-tag">World</span>
+          <a href="#" class="row-title">A Small Country's Big Bet on Universal Basic Income</a>
+          <p class="row-excerpt">Two years in, the results are surprising even the economists who designed the experiment.</p>
+          <div class="row-meta">Ahmad Noor · Feb 27, 2025 · 9 min read</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">4</button>
+      <button class="page-btn">5</button>
+      <button class="page-btn">→</button>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Popular -->
+    <div class="sidebar-widget">
+      <div class="widget-title">Most Read</div>
+      <div class="popular-list">
+        <div class="popular-item">
+          <div class="popular-num">01</div>
+          <div>
+            <div class="popular-title">The Hidden Cost of Overnight Shipping</div>
+            <div class="popular-meta">Business · 12k reads</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <div class="popular-num">02</div>
+          <div>
+            <div class="popular-title">What It Takes to Raise Kids Without Screens</div>
+            <div class="popular-meta">Culture · 9.4k reads</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <div class="popular-num">03</div>
+          <div>
+            <div class="popular-title">Is Your City Prepared for the Next Big Flood?</div>
+            <div class="popular-meta">World · 8.1k reads</div>
+          </div>
+        </div>
+        <div class="popular-item">
+          <div class="popular-num">04</div>
+          <div>
+            <div class="popular-title">The New Science of Forgetting on Purpose</div>
+            <div class="popular-meta">Science · 7.7k reads</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="sidebar-widget newsletter-widget">
+      <div class="widget-title">Newsletter</div>
+      <p>Get the week's best stories delivered to your inbox every Sunday morning.</p>
+      <input type="text" placeholder="Your name"/>
+      <input type="email" placeholder="Your email address"/>
+      <button>Subscribe Free</button>
+    </div>
+
+    <!-- Tags -->
+    <div class="sidebar-widget">
+      <div class="widget-title">Browse Topics</div>
+      <div class="tag-cloud">
+        <span class="tag">Tech</span>
+        <span class="tag">Culture</span>
+        <span class="tag">Science</span>
+        <span class="tag">Opinion</span>
+        <span class="tag">Travel</span>
+        <span class="tag">Food</span>
+        <span class="tag">Business</span>
+        <span class="tag">World</span>
+        <span class="tag">Design</span>
+        <span class="tag">Health</span>
+        <span class="tag">Climate</span>
+      </div>
+    </div>
+
+    <!-- Social -->
+    <div class="sidebar-widget">
+      <div class="widget-title">Follow Us</div>
+      <div class="social-list">
+        <div class="social-item">
+          <span class="social-name">Twitter / X</span>
+          <span class="social-count">24.5k</span>
+        </div>
+        <div class="social-item">
+          <span class="social-name">Instagram</span>
+          <span class="social-count">18.2k</span>
+        </div>
+        <div class="social-item">
+          <span class="social-name">Newsletter</span>
+          <span class="social-count">11.8k</span>
+        </div>
+        <div class="social-item">
+          <span class="social-name">YouTube</span>
+          <span class="social-count">6.3k</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a href="#" class="footer-logo">Ink<span style="color:var(--accent)">well</span></a>
+      <p class="footer-about">Independent journalism for curious minds. We cover the stories that matter, without the noise.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Sections</h5>
+      <ul>
+        <li><a href="#">World</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Culture</a></li>
+        <li><a href="#">Science</a></li>
+        <li><a href="#">Opinion</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Write for Us</a></li>
+        <li><a href="#">Advertise</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Support</h5>
+      <ul>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">RSS Feed</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Inkwell Media. All rights reserved.</span>
+    <button class="theme-toggle" id="themeBtn">☀ Toggle Dark Mode</button>
+  </div>
+</footer>
+
+<script>
+  // Dark mode toggle
+  const btn = document.getElementById('themeBtn');
+  btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    btn.textContent = document.body.classList.contains('dark') ? '☀ Light Mode' : '☾ Dark Mode';
+  });
+
+  // Active nav on click
+  document.querySelectorAll('nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      document.querySelectorAll('nav a').forEach(x => x.classList.remove('active'));
+      a.classList.add('active');
+    });
+  });
+
+  // Pagination
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
+  `;
+  navigator.clipboard.writeText(code)
+    .then(() => alert("Copied!"))
+    .catch(() => alert("Copy failed"));
+}
