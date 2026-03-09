@@ -23514,7 +23514,475 @@ function copyCODE108() {
     .catch(() => alert("Copy failed"));
 }
 function copyCODE109() {
-  const code = `
+  const code = `import { useState, useRef, useEffect, useCallback } from "react";
+
+const THEMES = {
+  syntax: {
+    keyword: "#c792ea",
+    string: "#c3e88d",
+    comment: "#546e7a",
+    number: "#f78c6c",
+    function: "#82aaff",
+    operator: "#89ddff",
+    variable: "#eeffff",
+    type: "#ffcb6b",
+  }
+};
+
+const LANGUAGE_TEMPLATES = {
+  javascript: `// Welcome to CodeVault
+const fibonacci = (n) => {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+};
+
+class DataProcessor {
+  constructor(data) {
+    this.data = data;
+    this.processed = false;
+  }
+
+  async transform(fn) {
+    const result = await Promise.all(
+      this.data.map((item) => fn(item))
+    );
+    this.processed = true;
+    return result;
+  }
+}
+
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const processor = new DataProcessor(nums);
+
+// Generate fibonacci sequence
+const fibs = nums.map((n) => fibonacci(n));
+console.log("Fibonacci:", fibs);`,
+
+  python: `# Welcome to CodeVault
+from typing import List, Optional
+import asyncio
+
+class DataProcessor:
+    def __init__(self, data: List):
+        self.data = data
+        self.processed = False
+    
+    async def transform(self, fn):
+        result = [await fn(item) for item in self.data]
+        self.processed = True
+        return result
+
+def fibonacci(n: int) -> int:
+    """Calculate fibonacci number recursively."""
+    if n <= 1:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# Generate sequence
+nums = list(range(1, 11))
+fibs = [fibonacci(n) for n in nums]
+print(f"Fibonacci: {fibs}")`,
+
+  typescript: `// Welcome to CodeVault
+interface Config<T> {
+  data: T[];
+  transformer: (item: T) => Promise<T>;
+  onComplete?: (result: T[]) => void;
+}
+
+class DataProcessor<T> {
+  private data: T[];
+  public processed: boolean = false;
+
+  constructor(private config: Config<T>) {
+    this.data = config.data;
+  }
+
+  async transform(): Promise<T[]> {
+    const result = await Promise.all(
+      this.data.map(this.config.transformer)
+    );
+    this.processed = true;
+    this.config.onComplete?.(result);
+    return result;
+  }
+}
+
+const fibonacci = (n: number): number =>
+  n <= 1 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+
+export { DataProcessor, fibonacci };`
+};
+
+function tokenize(code) {
+  const tokens = [];
+  const patterns = [
+    { type: "comment", regex: /\/\/[^\n]*|\/\*[\s\S]*?\*\//g },
+    { type: "string", regex: /(['"`])(?:(?!\1)[^\\]|\\[\s\S])*\1/g },
+    { type: "number", regex: /\b\d+\.?\d*\b/g },
+    { type: "keyword", regex: /\b(const|let|var|function|class|async|await|return|if|else|for|while|import|export|from|new|this|typeof|instanceof|true|false|null|undefined|void|of|in|extends|implements|interface|type|enum|private|public|protected|readonly|static|abstract|def|self|from|import|pass|raise|with|as|lambda|yield|global|nonlocal|and|or|not|is|try|except|finally|List|Optional)\b/g },
+    { type: "type", regex: /\b([A-Z][a-zA-Z]*)\b/g },
+    { type: "function", regex: /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()/g },
+    { type: "operator", regex: /[=><!+\-*\/&|?:]+/g },
+  ];
+
+  const result = [];
+  let lastIndex = 0;
+
+  const allMatches = [];
+  patterns.forEach(({ type, regex }) => {
+    regex.lastIndex = 0;
+    let match;
+    while ((match = regex.exec(code)) !== null) {
+      allMatches.push({ type, start: match.index, end: match.index + match[0].length, text: match[0] });
+    }
+  });
+
+  allMatches.sort((a, b) => a.start - b.start);
+
+  const filtered = [];
+  let covered = 0;
+  for (const match of allMatches) {
+    if (match.start >= covered) {
+      filtered.push(match);
+      covered = match.end;
+    }
+  }
+
+  for (const match of filtered) {
+    if (match.start > lastIndex) {
+      result.push({ type: "variable", text: code.slice(lastIndex, match.start) });
+    }
+    result.push(match);
+    lastIndex = match.end;
+  }
+  if (lastIndex < code.length) {
+    result.push({ type: "variable", text: code.slice(lastIndex) });
+  }
+
+  return result;
+}
+
+function HighlightedCode({ code }) {
+  const tokens = tokenize(code);
+  const colorMap = {
+    keyword: "#c792ea",
+    string: "#c3e88d",
+    comment: "#546e7a",
+    number: "#f78c6c",
+    function: "#82aaff",
+    operator: "#89ddff",
+    variable: "#eeffff",
+    type: "#ffcb6b",
+  };
+
+  return (
+    <span>
+      {tokens.map((token, i) => (
+        <span key={i} style={{ color: colorMap[token.type] || colorMap.variable }}>
+          {token.text}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+export default function CodeEditor() {
+  const [language, setLanguage] = useState("javascript");
+  const [code, setCode] = useState(LANGUAGE_TEMPLATES.javascript);
+  const [cursorPos, setCursorPos] = useState({ line: 1, col: 1 });
+  const [fileName, setFileName] = useState("main.js");
+  const [saved, setSaved] = useState(true);
+  const [activeTab, setActiveTab] = useState(0);
+  const textareaRef = useRef(null);
+  const highlightRef = useRef(null);
+
+  const tabs = [
+    { name: "main.js", lang: "javascript" },
+    { name: "processor.py", lang: "python" },
+    { name: "types.ts", lang: "typescript" },
+  ];
+
+  const lines = code.split("\n");
+
+  const syncScroll = useCallback(() => {
+    if (textareaRef.current && highlightRef.current) {
+      highlightRef.current.scrollTop = textareaRef.current.scrollTop;
+      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setCode(e.target.value);
+    setSaved(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      const newCode = code.substring(0, start) + "  " + code.substring(end);
+      setCode(newCode);
+      requestAnimationFrame(() => {
+        e.target.selectionStart = e.target.selectionEnd = start + 2;
+      });
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+      e.preventDefault();
+      setSaved(true);
+    }
+  };
+
+  const handleKeyUp = (e) => {
+    const pos = e.target.selectionStart;
+    const textBefore = code.slice(0, pos);
+    const line = (textBefore.match(/\n/g) || []).length + 1;
+    const lastNewline = textBefore.lastIndexOf("\n");
+    const col = pos - lastNewline;
+    setCursorPos({ line, col });
+  };
+
+  const switchTab = (i) => {
+    setActiveTab(i);
+    const tab = tabs[i];
+    setLanguage(tab.lang);
+    setCode(LANGUAGE_TEMPLATES[tab.lang]);
+    setFileName(tab.name);
+    setSaved(true);
+  };
+
+  const extColor = { js: "#f0db4f", py: "#3572A5", ts: "#3178c6" };
+  const ext = fileName.split(".").pop();
+
+  return (
+    <div style={{
+      minHeight: "100vh",
+      background: "#0d1117",
+      display: "flex",
+      flexDirection: "column",
+      fontFamily: "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace",
+      color: "#c9d1d9",
+    }}>
+      {/* Title bar */}
+      <div style={{
+        background: "#161b22",
+        borderBottom: "1px solid #21262d",
+        padding: "0 16px",
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        height: 38,
+        userSelect: "none",
+      }}>
+        <div style={{ display: "flex", gap: 6, marginRight: 12 }}>
+          {["#ff5f57", "#febc2e", "#28c840"].map((c, i) => (
+            <div key={i} style={{ width: 12, height: 12, borderRadius: "50%", background: c, cursor: "pointer", transition: "opacity .15s" }} />
+          ))}
+        </div>
+        <span style={{ color: "#6e7681", fontSize: 12, letterSpacing: "0.08em" }}>
+          CodeVault
+        </span>
+        <span style={{ marginLeft: "auto", fontSize: 11, color: "#3d444d" }}>v2.1.0</span>
+      </div>
+
+      {/* Tabs */}
+      <div style={{
+        background: "#161b22",
+        borderBottom: "1px solid #21262d",
+        display: "flex",
+        alignItems: "flex-end",
+        paddingLeft: 8,
+        gap: 2,
+      }}>
+        {tabs.map((tab, i) => {
+          const tabExt = tab.name.split(".").pop();
+          const isActive = i === activeTab;
+          return (
+            <div
+              key={i}
+              onClick={() => switchTab(i)}
+              style={{
+                padding: "8px 16px",
+                fontSize: 12,
+                cursor: "pointer",
+                borderTop: isActive ? `2px solid ${extColor[tabExt] || "#58a6ff"}` : "2px solid transparent",
+                background: isActive ? "#0d1117" : "transparent",
+                color: isActive ? "#e6edf3" : "#6e7681",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "color .15s",
+                borderRadius: "4px 4px 0 0",
+              }}
+            >
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: extColor[tabExt] || "#58a6ff",
+                opacity: isActive ? 1 : 0.4,
+              }} />
+              {tab.name}
+              {!saved && isActive && (
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#f0883e" }} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Editor */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        {/* Sidebar */}
+        <div style={{
+          width: 48,
+          background: "#161b22",
+          borderRight: "1px solid #21262d",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          paddingTop: 12,
+          gap: 16,
+        }}>
+          {["⬡", "⌖", "⎔", "⊞"].map((icon, i) => (
+            <div key={i} style={{
+              width: 32, height: 32,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 16,
+              color: i === 0 ? "#58a6ff" : "#3d444d",
+              cursor: "pointer",
+              borderRadius: 6,
+              background: i === 0 ? "rgba(88,166,255,0.1)" : "transparent",
+            }}>
+              {icon}
+            </div>
+          ))}
+        </div>
+
+        {/* Line numbers + code area */}
+        <div style={{ flex: 1, display: "flex", overflow: "hidden", position: "relative" }}>
+          {/* Line numbers */}
+          <div style={{
+            width: 52,
+            background: "#0d1117",
+            padding: "14px 0",
+            textAlign: "right",
+            paddingRight: 12,
+            fontSize: 13,
+            lineHeight: "21px",
+            color: "#3d444d",
+            userSelect: "none",
+            overflowY: "hidden",
+            flexShrink: 0,
+            borderRight: "1px solid #161b22",
+          }}>
+            {lines.map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  color: i + 1 === cursorPos.line ? "#6e7681" : "#3d444d",
+                  fontWeight: i + 1 === cursorPos.line ? 600 : 400,
+                  transition: "color .1s",
+                }}
+              >
+                {i + 1}
+              </div>
+            ))}
+          </div>
+
+          {/* Highlight layer */}
+          <div
+            ref={highlightRef}
+            style={{
+              position: "absolute",
+              left: 52,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              padding: "14px 16px",
+              fontSize: 13,
+              lineHeight: "21px",
+              fontFamily: "inherit",
+              whiteSpace: "pre",
+              overflow: "hidden",
+              pointerEvents: "none",
+              tabSize: 2,
+              color: "#eeffff",
+            }}
+          >
+            <HighlightedCode code={code} />
+          </div>
+
+          {/* Textarea */}
+          <textarea
+            ref={textareaRef}
+            value={code}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyUp}
+            onClick={handleKeyUp}
+            onScroll={syncScroll}
+            spellCheck={false}
+            style={{
+              position: "absolute",
+              left: 52,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              padding: "14px 16px",
+              fontSize: 13,
+              lineHeight: "21px",
+              fontFamily: "inherit",
+              whiteSpace: "pre",
+              overflow: "auto",
+              background: "transparent",
+              color: "transparent",
+              caretColor: "#58a6ff",
+              border: "none",
+              outline: "none",
+              resize: "none",
+              tabSize: 2,
+              zIndex: 2,
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Status bar */}
+      <div style={{
+        background: "#1c2128",
+        borderTop: "1px solid #21262d",
+        padding: "4px 16px",
+        display: "flex",
+        alignItems: "center",
+        gap: 20,
+        fontSize: 11,
+        color: "#6e7681",
+        userSelect: "none",
+      }}>
+        <span style={{
+          color: saved ? "#3fb950" : "#f0883e",
+          display: "flex", alignItems: "center", gap: 4,
+        }}>
+          <span>{saved ? "●" : "○"}</span>
+          {saved ? "Saved" : "Unsaved changes"}
+        </span>
+        <span>Ln {cursorPos.line}, Col {cursorPos.col}</span>
+        <span style={{
+          marginLeft: "auto",
+          color: extColor[ext] || "#6e7681",
+          fontWeight: 600,
+          letterSpacing: "0.05em",
+          textTransform: "uppercase",
+        }}>
+          {language}
+        </span>
+        <span>UTF-8</span>
+        <span>LF</span>
+        <span style={{ color: "#58a6ff" }}>⌘S to save</span>
+      </div>
+    </div>
+  );
+}
   `;
   navigator.clipboard.writeText(code)
     .then(() => alert("Copied!"))
