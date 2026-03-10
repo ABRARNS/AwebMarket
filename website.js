@@ -24462,7 +24462,1169 @@ updateHome();
     .catch(() => alert("Copy failed"));
 }
 function copyCODE110() {
-  const code = `
+  const code = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maison Noir — Fine Dining</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0806;
+      --deep: #111009;
+      --gold: #c8a96e;
+      --gold-light: #e2c98a;
+      --cream: #f5efe4;
+      --warm-white: #faf7f2;
+      --muted: #7a6e60;
+      --border-gold: rgba(200, 169, 110, 0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--cream);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.18s ease;
+      opacity: 0.6;
+    }
+
+    /* Noise texture */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.8rem 4rem;
+      background: linear-gradient(to bottom, rgba(10,8,6,0.95) 0%, transparent 100%);
+      animation: fadeDown 1s ease both;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 3rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--cream);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.3s, color 0.3s;
+    }
+
+    .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+    .nav-reserve {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.6rem 1.5rem;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .nav-reserve:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 60% 40%, rgba(200,169,110,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(200,169,110,0.05) 0%, transparent 50%),
+        linear-gradient(160deg, #1a1510 0%, #0a0806 50%, #0d0b08 100%);
+    }
+
+    /* Decorative lines */
+    .hero-lines {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-lines::before,
+    .hero-lines::after {
+      content: '';
+      position: absolute;
+      border: 1px solid var(--border-gold);
+    }
+
+    .hero-lines::before {
+      top: 10%; left: 6%; right: 6%; bottom: 10%;
+    }
+
+    .hero-lines::after {
+      top: 12%; left: 8%; right: 8%; bottom: 12%;
+    }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      animation: fadeUp 1.2s ease 0.3s both;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 0.5s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4.5rem, 10vw, 9rem);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      color: var(--warm-white);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.7s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-subtitle {
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1s forwards;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 2rem auto;
+      opacity: 0;
+      animation: expandWidth 0.8s ease 1.2s forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 1.5rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.4s forwards;
+    }
+
+    .btn-primary {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .btn-ghost::after {
+      content: '→';
+      font-size: 0.9rem;
+      transition: transform 0.3s;
+    }
+
+    .btn-ghost:hover { opacity: 1; }
+    .btn-ghost:hover::after { transform: translateX(4px); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease 1.8s forwards;
+    }
+
+    .hero-scroll span {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollDrop 1.5s ease-in-out infinite;
+    }
+
+    /* ── INTRO ── */
+    .intro {
+      padding: 10rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .intro-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--warm-white);
+      margin-bottom: 2rem;
+    }
+
+    .intro-text h2 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .intro-text p {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .intro-visual {
+      position: relative;
+    }
+
+    .intro-card {
+      background: linear-gradient(135deg, #1c1710 0%, #141109 100%);
+      border: 1px solid var(--border-gold);
+      padding: 3rem;
+      position: relative;
+    }
+
+    .intro-card::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 2rem; right: 2rem;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .stat-item {}
+
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ── MENU SECTION ── */
+    .menu-section {
+      padding: 8rem 4rem;
+      background: linear-gradient(to bottom, transparent, #0d0b08 30%, #0d0b08 70%, transparent);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.5;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300;
+      color: var(--warm-white);
+      line-height: 1;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 4rem;
+      border: 1px solid var(--border-gold);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      border-right: 1px solid var(--border-gold);
+      transition: all 0.3s;
+    }
+
+    .tab-btn:last-child { border-right: none; }
+
+    .tab-btn.active {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--gold);
+      background: rgba(200,169,110,0.05);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--border-gold);
+    }
+
+    .menu-item {
+      background: var(--deep);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.3s;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .menu-item:hover::before { transform: scaleX(1); }
+    .menu-item:hover { background: #161310; }
+
+    .menu-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+
+    .menu-item-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--warm-white);
+      flex: 1;
+      padding-right: 1rem;
+    }
+
+    .menu-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .menu-item-desc {
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .menu-item-tag {
+      display: inline-block;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border-gold);
+      padding: 0.2rem 0.6rem;
+      margin-top: 1rem;
+    }
+
+    /* ── AMBIENCE ── */
+    .ambience {
+      padding: 8rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .ambience-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+
+    .amb-card {
+      background: linear-gradient(135deg, #1a1610, #0f0d0a);
+      border: 1px solid var(--border-gold);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease;
+    }
+
+    .amb-card:hover { transform: translateY(-4px); }
+
+    .amb-card.large {
+      grid-column: span 2;
+    }
+
+    .amb-icon {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .amb-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--warm-white);
+      margin-bottom: 0.8rem;
+    }
+
+    .amb-card p {
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .amb-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 80px; height: 80px;
+      background: radial-gradient(circle, rgba(200,169,110,0.07) 0%, transparent 70%);
+    }
+
+    /* ── RESERVATION ── */
+    .reservation {
+      padding: 8rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reservation::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(200,169,110,0.06) 0%, transparent 70%);
+    }
+
+    .reservation-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .reservation h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300;
+      color: var(--warm-white);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .reservation h2 em { font-style: italic; color: var(--gold-light); }
+
+    .reservation p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .res-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border-gold);
+      margin-bottom: 1px;
+    }
+
+    .res-form-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border-gold);
+      margin-bottom: 2rem;
+    }
+
+    .res-input {
+      background: var(--deep);
+      border: none;
+      padding: 1.2rem 1.5rem;
+      color: var(--cream);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      width: 100%;
+      outline: none;
+      transition: background 0.2s;
+    }
+
+    .res-input::placeholder { color: var(--muted); }
+    .res-input:focus { background: #181410; }
+
+    .res-select {
+      background: var(--deep);
+      border: none;
+      padding: 1.2rem 1.5rem;
+      color: var(--muted);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      width: 100%;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      transition: background 0.2s;
+    }
+
+    .res-select:focus { background: #181410; color: var(--cream); }
+
+    .btn-reserve-large {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 1.2rem 4rem;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .btn-reserve-large:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: 6rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .testimonial {
+      border: 1px solid var(--border-gold);
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: 0.3;
+      position: absolute;
+      top: 0.5rem; left: 1.5rem;
+      line-height: 1;
+    }
+
+    .testimonial-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      padding-top: 1rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border-gold);
+      padding: 4rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      max-width: 1200px;
+      margin: 0 auto 0;
+    }
+
+    .footer-brand .nav-logo { font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+
+    .footer-brand p {
+      font-size: 0.76rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.7rem; }
+    .footer-col ul li a {
+      text-decoration: none;
+      font-size: 0.76rem;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-gold);
+      padding: 1.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes expandWidth {
+      from { opacity: 0; width: 0; }
+      to   { opacity: 1; width: 60px; }
+    }
+
+    @keyframes scrollDrop {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+      100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .intro { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .ambience-grid { grid-template-columns: 1fr; }
+      .amb-card.large { grid-column: span 1; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .res-form, .res-form-bottom { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .hero-lines::before, .hero-lines::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">Maison Noir</div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#ambience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#reserve" class="nav-reserve">Reserve a Table</a>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Est. 2008 · Paris — New York</p>
+    <h1 class="hero-title">
+      Where Every<br><em>Dish Tells</em><br>a Story
+    </h1>
+    <p class="hero-subtitle">Fine Dining · Seasonal Cuisine · Curated Wines</p>
+    <div class="hero-divider"></div>
+    <div class="hero-cta">
+      <a href="#reserve" class="btn-primary">Reserve Tonight</a>
+      <a href="#menu" class="btn-ghost">Explore Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="intro" id="about">
+  <div class="intro-text">
+    <p class="intro-label">Our Philosophy</p>
+    <h2>A Culinary <em>Journey</em> Beyond Expectations</h2>
+    <p>At Maison Noir, we believe that dining is not merely sustenance — it is an art form. Every plate that leaves our kitchen carries the story of its origin, from the hands of our artisan farmers to the craft of our Michelin-starred chef.</p>
+    <p>We source exclusively from local estates and seasonal harvests, allowing nature to dictate the poetry of each menu. The result is an ever-evolving tasting experience that surprises, delights, and lingers in memory.</p>
+  </div>
+  <div class="intro-visual">
+    <div class="intro-card">
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-number">2★</div>
+          <div class="stat-label">Michelin Stars</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">16</div>
+          <div class="stat-label">Years of Excellence</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">98%</div>
+          <div class="stat-label">Locally Sourced</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">400+</div>
+          <div class="stat-label">Wine Labels</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MENU ── -->
+<section class="menu-section" id="menu">
+  <div class="section-header">
+    <div class="section-label">Curated Selection</div>
+    <h2 class="section-title">Tonight's <em>Menu</em></h2>
+  </div>
+
+  <div class="menu-tabs">
+    <button class="tab-btn active" onclick="setTab(this)">Starters</button>
+    <button class="tab-btn" onclick="setTab(this)">Mains</button>
+    <button class="tab-btn" onclick="setTab(this)">Desserts</button>
+    <button class="tab-btn" onclick="setTab(this)">Wine Pairing</button>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Truffle Velouté</div>
+        <div class="menu-item-price">$38</div>
+      </div>
+      <div class="menu-item-desc">Black Périgord truffle, Jerusalem artichoke foam, aged parmesan crisp and winter herb oil.</div>
+      <span class="menu-item-tag">Chef's Pick</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Seared Scallops</div>
+        <div class="menu-item-price">$46</div>
+      </div>
+      <div class="menu-item-desc">Hokkaido scallops, cauliflower purée, crispy capers, brown butter emulsion and micro greens.</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Foie Gras Torchon</div>
+        <div class="menu-item-price">$54</div>
+      </div>
+      <div class="menu-item-desc">House-cured foie gras, Sauternes gelée, brioche toast and seasonal fruit compote.</div>
+      <span class="menu-item-tag">Signature</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Burrata Royale</div>
+        <div class="menu-item-price">$28</div>
+      </div>
+      <div class="menu-item-desc">Imported Italian burrata, heirloom tomato, fresh basil oil, aged balsamic and sea salt.</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Tuna Tataki</div>
+        <div class="menu-item-price">$42</div>
+      </div>
+      <div class="menu-item-desc">Yellowfin tuna, yuzu ponzu, avocado mousse, sesame, pickled radish and shiso leaf.</div>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-top">
+        <div class="menu-item-name">Bone Marrow Gratinée</div>
+        <div class="menu-item-price">$36</div>
+      </div>
+      <div class="menu-item-desc">Roasted bone marrow, gremolata, sourdough crostini, cornichons and chimichurri.</div>
+      <span class="menu-item-tag">New</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── AMBIENCE ── -->
+<section class="ambience" id="ambience">
+  <div class="section-header">
+    <div class="section-label">The Experience</div>
+    <h2 class="section-title">Beyond <em>Dining</em></h2>
+  </div>
+  <div class="ambience-grid">
+    <div class="amb-card large">
+      <span class="amb-icon">🕯️</span>
+      <h3>The Dining Room</h3>
+      <p>Our intimate 40-seat dining room bathes in warm candlelight, draped in dark oak paneling and hand-stitched velvet. Every table is positioned for privacy, each setting laid with silverware crafted by a Parisian atelier. It is a space designed to slow time and heighten the senses.</p>
+    </div>
+    <div class="amb-card">
+      <span class="amb-icon">🍷</span>
+      <h3>The Wine Cellar</h3>
+      <p>A curated collection of over 400 labels, spanning three centuries of viniculture. Our sommelier offers private cellar tours by appointment.</p>
+    </div>
+    <div class="amb-card">
+      <span class="amb-icon">🎵</span>
+      <h3>Live Jazz</h3>
+      <p>Friday and Saturday evenings, our resident jazz trio creates a soundscape that complements every course — never intrusive, always inspiring.</p>
+    </div>
+    <div class="amb-card">
+      <span class="amb-icon">🎂</span>
+      <h3>Private Events</h3>
+      <p>The Salon Privé seats up to 20 guests for exclusive celebrations, corporate dinners and bespoke tasting menus designed for the occasion.</p>
+    </div>
+    <div class="amb-card large">
+      <span class="amb-icon">👨‍🍳</span>
+      <h3>Chef's Table</h3>
+      <p>An unparalleled encounter with our cuisine. Six seats at the kitchen counter, where guests witness the choreography of service and enjoy an exclusive 12-course menu prepared and presented by Chef Laurent himself. Available Wednesday through Sunday, one seating per evening.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials">
+  <div class="section-header">
+    <div class="section-label">Guest Voices</div>
+    <h2 class="section-title">Moments <em>Remembered</em></h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">An evening that transcended dining and became a memory I will carry for years. The truffle velouté alone was worth every mile of travel.</p>
+      <div class="testimonial-author">— Isabelle M., Paris</div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">Maison Noir achieves the rare — flawless technique delivered with genuine warmth. The sommelier's pairing was nothing short of revelatory.</p>
+      <div class="testimonial-author">— James T., New York</div>
+    </div>
+    <div class="testimonial">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-text">We celebrated our anniversary at the Chef's Table. Chef Laurent came to greet us personally. An experience of extraordinary intimacy and artistry.</p>
+      <div class="testimonial-author">— Sophie & Marc R., London</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESERVATION ── -->
+<section class="reservation" id="reserve">
+  <div class="reservation-inner">
+    <div class="section-label">Join Us</div>
+    <h2>Make a <em>Reservation</em></h2>
+    <p>Reserve your table at Maison Noir and allow us to craft an evening tailored precisely to you. For special occasions or dietary requirements, please note them below.</p>
+    <div class="res-form">
+      <input class="res-input" type="text" placeholder="First Name" />
+      <input class="res-input" type="text" placeholder="Last Name" />
+    </div>
+    <div class="res-form-bottom">
+      <input class="res-input" type="date" placeholder="Date" />
+      <select class="res-select">
+        <option value="">Time</option>
+        <option>6:00 PM</option>
+        <option>6:30 PM</option>
+        <option>7:00 PM</option>
+        <option>7:30 PM</option>
+        <option>8:00 PM</option>
+        <option>8:30 PM</option>
+        <option>9:00 PM</option>
+      </select>
+      <select class="res-select">
+        <option value="">Guests</option>
+        <option>1 Guest</option>
+        <option>2 Guests</option>
+        <option>3 Guests</option>
+        <option>4 Guests</option>
+        <option>5 Guests</option>
+        <option>6+ Guests</option>
+      </select>
+    </div>
+    <button class="btn-reserve-large">Confirm Reservation</button>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="contact">
+  <div class="footer-brand">
+    <span class="nav-logo">Maison Noir</span>
+    <p>A sanctuary of fine dining nestled in the heart of the city. Open Tuesday through Sunday, evening service only.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigate</h4>
+    <ul>
+      <li><a href="#about">Our Story</a></li>
+      <li><a href="#menu">The Menu</a></li>
+      <li><a href="#ambience">Experience</a></li>
+      <li><a href="#reserve">Reservations</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Hours</h4>
+    <ul>
+      <li><a href="#">Tue – Thu: 6 – 10pm</a></li>
+      <li><a href="#">Fri – Sat: 5 – 11pm</a></li>
+      <li><a href="#">Sunday: 5 – 9pm</a></li>
+      <li><a href="#">Monday: Closed</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <ul>
+      <li><a href="#">+1 (212) 555-0188</a></li>
+      <li><a href="#">hello@maisonnoir.com</a></li>
+      <li><a href="#">14 Rue du Faubourg</a></li>
+      <li><a href="#">New York, NY 10001</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 Maison Noir. All rights reserved.</p>
+  <p>Crafted with intention · Privacy Policy</p>
+</div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button, .menu-item, .amb-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.opacity = '1';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // Tab switching
+  function setTab(btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.menu-item, .amb-card, .testimonial, .intro-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
   `;
   navigator.clipboard.writeText(code)
     .then(() => alert("Copied!"))
